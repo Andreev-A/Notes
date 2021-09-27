@@ -20,12 +20,13 @@ with open('D:\\notes.txt', 'r', encoding='cp1251') as inf:
     elif my_request == '':
         note_title = input('Название заметки: ').lower()
         if note_title != '':
-            if note_title in text_notes.keys():
-                print('ЕСТЬ ТАКАЯ: ', *text_notes[note_title].split('___'), sep='\n- ')
+            if note_title in ident.keys():
+                print('ЕСТЬ ТАКАЯ: ', *text_notes[ident[note_title]].split('___'), sep='\n- ')
+                input_note_text(ident[note_title])
             else:
                 note_text = input('Заметка: ')
                 text_notes[note_title] = note_text
-            input_note_text(note_title)
+                input_note_text(note_title)
 with open('D:\\notes.txt', 'w') as ouf:
     count = 0
     for note_title, note_text in text_notes.items():
