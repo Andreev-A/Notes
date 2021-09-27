@@ -27,4 +27,9 @@ print(*zoo)
 # выведите на консоль в какой клетке сидит лев (lion) и жаворонок (lark).
 # Номера при выводе должны быть понятны простому человеку, не программисту.
 # TODO здесь ваш код
-
+if 'lion' in zoo:
+    lion_cage_number = zoo.index('lion')
+    print('Лев в клетке -', lion_cage_number, end=' ')
+if 'lark' in zoo:
+    lark_cage_number = zoo.index('lark')
+    print('Жаворонок в клетке -', lark_cage_number)
