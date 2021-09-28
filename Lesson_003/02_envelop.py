@@ -65,11 +65,17 @@ hole_x, hole_y = 8, 9
 brick_x, brick_y, brick_z = 7, 9, 8
 if hole_x < hole_y:
     hole_x, hole_y = hole_y, hole_x
-if brick_x < brick_z:
-    brick_x, brick_z = brick_z, brick_x
-if brick_x < brick_y:
-    brick_x, brick_y = brick_y, brick_x
-if hole_x >= brick_x and hole_y >= brick_y:
-    print('Кирпич  пройдет через отверстие')
+if hole_x > 1000 or hole_y < 1:
+    print('Некоректные размеры')
 else:
-    print('Кирпич не пройдет через отверстие')
+    if brick_x < brick_z:
+        brick_x, brick_z = brick_z, brick_x
+    if brick_x < brick_y:
+        brick_x, brick_y = brick_y, brick_x
+    if brick_x > 1000 or brick_y < 1 or brick_z < 1:
+        print('Некоректные размеры')
+    else:
+        if hole_x >= brick_x and hole_y >= brick_y:
+            print('Кирпич  пройдет через отверстие')
+        else:
+            print('Кирпич не пройдет через отверстие')
