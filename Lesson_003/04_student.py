@@ -16,7 +16,7 @@ educational_grant, expenses = 10000, 12000
 month = 10
 total_educational_grant = educational_grant
 expenses_next = expenses
-while total_educational_grant < educational_grant * month:
+while total_educational_grant < educational_grant * 10:
     expenses_next = expenses_next * 1.03
     expenses += expenses_next
     total_educational_grant += educational_grant

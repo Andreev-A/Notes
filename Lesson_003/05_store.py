@@ -73,7 +73,11 @@ store = {
     ],
 }
 
-
-
-
-
+for name in goods:
+    if goods[name] in store:
+        total_quantity = 0
+        total_cost = 0
+        for string in range(len(store[goods[name]])):
+            total_quantity += store[goods[name]][string]['quantity']
+            total_cost += store[goods[name]][string]['quantity'] * store[goods[name]][string]['price']
+        print(name, '-', total_quantity, 'шт.,', 'стоимость', total_cost, 'руб.')
