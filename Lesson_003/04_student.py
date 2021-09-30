@@ -9,6 +9,13 @@
 # Формат вывода:
 #   Студенту надо попросить ХХХ.ХХ рублей
 
-educational_grant, expenses = 10000, 12000
+# educational_grant, expenses = 10000, 12000
 
 # TODO здесь ваш код
+educational_grant, expenses = 10000, 12000
+expenses_next = expenses
+for _ in range(9):
+    expenses_next = expenses_next * 1.03
+    expenses += expenses_next
+take_from_parents = round(expenses - educational_grant * 10, 2)
+print('Студенту надо попросить', take_from_parents, 'рублей')
