@@ -13,9 +13,12 @@
 
 # TODO здесь ваш код
 educational_grant, expenses = 10000, 12000
+month = 10
+total_educational_grant = educational_grant
 expenses_next = expenses
-for _ in range(9):
+while total_educational_grant < educational_grant * month:
     expenses_next = expenses_next * 1.03
     expenses += expenses_next
-take_from_parents = round(expenses - educational_grant * 10, 2)
+    total_educational_grant += educational_grant
+take_from_parents = round(expenses - total_educational_grant, 2)
 print('Студенту надо попросить', take_from_parents, 'рублей')
