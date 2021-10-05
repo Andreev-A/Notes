@@ -55,16 +55,27 @@ from PIL import Image
 from rcviz import CallGraph, viz
 
 cg = CallGraph(filename="sort.png")
-
+cache = {}
 
 @viz(cg)
-def fib1(n):
+# def fib1(n):
+#     assert n >= 0
+#     return n if n <= 1 else fib1(n - 1) + fib1(n - 2)
+
+
+
+def fib2(n):
     assert n >= 0
-    return n if n <= 1 else fib1(n - 1) + fib1(n - 2)
+    if n not in cache:
+        cache[n] = n if n <= 1 else fib2(n - 1) + fib2(n - 2)
+    return cache[n]
 
-
-fib1(8)
+fib2(5)
 
 cg.render()
 
 Image.open('./sort.png').show()
+if n <= 1:
+            cache[n] = n
+        else:
+            cache[n] = fib2(n - 1) + fib2(n - 2)
