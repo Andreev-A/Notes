@@ -1,3 +1,5 @@
+# from __future__ import print_function
+#
 # from sympy import *
 #
 #
@@ -48,8 +50,14 @@
 # # print(math.factorial(n))
 # # print(2 ** (2 ** n))
 
-from PIL import Image
 
+from PIL import Image
+from rcviz import CallGraph, viz
+
+cg = CallGraph(filename="sort.png")
+
+
+@viz(cg)
 def fib1(n):
     assert n >= 0
     return n if n <= 1 else fib1(n - 1) + fib1(n - 2)
@@ -57,4 +65,6 @@ def fib1(n):
 
 fib1(8)
 
-# Image.open('./fib1.png').show()
+cg.render()
+
+Image.open('./sort.png').show()
