@@ -1,5 +1,3 @@
-# from __future__ import print_function
-#
 # from sympy import *
 #
 #
@@ -57,12 +55,11 @@ from rcviz import CallGraph, viz
 cg = CallGraph(filename="sort.png")
 cache = {}
 
+
 @viz(cg)
 # def fib1(n):
 #     assert n >= 0
 #     return n if n <= 1 else fib1(n - 1) + fib1(n - 2)
-
-
 
 def fib2(n):
     assert n >= 0
@@ -70,12 +67,14 @@ def fib2(n):
         cache[n] = n if n <= 1 else fib2(n - 1) + fib2(n - 2)
     return cache[n]
 
+
+# if n <= 1:
+#     cache[n] = n
+# else:
+#     cache[n] = fib2(n - 1) + fib2(n - 2)
+
 fib2(5)
 
 cg.render()
 
 Image.open('./sort.png').show()
-if n <= 1:
-            cache[n] = n
-        else:
-            cache[n] = fib2(n - 1) + fib2(n - 2)

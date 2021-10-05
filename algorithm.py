@@ -40,13 +40,13 @@
 
 # По данным двум числам 1 <= a, b <= 2*10^9 найдите их наибольший общий делитель.
 
-def gcd(a, b):
-    list, i = [a, b], 1
-    for i in range(1, max(a, b)):
-        if not list[i] and list[i - 1]:
-            break
-        list.append(list[i - 1] % list[i])
-    return max(list[i], list[i - 1])
+# def gcd(a, b):
+#     list, i = [a, b], 1
+#     for i in range(1, max(a, b)):
+#         if not list[i] and list[i - 1]:
+#             break
+#         list.append(list[i - 1] % list[i])
+#     return max(list[i], list[i - 1])
 
 # def gcd(a, b):
 #     return gcd(b, a % b) if b else a
@@ -56,3 +56,16 @@ def gcd(a, b):
 #     a, b = b, a % b
 # print(a)
 
+
+from rcviz import callgraph, viz
+from PIL import Image
+
+
+@viz
+def fib1(n):
+    assert n >= 0
+    return n if n <= 1 else fib1(n - 1) + fib1(n - 2)
+
+fib1(5)
+callgraph.render ("fib1.png")
+Image.open('./fib1.png').show()
