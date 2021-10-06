@@ -56,16 +56,3 @@
 #     a, b = b, a % b
 # print(a)
 
-
-from rcviz import callgraph, viz
-from PIL import Image
-
-
-@viz
-def fib1(n):
-    assert n >= 0
-    return n if n <= 1 else fib1(n - 1) + fib1(n - 2)
-
-fib1(5)
-callgraph.render ("fib1.png")
-Image.open('./fib1.png').show()
