@@ -62,9 +62,45 @@
 # задающих начало и конец отрезка. Выведите оптимальное число m точек и сами m точек. Если таких множеств точек
 # несколько, выведите любое из них.
 
-work_list = [input().split(' ') for i in range(int(input()))]
-work_list.sort(key=lambda x: int(x[1]))
-for i in range(len(work_list)):
-    if work_list[i + 1][0] <= work_list[i][1] <= work_list[i + 1][1]:
+# work_list = [list(map(int, input().split())) for i in range(int(input()))]
+# work_list.sort(key=lambda x: x[1])
+# point_list = [work_list[0][1]]
+# for i in range(len(work_list) - 1):
+#     if not work_list[i + 1][0] <= point_list[-1]:
+#         point_list.append(work_list[i + 1][1])
+# print(len(point_list))
+# print(*point_list)
+#
+# segments = sorted([sorted(map(int,input().split())) for i in range(int(input()))], key=lambda x: x[1])
+# dots = [segments.pop(0)[1]]
+# for l, r in segments:
+#     if l > dots[-1]:
+#         dots.append(r)
+# print(str(len(dots)) + '\n' + ' '.join(map(str, dots)))
+#
+# points = [list(map(int, input().split())) for i in range(int(input()))]
+# out = []
+# for p in reversed(sorted(points)):
+#     if not out or out[-1] > p[1]:
+#         out.append(p[0])
+# print(len(out))
+# print(*out)
+#
+# segs = sorted([[int(i) for i in input().split()] for j in range(int(input()))])
+# dots = []
+# while segs:
+#     dots.append(segs[-1][0])
+#     while segs and dots[-1] <= segs[-1][1]:
+#         segs.pop()
+# print(str(len(dots))+'\n'+' '.join(map(str, dots)))
 
-print(*work_list)
+a = int(input())
+b = []
+for i in range(1, a + 1):
+    a -= i
+    if a <= i:
+        b.append(i + a)
+        break
+    b.append(i)
+print(len(b))
+print(*b)
