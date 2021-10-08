@@ -94,13 +94,52 @@
 #         segs.pop()
 # print(str(len(dots))+'\n'+' '.join(map(str, dots)))
 
-a = int(input())
-b = []
-for i in range(1, a + 1):
-    a -= i
-    if a <= i:
-        b.append(i + a)
+# По данному числу 1 <= n <= 10^9 найдите максимальное число k, для которого n можно представить как сумму
+# k различных натуральных слагаемых. Выведите в первой строке число k, во второй — k слагаемых.
+#
+# entered_number = int(input())
+# difference_entered_number = entered_number
+# summand_of_numbers = []
+# for next_summand_of_number in range(1, entered_number + 1):
+#     difference_entered_number -= next_summand_of_number
+#     if difference_entered_number <= next_summand_of_number:
+#         summand_of_numbers.append(next_summand_of_number + difference_entered_number)
+#         break
+#     summand_of_numbers.append(next_summand_of_number)
+# print(len(summand_of_numbers))
+# print(*summand_of_numbers)
+
+# a = int(input())
+# b = []
+# for i in range(1, a + 1):
+#     a -= i
+#     if a <= i:
+#         b.append(i + a)
+#         break
+#     b.append(i)
+# print(len(b))
+# print(*b)
+
+# Первая строка содержит количество предметов 1 <= n <= 10^3 и вместимость рюкзака 0 <= W <= 2 * 10^6. Каждая из
+# следующих n строк задаёт стоимость 0 <= c_i <= 2 * 10^6 и объём 0 <= w_i <= 2 * 10^6 предмета (n, W, c_i, w_i  —
+# целые числа). Выведите максимальную стоимость частей предметов (от каждого предмета можно отделить любую часть,
+# стоимость и объём при этом пропорционально уменьшатся), помещающихся в данный рюкзак, с точностью не менее трёх
+# знаков после запятой.
+
+import decimal
+
+decimal.getcontext().rounding = decimal.ROUND_DOWN
+
+number_of_items, backpack_capacity = map(int, input().split())
+work_list, maximum_cost = [], 0
+for _ in range(number_of_items):
+    cost, volume = map(int, input().split())
+    work_list.append([round(cost / volume, 3), cost, volume])
+for segment in reversed(sorted(work_list)):
+    if backpack_capacity >= segment[2]:
+        backpack_capacity -= segment[2]
+        maximum_cost += segment[1]
+    else:
+        maximum_cost += backpack_capacity / segment[2] * segment[1]
         break
-    b.append(i)
-print(len(b))
-print(*b)
+print(round(maximum_cost, 3))
