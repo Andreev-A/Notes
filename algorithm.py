@@ -126,20 +126,129 @@
 # стоимость и объём при этом пропорционально уменьшатся), помещающихся в данный рюкзак, с точностью не менее трёх
 # знаков после запятой.
 
-import decimal
+# number_of_items, backpack_capacity = map(int, input().split())
+# work_list, maximum_cost = [], 0
+# for _ in range(number_of_items):
+#     cost, volume = map(int, input().split())
+#     work_list.append([cost / volume, cost, volume])
+# for segment in reversed(sorted(work_list)):
+#     if backpack_capacity >= segment[2]:
+#         backpack_capacity -= segment[2]
+#         maximum_cost += segment[1]
+#     else:
+#         maximum_cost += backpack_capacity / segment[2] * segment[1]
+#         break
+# print(round(maximum_cost, 3))
+#
+# Постройте алгоритм, который получает на вход натуральное число n и за время O(n) находит минимальное число монет
+# def num_coin_opt(price: int):
+#     coins = [10, 25, 1]
+#     coins.sort(reverse=True)
+#     amount_coins = [0] * (len(coins))
+#
+#     for i in range(len(coins)):
+#         working_price = priceabacabad
+#         for coin in coins[i:]:
+#             amount_coins[i] += working_price // coin
+#             working_price %= coin
+#     return min(amount_coins)
 
-decimal.getcontext().rounding = decimal.ROUND_DOWN
+# По данной непустой строке ss длины не более 10^4, состоящей из строчных букв латинского алфавита, постройте
+# оптимальный беспрефиксный код. В первой строке выведите количество различных букв k, встречающихся в строке,
+# и размер получившейся закодированной строки. В следующих k строках запишите коды букв в формате "letter: code".
+# В последней строке выведите закодированную строку.
+# abacabad   01001100100111
+#
+# string = input()
+# work_list, letters_in_binary, binary_code = [], {}, ''
+# for letter in set(string):
+#     work_list.append([letter, string.count(letter)])
+# number_of_letters = len(work_list)
+# while len(work_list) > 1:
+#     work_list.sort(key=lambda x: x[1])
+#     work_list.append([work_list[0][0] + work_list[1][0], work_list[0][1] + work_list[1][1]])
+#     for i in range(2):
+#         for j in work_list.pop(0)[0]:
+#             if j in letters_in_binary:
+#                 letters_in_binary[j] = str(i) + letters_in_binary[j]
+#             else:
+#                 letters_in_binary.setdefault(j, str(i))
+# for letter in string:
+#     if number_of_letters == 1:
+#         binary_code = str(0) * work_list[0][1]
+#         letters_in_binary[letter] = str(0)
+#     else:
+#         binary_code += letters_in_binary[letter]
+# print(number_of_letters, len(binary_code))
+# [print('{}: {}'.format(k, letters_in_binary[k])) for k in sorted(letters_in_binary)]
+# print(binary_code)
+#
+# import collections
+#
+#
+# def popmin(tree, codes, num):
+#     el = tree.pop(tree.index(min(tree)))
+#     for s in el[1]:
+#         codes[s] = num + codes[s]
+#     return el[0], el[1]
+#
+#
+# def main():
+#     sss = input().strip()
+#     count = collections.Counter(sss)
+#     codes = dict.fromkeys(count, '0' if len(count) == 1 else '')
+#     tree = [[count[key], key] for key in count]
+#     while len(tree) > 1:
+#         val1, s1 = popmin(tree, codes, '0')
+#         val2, s2 = popmin(tree, codes, '1')
+#         tree.append([val1 + val2, s1 + s2])
+#     word = ''.join(codes[s] for s in sss)
+#     print(len(count), len(word))
+#     [print('{}: {}'.format(k, codes[k])) for k in sorted(codes)]
+#     print(word)
+#
+#
+# from heapq import heappush, heappop
+# from collections import Counter
+#
+# prefix = lambda a, p: [(k, p + v) for k, v in a]
+# merge  = lambda a, b: (a[0] + b[0], prefix(a[1], '0') + prefix(b[1], '1'))
+#
+# string = input()
+# heap = [(v, [(k, '')]) for k, v in reversed(Counter(string).most_common())]
+#
+# while len(heap) > 1:
+#     heappush(heap, merge(heappop(heap), heappop(heap)))
+#
+# table = heap[0][1] if len(heap[0][1]) > 1 else prefix(heap[0][1], '0')
+# encoded = string.translate(str.maketrans(dict(table)))
+#
+# print(len(table), len(encoded))
+# print(*map('{0[0]}: {0[1]}'.format, table), encoded, sep='\n')
+#
+# from collections import Counter
+#
+# line = input()
+# count = Counter(line)
+# d = {key:"" for key in set(count)}
+# if len(d) > 1:
+#     while len(count) > 1:
+#         a, b = count.most_common()[:-3:-1]
+#         count[a[0] + b[0]] = count.pop(a[0]) + count.pop(b[0])
+#         for c in a[0]:
+#             d[c] = '0' + d[c]
+#         for c in b[0]:
+#             d[c] = '1' + d[c]
+# elif len(d) == 1:
+#     d[line[0]] = '0'
+#
+# cod_line = ''.join(d[k] for k in line)
+#
+# print(len(d), len(cod_line))
+# print(*[f'{k}: {d[k]}' for k, z in Counter(line).most_common()], sep='\n')
+# print(cod_line)
 
-number_of_items, backpack_capacity = map(int, input().split())
-work_list, maximum_cost = [], 0
-for _ in range(number_of_items):
-    cost, volume = map(int, input().split())
-    work_list.append([round(cost / volume, 3), cost, volume])
-for segment in reversed(sorted(work_list)):
-    if backpack_capacity >= segment[2]:
-        backpack_capacity -= segment[2]
-        maximum_cost += segment[1]
-    else:
-        maximum_cost += backpack_capacity / segment[2] * segment[1]
-        break
-print(round(maximum_cost, 3))
+x, y = map(int, input().split())
+letters_in_binary = dict(input().split(':') for _ in range(x))
+
+print(letters_in_binary)
