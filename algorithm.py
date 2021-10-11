@@ -248,7 +248,49 @@
 # print(*[f'{k}: {d[k]}' for k, z in Counter(line).most_common()], sep='\n')
 # print(cod_line)
 
-x, y = map(int, input().split())
-letters_in_binary = dict(input().split(':') for _ in range(x))
+# Восстановите строку по её коду и беспрефиксному коду символов. В первой строке входного файла заданы два целых числа k
+# и l через пробел — количество различных букв, встречающихся в строке, и размер получившейся закодированной строки,
+# соответственно. В следующих k строках записаны коды букв в формате "letter: code". Ни один код не является префиксом
+# другого. Буквы могут быть перечислены в любом порядке. В качестве букв могут встречаться лишь строчные буквы
+# латинского алфавита; каждая из этих букв встречается в строке хотя бы один раз. Наконец, в последней строке записана
+# закодированная строка. Исходная строка и коды всех букв непусты. Заданный код таков, что закодированная строка имеет
+# минимальный возможный размер.
+# В первой строке выходного файла выведите строку s. Она должна состоять из строчных букв латинского алфавита.
+# Гарантируется, что длина правильного ответа не превосходит 10^4 символов.
+#
+# number_of_letters, encoded_string_size = map(int, input().split())
+# letters_in_binary = dict({map(str, input().split(': ')[::-1]) for _ in range(number_of_letters)})
+# encoded_string, decoded_string, letter = input(), '', ''
+# for i in encoded_string:
+#     letter += i
+#     if letter not in letters_in_binary:
+#         continue
+#     decoded_string += letters_in_binary[letter]
+#     letter = ''
+# print(decoded_string)
 
-print(letters_in_binary)
+priority_queue = [10, 9, 8, 5, 3]
+# x = [input()]
+operation, number = map(str, input().split())
+if operation == 'Insert':
+    priority_queue.append(int(number))
+    item = len(priority_queue) - 1
+    previous_item = (item - 1) // 2
+    while item:
+        if priority_queue[item] > priority_queue[previous_item]:
+            priority_queue[item], priority_queue[previous_item] = priority_queue[previous_item], priority_queue[item]
+            item = previous_item
+        else:
+            break
+if operation == 'ExtractMax':
+    priority_queue[0], out = priority_queue[- 1], priority_queue[0]
+    item = 1
+    while item < len(priority_queue):
+        item_1 = 2 * item - 1
+        item_2 = 2 * item
+        if priority_queue[item_1] > priority_queue[item_2]:
+            next_item = item_1
+        else:
+            next_item = item_2
+        priority_queue[item], priority_queue[next_item] = priority_queue[item], priority_queue[next_item]
+        item = next_item
