@@ -269,28 +269,34 @@
 #     letter = ''
 # print(decoded_string)
 
-priority_queue = [10, 9, 8, 5, 3]
-# x = [input()]
-operation, number = map(str, input().split())
-if operation == 'Insert':
-    priority_queue.append(int(number))
-    item = len(priority_queue) - 1
-    previous_item = (item - 1) // 2
-    while item:
-        if priority_queue[item] > priority_queue[previous_item]:
-            priority_queue[item], priority_queue[previous_item] = priority_queue[previous_item], priority_queue[item]
-            item = previous_item
-        else:
-            break
-if operation == 'ExtractMax':
-    priority_queue[0], out = priority_queue[- 1], priority_queue[0]
-    item = 1
-    while item < len(priority_queue):
-        item_1 = 2 * item - 1
-        item_2 = 2 * item
-        if priority_queue[item_1] > priority_queue[item_2]:
-            next_item = item_1
-        else:
-            next_item = item_2
-        priority_queue[item], priority_queue[next_item] = priority_queue[item], priority_queue[next_item]
-        item = next_item
+priority_list, extract_max = [], []
+for i in range(int(input())):
+    string = input()
+    if priority_list and string == 'ExtractMax':
+        extract_max.append(priority_list[0])
+        if len(priority_list) > 1:
+            priority_list[0] = priority_list.pop(- 1)
+            index = 0
+            while 2 * index + 1 < len(priority_list):
+                index_1 = 2 * index + 1
+                index_2 = 2 * index + 2
+                if index_2 > len(priority_list) - 1:
+                    index_2 = index_1
+                if priority_list[index_1] >= priority_list[index_2]:
+                    next_index = index_1
+                else:
+                    next_index = index_2
+                priority_list[index], priority_list[next_index] = priority_list[next_index], priority_list[index]
+                index = next_index
+    elif string != 'ExtractMax':
+        number = string.split()
+        priority_list.append(int(number[1]))
+        index = len(priority_list) - 1
+        while index:
+            prev_index = (index - 1) // 2
+            if priority_list[index] > priority_list[prev_index]:
+                priority_list[index], priority_list[prev_index] = priority_list[prev_index], priority_list[index]
+                index = prev_index
+            else:
+                break
+print(*extract_max, sep='\n')
