@@ -62,6 +62,11 @@
 # задающих начало и конец отрезка. Выведите оптимальное число m точек и сами m точек. Если таких множеств точек
 # несколько, выведите любое из них.
 
+# 4
+# 4 7
+# 1 3
+# 2 5
+# 5 6
 # work_list = [list(map(int, input().split())) for i in range(int(input()))]
 # work_list.sort(key=lambda x: x[1])
 # point_list = [work_list[0][1]]
@@ -126,6 +131,10 @@
 # стоимость и объём при этом пропорционально уменьшатся), помещающихся в данный рюкзак, с точностью не менее трёх
 # знаков после запятой.
 
+# 3 50
+# 60 20
+# 100 50
+# 120 30
 # number_of_items, backpack_capacity = map(int, input().split())
 # work_list, maximum_cost = [], 0
 # for _ in range(number_of_items):
@@ -139,6 +148,116 @@
 #         maximum_cost += backpack_capacity / segment[2] * segment[1]
 #         break
 # print(round(maximum_cost, 3))
+#
+#  алгоритм с практики (задача выше)
+import sys
+import heapq
+
+
+# решение сортировкой
+# def fractional_knapsack(capacity, values_and_weights):
+#     # список пар удельная стоимость и количество
+#     order = [(v / w, w) for v, w in values_and_weights]
+#     # пары сравниваются лексиграфически, если первые равны - то берется по второй большей
+#     order.sort(reverse=True)
+#     #  заведем аккумулятор - стоимость рюкзака на данный момент и обойдем получившийся список
+#     acc = 0
+#     for v_per_w, w in order:
+#         # если помещается в рюкзак, то берем весь, емкость убывает
+#         if w < capacity:
+#             acc += v_per_w * w
+#             capacity -= w
+#         # не помещается - то берем сколько сможем
+#         else:
+#             acc += v_per_w * capacity
+#             break
+#     return acc
+
+# решение двоичной кучей, добавляем модуль heapq
+def fractional_knapsack(capacity, values_and_weights):
+    # список пар удельная стоимость и количество
+    order = [(-v / w, w) for v, w in values_and_weights]
+    # построим кучу на списке пар, удельная ценность как приоритет, строим по наименьшему приоритету преобразуя список
+    # чтобы инвертировать это поведение добавим '-' в первый компонент пары выше в строке order
+    heapq.heapify(order)
+    #  заведем аккумулятор - будем вытаскивать из списка элемент с большей удельной ценность с помощью функции heappop
+    acc = 0
+    # while order:
+    #     v_per_w, w = heapq.heappop(order)
+    #     # если помещается в рюкзак, то берем весь, емкость убывает, ставим '-' т.к в куче с минусом
+    #     if w < capacity:
+    #         acc += -v_per_w * w
+    #         capacity -= w
+    #     # не помещается - то берем сколько сможем, ставим '-' т.к в куче с минусом
+    #     else:
+    #         acc += -v_per_w * capacity
+    #         break
+    # или через переменную, добавляем условие остановки по полному рюкзаку - and capacity
+    while order and capacity:
+        v_per_w, w = heapq.heappop(order)
+        can_take = min(w, capacity)
+        # '-' заменяем сложение, чтобы не было -v_per_w
+        acc -= v_per_w * can_take
+        capacity -= can_take
+
+    return acc
+
+
+def main():
+    # для каждой строки а потоке ввода разбивает ее на кусочки и каждый кусочек приводит к целому числу,
+    # map - функция-генератор, приводим все к кортежу - чтобы все было явно
+    reader = (tuple(map(int, line.split())) for line in sys.stdin)
+    # прочитаем элементы, попросив следующий элемент с генератора
+    n, capacity = next(reader)
+    # читаем остальные элементы в потоке в список парами
+    values_and_weights = list(reader)
+    # не используем n явно просто проверим что правильно считали
+    assert len(values_and_weights) == n
+    # вызовем функцию для решения и выведем ответ
+    opt_value = fractional_knapsack(capacity, values_and_weights)
+    print('{:.3f}'.format(opt_value))
+
+
+
+def test():
+    # рюкзак ноль - его нет
+    assert fractional_knapsack(0, [(60, 20)]) == 0.0
+    # предмета меньше, чем рюкзак может вместить - то есть взяли сколько есть
+    assert fractional_knapsack(25, [(60, 20)]) == 60.0
+    # есть предметы нулевой стоимости и они не повлияли на итог
+    assert fractional_knapsack(25, [(60, 20), (0, 100)]) == 60.0
+    # если предметов больше, то возьмем оптимальное решение
+    assert fractional_knapsack(25, [(60, 20), (50, 50)]) == 60.0 + 5.0
+    # пример со страницы задания
+    assert fractional_knapsack(50, [(60, 20), (100, 50), (120, 30)]) == 180.0
+
+    import time
+
+    def timed(f, *args, n_iter=100):
+        acc = float('inf')
+        for i in range(n_iter):
+            t0 = time.perf_counter()
+            f(*args)
+            t1 = time.perf_counter()
+            acc = min(acc, t1 - t0)
+        return acc
+
+    from random import randint
+    # from timing import timed
+    for attempt in range(100):
+        n = randint(1, 1000)
+        capacity = randint(0, 2 * 10 ** 6)
+        values_and_weights = []
+        for i in range(n):
+            values_and_weights.append((randint(0, 2 * 10 ** 6), randint(1, 2 * 10 ** 6)))
+
+            t = timed(fractional_knapsack, values_and_weights)
+            assert t < 5
+
+#  вызов функции main, на время проверки меняем на test
+if __name__ == '__main__':
+    test()
+
 #
 # Постройте алгоритм, который получает на вход натуральное число n и за время O(n) находит минимальное число монет
 # def num_coin_opt(price: int):
@@ -258,6 +377,12 @@
 # В первой строке выходного файла выведите строку s. Она должна состоять из строчных букв латинского алфавита.
 # Гарантируется, что длина правильного ответа не превосходит 10^4 символов.
 #
+# 4 14
+# a: 0
+# b: 10
+# c: 110
+# d: 111
+# 01001100100111
 # number_of_letters, encoded_string_size = map(int, input().split())
 # letters_in_binary = dict({map(str, input().split(': ')[::-1]) for _ in range(number_of_letters)})
 # encoded_string, decoded_string, letter = input(), '', ''
@@ -269,34 +394,71 @@
 #     letter = ''
 # print(decoded_string)
 
-priority_list, extract_max = [], []
-for i in range(int(input())):
-    string = input()
-    if priority_list and string == 'ExtractMax':
-        extract_max.append(priority_list[0])
-        if len(priority_list) > 1:
-            priority_list[0] = priority_list.pop(- 1)
-            index = 0
-            while 2 * index + 1 < len(priority_list):
-                index_1 = 2 * index + 1
-                index_2 = 2 * index + 2
-                if index_2 > len(priority_list) - 1:
-                    index_2 = index_1
-                if priority_list[index_1] >= priority_list[index_2]:
-                    next_index = index_1
-                else:
-                    next_index = index_2
-                priority_list[index], priority_list[next_index] = priority_list[next_index], priority_list[index]
-                index = next_index
-    elif string != 'ExtractMax':
-        number = string.split()
-        priority_list.append(int(number[1]))
-        index = len(priority_list) - 1
-        while index:
-            prev_index = (index - 1) // 2
-            if priority_list[index] > priority_list[prev_index]:
-                priority_list[index], priority_list[prev_index] = priority_list[prev_index], priority_list[index]
-                index = prev_index
-            else:
-                break
-print(*extract_max, sep='\n')
+# Первая строка входа содержит число операций 1 <= n <= 10^5. Каждая из последующих n строк задают операцию одного из
+# следующих двух типов:
+# Insert x, где 0 <= n <= 10^9 — целое число
+# ExtractMax
+# Первая операция добавляет число x в очередь с приоритетами, вторая — извлекает максимальное число и выводит его.
+#
+# priority_list, extract_max = [], []
+# for _ in range(int(input())):
+#     string = input()
+#     if priority_list and string == 'ExtractMax':
+#         extract_max.append(priority_list.pop(0))
+#         if len(priority_list) > 1:
+#             priority_list.insert(0, priority_list.pop(- 1))
+#             index = 0
+#             while 2 * index + 1 < len(priority_list):
+#                 index_1 = 2 * index + 1
+#                 index_2 = 2 * index + 2
+#                 if index_2 > len(priority_list) - 1:
+#                     index_2 = index_1
+#                 if priority_list[index] >= (priority_list[index_1] and priority_list[index_2]):
+#                     break
+#                 if priority_list[index_1] >= priority_list[index_2]:
+#                     next_index = index_1
+#                 else:
+#                     next_index = index_2
+#                 priority_list[index], priority_list[next_index] = priority_list[next_index], priority_list[index]
+#                 index = next_index
+#     elif string != 'ExtractMax':
+#         priority_list.append(int(string.split()[1]))
+#         index = len(priority_list) - 1
+#         while index:
+#             prev_index = (index - 1) // 2
+#             if priority_list[index] > priority_list[prev_index]:
+#                 priority_list[index], priority_list[prev_index] = priority_list[prev_index], priority_list[index]
+#                 index = prev_index
+#             else:
+#                 break
+# print(*extract_max, sep='\n')
+#
+# def up(i):
+#     while i > 0 and a[(i - 1)//2] < a[i]:
+#         a[(i - 1)//2], a[i] = a[i], a[(i - 1)//2]
+#         i = (i - 1) // 2
+#
+# def down(i):
+#     while 2 * i + 1 <= len(a) - 1:
+#         j = i
+#         if a[2 * i + 1] > a[i]:
+#             j = 2 * i + 1
+#         if 2 * i + 2 <= len(a) - 1 and a[2 * i + 2] > a[j]:
+#             j = 2 * i + 2
+#         if i == j:
+#             break
+#         else:
+#             a[i], a[j] = a[j], a[i]
+#             i = j
+#
+# a = []
+# for _ in range(int(input())):
+#     s = (input().split())
+#     if len(s) == 2:
+#         a.append(int(s[1]))
+#         up(len(a) - 1)
+#     else:
+#         print(a[0])
+#         a[0] = a[-1]
+#         a.pop()
+#         down(0)
