@@ -155,52 +155,53 @@ import heapq
 
 
 # решение сортировкой
-# def fractional_knapsack(capacity, values_and_weights):
-#     # список пар удельная стоимость и количество
-#     order = [(v / w, w) for v, w in values_and_weights]
-#     # пары сравниваются лексиграфически, если первые равны - то берется по второй большей
-#     order.sort(reverse=True)
-#     #  заведем аккумулятор - стоимость рюкзака на данный момент и обойдем получившийся список
-#     acc = 0
-#     for v_per_w, w in order:
-#         # если помещается в рюкзак, то берем весь, емкость убывает
-#         if w < capacity:
-#             acc += v_per_w * w
-#             capacity -= w
-#         # не помещается - то берем сколько сможем
-#         else:
-#             acc += v_per_w * capacity
-#             break
-#     return acc
-
-# решение двоичной кучей, добавляем модуль heapq
 def fractional_knapsack(capacity, values_and_weights):
     # список пар удельная стоимость и количество
-    order = [(-v / w, w) for v, w in values_and_weights]
-    # построим кучу на списке пар, удельная ценность как приоритет, строим по наименьшему приоритету преобразуя список
-    # чтобы инвертировать это поведение добавим '-' в первый компонент пары выше в строке order
-    heapq.heapify(order)
-    #  заведем аккумулятор - будем вытаскивать из списка элемент с большей удельной ценность с помощью функции heappop
+    order = [(v / w, w) for v, w in values_and_weights]
+    # пары сравниваются лексиграфически, если первые равны - то берется по второй большей
+    order.sort(reverse=True)
+    #  заведем аккумулятор - стоимость рюкзака на данный момент и обойдем получившийся список
     acc = 0
-    # while order:
-    #     v_per_w, w = heapq.heappop(order)
-    #     # если помещается в рюкзак, то берем весь, емкость убывает, ставим '-' т.к в куче с минусом
-    #     if w < capacity:
-    #         acc += -v_per_w * w
-    #         capacity -= w
-    #     # не помещается - то берем сколько сможем, ставим '-' т.к в куче с минусом
-    #     else:
-    #         acc += -v_per_w * capacity
-    #         break
-    # или через переменную, добавляем условие остановки по полному рюкзаку - and capacity
-    while order and capacity:
-        v_per_w, w = heapq.heappop(order)
-        can_take = min(w, capacity)
-        # '-' заменяем сложение, чтобы не было -v_per_w
-        acc -= v_per_w * can_take
-        capacity -= can_take
-
+    for v_per_w, w in order:
+        # если помещается в рюкзак, то берем весь, емкость убывает
+        if w < capacity:
+            acc += v_per_w * w
+            capacity -= w
+        # не помещается - то берем сколько сможем
+        else:
+            acc += v_per_w * capacity
+            break
     return acc
+
+
+# # решение двоичной кучей, добавляем модуль heapq
+# def fractional_knapsack(capacity, values_and_weights):
+#     # список пар удельная стоимость и количество
+#     order = [(-v / w, w) for v, w in values_and_weights]
+#     # построим кучу на списке пар, удельная ценность как приоритет, строим по наименьшему приоритету преобразуя список
+#     # чтобы инвертировать это поведение добавим '-' в первый компонент пары выше в строке order
+#     heapq.heapify(order)
+#     #  заведем аккумулятор - будем вытаскивать из списка элемент с большей удельной ценность с помощью функции heappop
+#     acc = 0
+#     # while order:
+#     #     v_per_w, w = heapq.heappop(order)
+#     #     # если помещается в рюкзак, то берем весь, емкость убывает, ставим '-' т.к в куче с минусом
+#     #     if w < capacity:
+#     #         acc += -v_per_w * w
+#     #         capacity -= w
+#     #     # не помещается - то берем сколько сможем, ставим '-' т.к в куче с минусом
+#     #     else:
+#     #         acc += -v_per_w * capacity
+#     #         break
+#     # или через переменную, добавляем условие остановки по полному рюкзаку - and capacity
+#     while order and capacity:
+#         v_per_w, w = heapq.heappop(order)
+#         can_take = min(w, capacity)
+#         # '-' заменяем сложение, чтобы не было -v_per_w
+#         acc -= v_per_w * can_take
+#         capacity -= can_take
+#
+#     return acc
 
 
 def main():
@@ -216,7 +217,6 @@ def main():
     # вызовем функцию для решения и выведем ответ
     opt_value = fractional_knapsack(capacity, values_and_weights)
     print('{:.3f}'.format(opt_value))
-
 
 
 def test():
@@ -251,8 +251,10 @@ def test():
         for i in range(n):
             values_and_weights.append((randint(0, 2 * 10 ** 6), randint(1, 2 * 10 ** 6)))
 
-            t = timed(fractional_knapsack, values_and_weights)
-            assert t < 5
+        t = timed(fractional_knapsack, capacity, values_and_weights)
+        print(t)
+        assert t < 5
+
 
 #  вызов функции main, на время проверки меняем на test
 if __name__ == '__main__':
@@ -415,10 +417,7 @@ if __name__ == '__main__':
 #                     index_2 = index_1
 #                 if priority_list[index] >= (priority_list[index_1] and priority_list[index_2]):
 #                     break
-#                 if priority_list[index_1] >= priority_list[index_2]:
-#                     next_index = index_1
-#                 else:
-#                     next_index = index_2
+#                 next_index = index_1 if priority_list[index_1] >= priority_list[index_2] else index_2
 #                 priority_list[index], priority_list[next_index] = priority_list[next_index], priority_list[index]
 #                 index = next_index
 #     elif string != 'ExtractMax':

@@ -8,15 +8,17 @@ sd.resolution = (1200, 600)
 
 # TODO здесь ваш код
 color = sd.COLOR_DARK_YELLOW
-y_0 = 0
-for i in range(12):
-    x_0 = 0 if i % 2 else 50
-    for j in range(12):
-        point_0 = sd.get_point(x_0, y_0)
-        point_1 = sd.get_point(x_0 + 100, y_0 + 50)
-        sd.rectangle(left_bottom=point_0, right_top=point_1, color=color,  width=2)
-        x_0 += 100
-    y_0 += 50
+length, height = 100, 50
+row = 0
+for y in range(0, sd.resolution[1], height):
+    row += 1
+    for x in range(0, sd.resolution[0], length):
+        x_0 = x if row % 2 else x + length // 2
+        left_bottom = sd.get_point(x_0, y)
+        right_top = sd.get_point(x_0 + length, y + height)
+        sd.rectangle(left_bottom=left_bottom, right_top=right_top, color=color,  width=2)
+
 sd.pause()
+
 
 
