@@ -15,4 +15,15 @@
 # Создать рецепт своего бургера, по вашему вкусу.
 # Если не хватает инградиентов - создать соответствующие функции в модуле my_burger
 
-# TODO здесь ваш код
+import my_burger
+
+recipe = []
+print('Давйте создадим рецепт бургера. Итак начнем')
+my_burger.add_buns(recipe)
+my_burger.add_cutlets(recipe)
+my_burger.add_cucumber(recipe)
+my_burger.add_tomato(recipe)
+my_burger.add_sauce(recipe)
+my_burger.add_mayonnaise(recipe)
+my_burger.add_cheese(recipe)
+print('Получился следующий рецепт: ' + ", ".join(map(str, recipe)))

@@ -1,42 +1,40 @@
+def add_buns(_recipe):
+    need_to_add = input('Добавить в бургер булочки? (да, нет): ').lower()
+    if need_to_add == 'да':
+        return _recipe.append('булочки')
 
 
-def add_buns():
-    need_to_add = input('Добавить в бургер булочки?: ')
-    if need_to_add == 'Да' or 'да':
-        return 'булочки'
-    else:
-        return False
-
-def add_cutlets():
-    need_to_add = input('Добавить в бургер котлеты?: ')
-    if need_to_add == 'Да' or 'да':
-        return 'котлеты'
-    else:
-        return False
-
-def add_cucumber():
-    need_to_add = input('Добавить в бургер огурчик?: ')
-    if need_to_add == 'Да' or 'да':
-        return True
-    else:
-        return False
-
-def add_tomato():
-    need_to_add = input('Добавить в бургер помидор?: ')
-    if need_to_add == 'Да' or 'да':
-        return True
-    else:
-        return False
+def add_cutlets(_recipe):
+    need_to_add = input('Добавить в бургер котлеты? (да, нет): ').lower()
+    if need_to_add == 'да':
+        return _recipe.append('котлеты')
 
 
-
-add mayonnaise
-
-add sauce
-
-add cheese
+def add_cucumber(_recipe):
+    need_to_add = input('Добавить в бургер огурчик? (да, нет): ').lower()
+    if need_to_add == 'да':
+        return _recipe.append('огурчик')
 
 
+def add_tomato(_recipe):
+    need_to_add = input('Добавить в бургер помидор? (да, нет): ').lower()
+    if need_to_add == 'да':
+        return _recipe.append('помидор')
 
-#  - майонеза
-#  - сыра
+
+def add_sauce(_recipe):
+    need_to_add = input('Добавить в бургер соус? (да, нет): ').lower()
+    if need_to_add == 'да':
+        return _recipe.append('соус')
+
+
+def add_mayonnaise(_recipe):
+    need_to_add = input('Добавить в бургер майонеза? (да, нет): ').lower()
+    if need_to_add == 'да':
+        return _recipe.append('майонез')
+
+
+def add_cheese(_recipe):
+    need_to_add = input('Добавить в бургер сыра? (да, нет): ').lower()
+    if need_to_add == 'да':
+        return _recipe.append('сыр')
