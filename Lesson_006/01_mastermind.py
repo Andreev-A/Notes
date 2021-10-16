@@ -47,11 +47,11 @@ from mastermind_engine import number_generator, check_the_number
 from termcolor import cprint, colored
 
 while True:
-    print(number_generator())
-    cprint('Компьютер загадал число.', color='cyan')
+    print('Вывод загаданного числа для тестов - ', number_generator())
+    cprint('Компьютер загадал число. Введите четырехзначное число c неповторяющимися цифрами ', color='cyan')
     count = 0
     while True:
-        entered_number = input(colored('Введите Ваше четырехзначное число c неповторяющимися цифрами: ', color='green'))
+        entered_number = input(colored('Ваше число: ', color='green'))
         if len(entered_number) == 4 and entered_number.isdigit():
             count += 1
             result_of_checking = check_the_number(entered_number)
@@ -59,13 +59,18 @@ while True:
             cprint('Вы неправильно ввели число. Попробуйте еще раз.', color='red')
             continue
         if result_of_checking['bulls'] != 4:
-            for key, value in result_of_checking.items():
-                cprint(key + ' - ' + str(value), color='cyan')
+            cprint('быки - ' + str(result_of_checking['bulls']) + ', коровы - ' + str(result_of_checking['cows']),
+                   color='cyan')
         else:
-            cprint('Вы угадали число за ' + str(count) + ' ходов', color='magenta')
+            if count % 100 in [11, 12, 13, 14] or count % 10 in [0, 5, 6, 7, 8, 9]:
+                cprint('Вы угадали число за ' + str(count) + ' ходов', color='magenta')
+            elif count % 10 == 1:
+                cprint('Вы угадали число за ' + str(count) + ' ход', color='magenta')
+            elif count % 10 in [2, 3, 4]:
+                cprint('Вы угадали число за ' + str(count) + ' хода', color='magenta')
             break
-repeat = input(colored('Хотите еще партию? (да/нет): ', color='cyan')).lower()
-if repeat == 'да':
-    continue
-else:
-    break
+    repeat = input(colored('Хотите еще партию? (да/нет): ', color='cyan')).lower()
+    if repeat == 'да':
+        continue
+    else:
+        break
