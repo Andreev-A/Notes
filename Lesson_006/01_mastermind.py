@@ -47,13 +47,15 @@ from mastermind_engine import number_generator, check_the_number
 from termcolor import cprint, colored
 
 while True:
-    print('Вывод загаданного числа для тестов - ', number_generator())
+    mode_debugging = number_generator()
+    if mode_debugging is not None:  # uncomment stroke in number_generator()
+        print('Загаданное числа для тестов - ', mode_debugging)
     cprint('Компьютер загадал число. Введите четырехзначное число c неповторяющимися цифрами ', color='cyan')
-    count = 0
+    move_counter = 0
     while True:
         entered_number = input(colored('Ваше число: ', color='green'))
         if len(entered_number) == 4 and entered_number.isdigit():
-            count += 1
+            move_counter += 1
             result_of_checking = check_the_number(entered_number)
         else:
             cprint('Вы неправильно ввели число. Попробуйте еще раз.', color='red')
@@ -62,12 +64,12 @@ while True:
             cprint('быки - ' + str(result_of_checking['bulls']) + ', коровы - ' + str(result_of_checking['cows']),
                    color='cyan')
         else:
-            if count % 100 in [11, 12, 13, 14] or count % 10 in [0, 5, 6, 7, 8, 9]:
-                cprint('Вы угадали число за ' + str(count) + ' ходов', color='magenta')
-            elif count % 10 == 1:
-                cprint('Вы угадали число за ' + str(count) + ' ход', color='magenta')
-            elif count % 10 in [2, 3, 4]:
-                cprint('Вы угадали число за ' + str(count) + ' хода', color='magenta')
+            if move_counter % 100 in [11, 12, 13, 14] or move_counter % 10 in [0, 5, 6, 7, 8, 9]:
+                cprint('Вы угадали число за ' + str(move_counter) + ' ходов', color='magenta')
+            elif move_counter % 10 == 1:
+                cprint('Вы угадали число за ' + str(move_counter) + ' ход', color='magenta')
+            elif move_counter % 10 in [2, 3, 4]:
+                cprint('Вы угадали число за ' + str(move_counter) + ' хода', color='magenta')
             break
     repeat = input(colored('Хотите еще партию? (да/нет): ', color='cyan')).lower()
     if repeat == 'да':
