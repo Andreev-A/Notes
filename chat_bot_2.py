@@ -213,18 +213,3 @@ bot.
 #
 #
 # main()
-objects = [1, 2, 1, 5, True, False, True, 'false', [], [1,2], [1,2]]
-ans = 0
-asdd = [objects[0]]
-for obj in objects:  # доступная переменная objects
-    for i in range(len(asdd)):
-        if obj is asdd[i]:
-            asdd.insert(i, obj)
-        else:
-            asdd.append(obj)
-    print(asdd)
-    asd = list(asdd)
-    if asdd:
-        ans += 1
-
-print(ans, asdd)
