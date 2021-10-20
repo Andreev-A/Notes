@@ -90,10 +90,71 @@
 #     for j in range(i + 1):
 #         c[i][j] = c[i - 1][j] + c[i - 1][j - 1]
 # print(c[n][k])
+#
+# Реализуйте программу, которая будет эмулировать работу с пространствами имен. Необходимо реализовать поддержку
+# создания пространств имен и добавление в них переменных.
+# В данной задаче у каждого пространства имен есть уникальный текстовый идентификатор – его имя.
+# Вашей программе на вход подаются следующие запросы:
+# create <namespace> <parent> –  создать новое пространство имен с именем <namespace> внутри пространства <parent>
+# add <namespace> <var> – добавить в пространство <namespace> переменную <var>
+# get <namespace> <var> – получить имя пространства, из которого будет взята переменная <var> при запросе из
+# пространства <namespace>, или None, если такого пространства не существует
+# Для каждого запроса get выведите в отдельной строке его результат
+#
+# memory = {'global': [None, []]}
+#
+# def search(a, b):
+#     if a is None or b in memory[a][1]:
+#         print(a)
+#     else:
+#         search(memory[a][0], b)
+#
+# for command, namespace, parent_var in [input().split() for i in range(int(input()))]:
+#     if command == 'create':
+#         memory[namespace] = [parent_var, []]
+#     elif command == 'add':
+#         memory[namespace][1].append(parent_var)
+#     else:
+#         search(namespace, parent_var)
+#
+# memory = {'global': [None, []]}
+#
+# for command, namespace, parent_var in [input().split() for i in range(int(input()))]:
+#     if command == 'create':
+#         memory[namespace] = [parent_var, []]
+#     elif command == 'add':
+#         memory[namespace][1].append(parent_var)
+#     else:
+#         while namespace is not None:
+#             if parent_var in memory[namespace][1]:
+#                 break
+#             namespace = memory[namespace][0]
+#         print(namespace)
 
-# command, namespace, parent_var = (str(input().split()) for i in range(int(input())))
-# command, namespace, parent_var = (input().split() for i in range(int(input())))
-# print(command)
-# a, b = (int(i) for i in input().split())
-command, namespace, parent_var = map(str, input().split())
-print(command, namespace, parent_var)
+# dct = {'global': ['None']}  # словарь списков(родитель,переменные)
+# for ops, nms, v in [input().split() for i in range(int(input()))]:
+#     if ops == 'create':
+#         dct[nms] = [v]  # создать пространство-новый список в словаре
+#     elif ops == 'add':
+#         dct[nms].append(v)  # новая переменная-добавить в список
+#     elif ops == 'get':  # поиск переменной (циклом)
+#         while nms != 'None' and v not in dct[nms]:  # если нет в пространстве-меняем на родителя(пока не None)
+#             nms = dct[nms][0]
+#         print(nms)
+#
+# n = int(input())
+# parent = {"global": None}
+# vs = {"global": set()}
+# for _ in range(n):
+#     t, fst, snd = input().split()
+#     if t == "create":
+#         parent[fst] = snd
+#         vs[fst] = set()
+#     elif t == "add":
+#         vs[fst].add(snd)
+#     else:  # t == get
+#         while fst is not None:
+#             if snd in vs[fst]:
+#                 break
+#             fst = parent[fst]
+#         print(fst)
