@@ -218,27 +218,24 @@
 #
 #     def get_current_part(self):
 #         return self.part
-class Base:
-    def __init__(self):
-        self.val = 0
-
-    def add_one(self):
-        self.val += 1
-
-    def add_many(self, x):
-        for i in range(x):
-            self.add_one()
-
-class Derived(Base):
-    def add_one(self):
-        self.val += 10
 
 
-a = Derived()
-a.add_one()
+def sdf(connections, start, end):
+    if start in connections or not connections[start]:
+        if end in connections[start] or start == end:
+            return print('Yes')
+        else:
+           for between in connections[start]:
+               sdf(connections, between, end)
+    return print('No')
+connections = {}
+for _ in range(int(input())):
+    child, *parents = input().replace(":", " ").split()
+    connections[child] = parents
+print(connections)
+for _ in range(int(input())):
+    end, start = input().split()
+    sdf(connections, start, end)
 
-b = Derived()
-b.add_many(3)
 
-print(a.val)
-print(b.val)
+
