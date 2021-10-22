@@ -219,23 +219,38 @@
 #     def get_current_part(self):
 #         return self.part
 
+# в pycharm тоже можно скармливать с файла (input.txt)
+# в настройках запуска скрипта (Edit Configurations...) есть пункт: Redirect input from - выбираешь файл и работает
+# import sys
+# sys.stdin = open("input.txt", "r")
+# input = open("input.txt", "r").readline.
+# raise Exception
+# for k, v in словарь.items():
+#     for k2, v2 in словарь.items():
+# На первом уровне мы последовательно перебираем пары ключ(класс наследник) - значения(классы предки) в словаре.\
+# На втором уровне для каждого значения(предка) из пары проверяем содержится ли он в ключах словаря(т.е.является
+# ли предок в свою очередь чьим - то наследником).И если да, то добавляем предков предка в значения.
+# Естественно перед этим надо каким - то образом заполнить словарь. Ну а в самом конце просто проверяем, есть ли
+# соответствующее значение(предок) у запрошенного ключа(наследника).
 
-def sdf(connections, start, end):
-    if start in connections or not connections[start]:
-        if end in connections[start] or start == end:
-            return print('Yes')
-        else:
-           for between in connections[start]:
-               sdf(connections, between, end)
-    return print('No')
 connections = {}
+
+
+def search(connections, start, end):
+    if start in connections and end in connections[start] or start == end:
+        return print('Yes')
+    else:
+        for between in connections[start]:
+            search(connections, between, end)
+    return print('No')
+
+
+# if not connections[start]:
+
 for _ in range(int(input())):
     child, *parents = input().replace(":", " ").split()
     connections[child] = parents
 print(connections)
 for _ in range(int(input())):
     end, start = input().split()
-    sdf(connections, start, end)
-
-
-
+    search(connections, start, end)
