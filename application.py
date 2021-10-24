@@ -219,12 +219,6 @@
 #     def get_current_part(self):
 #         return self.part
 
-# в pycharm тоже можно скармливать с файла (input.txt)
-# в настройках запуска скрипта (Edit Configurations...) есть пункт: Redirect input from - выбираешь файл и работает
-# import sys
-# sys.stdin = open("input.txt", "r")
-# input = open("input.txt", "r").readline.
-# raise Exception
 # for k, v in словарь.items():
 #     for k2, v2 in словарь.items():
 # На первом уровне мы последовательно перебираем пары ключ(класс наследник) - значения(классы предки) в словаре.\
@@ -233,24 +227,133 @@
 # Естественно перед этим надо каким - то образом заполнить словарь. Ну а в самом конце просто проверяем, есть ли
 # соответствующее значение(предок) у запрошенного ключа(наследника).
 
-connections = {}
+# Вам необходимо отвечать на запросы, является ли один класс предком другого класса
+# Важное примечание: Создавать классы не требуется.
+# Мы просим вас промоделировать этот процесс, и понять существует ли путь от одного класса до другого.
+# Формат входных данных
+# В первой строке входных данных содержится целое число n - число классов.
+# В следующих n строках содержится описание наследования классов. В i-й строке указано от каких классов наследуется
+# i-й класс. Обратите внимание, что класс может ни от кого не наследоваться. Гарантируется, что класс не наследуется
+# сам от себя (прямо или косвенно), что класс не наследуется явно от одного класса более одного раза.
+# В следующей строке содержится число q - количество запросов.
+# В следующих q строках содержится описание запросов в формате <имя класса 1> <имя класса 2>.
+# Имя класса – строка, состоящая из символов латинского алфавита, длины не более 50.
+# Формат выходных данных
+# Для каждого запроса выведите в отдельной строке слово "Yes", если класс 1 является предком класса 2,
+# и "No", если не является.
+#
+# def search(child, parent):
+#     if child == parent:
+#         return 'Yes'
+#     #if child not in base or not base[child]:
+#         #return 'No'
+#     for prev_parent in base[child]:
+#         if search(prev_parent, parent):
+#             return 'Yes'
+#     return 'No'
+#
+# base = {}
+# for _ in range(int(input())):
+#     child, *parents = input().replace(":", " ").split()
+#     base[child] = parents
+# for _ in range(int(input())):
+#     end, start = input().split()
+#     print(search(start, end))
+#
+# Пример изящной реализации функции is_parent с использованием стандартной библиотеки языка Python
+# n = int(input())
+# parents = {}
+# for _ in range(n):
+#     a = input().split()
+#     parents[a[0]] = [] if len(a) == 1 else a[2:]
+#
+# def is_parent(child, parent):
+#     return child == parent or any(map(lambda p: is_parent(p, parent), parents[child]))
+#
+#
+# q = int(input())
+# for _ in range(q):
+#     a, b = input().split()
+#     print("Yes" if is_parent(b, a) else "No")
+#
+# n = int(input())
+# parents = {}
+# for _ in range(n):
+#     a = input().split()
+#     parents[a[0]] = [] if len(a) == 1 else a[2:]
+#
+# def is_parent(child, parent):
+#     if child == parent:
+#         return True
+#
+#     for p in parents[child]:
+#         if is_parent(p, parent):
+#             return True
+#
+#     return False
+#
+# q = int(input())
+# for _ in range(q):
+#     a, b = input().split()
+#     print("Yes" if is_parent(b, a) else "No")
+#
+# def test(parent, child):
+#     if parent == child or parent in base[child]:
+#         return 'Yes'
+#     for i in base[child]:
+#         if test(parent, i) == 'Yes':
+#             return 'Yes'
+#     return 'No'
+#
+# base = {}
+# for com in [input().split(' ') for i in range(int(input()))]:
+#     base[com[0]] = com[2:len(com)]
+# for com in [input().split(' ') for i in range(int(input()))]:
+#     print (test(com[0], com[1]))
 
+# Реализуйте структуру данных, представляющую собой расширенную структуру стек. Необходимо поддерживать добавление
+# элемента на вершину стека, удаление с вершины стека, и необходимо поддерживать операции сложения, вычитания,
+# умножения и целочисленного деления.
+#
+# class ExtendedStack(list):
+#     def sum(self):
+#         self.append(self.pop() + self.pop())
+#         # операция сложения
+#
+#     def sub(self):
+#         self.append(self.pop() - self.pop())
+#         # операция вычитания
+#
+#     def mul(self):
+#         self.append(self.pop() * self.pop())
+#         # операция умножения
+#
+#     def div(self):
+#         self.append(self.pop() // self.pop())
+#         # операция целочисленного деления
 
-def search(connections, start, end):
-    if start in connections and end in connections[start] or start == end:
-        return print('Yes')
-    else:
-        for between in connections[start]:
-            search(connections, between, end)
-    return print('No')
+# Реализуйте класс LoggableList, отнаследовав его от классов list и Loggable таким образом, чтобы при добавлении
+# элемента в список с помощью метода append в лог отправлялось сообщение, состоящее из только что добавленного элемента.
+# import time
+# class Loggable:
+#     def log(self, msg):
+#         print(str(time.ctime()) + ": " + str(msg))
+#
+#
+# class LoggableList(list, Loggable):
+#     def append(self, s):
+#         super(LoggableList, self).append(s)
+#         self.log(s)
+#
+#
+# # Пример правильного решения
+# class LoggableList(list, Loggable):
+#     def append(self, x):
+#         list.append(self, x)
+#         self.log(x)
+#
+# class LoggableList(list, Loggable):
+#     def append(self, msg):
+#         super().append(msg)
+#         self.log(msg)
 
-
-# if not connections[start]:
-
-for _ in range(int(input())):
-    child, *parents = input().replace(":", " ").split()
-    connections[child] = parents
-print(connections)
-for _ in range(int(input())):
-    end, start = input().split()
-    search(connections, start, end)
