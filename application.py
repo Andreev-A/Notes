@@ -357,3 +357,22 @@
 #         super().append(msg)
 #         self.log(msg)
 
+
+def search(child, parent):
+    if child == parent:
+        return 'Yes'
+    #if child not in base or not base[child]:
+        #return 'No'
+    for prev_parent in base[child]:
+        if search(prev_parent, parent):
+            return 'Yes'
+    return 'No'
+
+base = {}
+for _ in range(int(input())):
+    child, *parents = input().replace(":", " ").split()
+    base[child] = parents
+for _ in range(int(input())):
+    end, start = input().split()
+    print(search(start, end))
+
