@@ -360,19 +360,20 @@
 
 def search(child, parent):
     if child == parent:
-        return 'Yes'
+        return True
     #if child not in base or not base[child]:
         #return 'No'
     for prev_parent in base[child]:
         if search(prev_parent, parent):
-            return 'Yes'
-    return 'No'
+            return True
+    return False
 
-base = {}
+base, queue = {}, []
 for _ in range(int(input())):
     child, *parents = input().replace(":", " ").split()
     base[child] = parents
 for _ in range(int(input())):
-    end, start = input().split()
-    print(search(start, end))
+    queue.append(input())
 
+print(base)
+print(queue)
