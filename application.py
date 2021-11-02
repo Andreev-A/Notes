@@ -357,23 +357,119 @@
 #         super().append(msg)
 #         self.log(msg)
 
+# Антон написал код, который выглядит следующим образом.
+# try:
+#    foo()
+# except <имя 1>:
+#    print("<имя 1>")
+# except <имя 2>:
+#    print("<имя 2>")
+# ...
+# Костя посмотрел на этот код и указал Антону на то, что некоторые исключения можно не ловить, так как ранее в коде
+# будет пойман их предок. Но Антон не помнит какие исключения наследуются от каких. Помогите ему выйти из неловкого
+# положения и напишите программу, которая будет определять обработку каких исключений можно удалить из кода.
+# Важное примечание:
+# В отличие от предыдущей задачи, типы исключений не созданы.
+# Создавать классы исключений также не требуется
+# Мы просим вас промоделировать этот процесс, и понять какие из исключений можно и не ловить, потому что мы уже ранее
+# где-то поймали их предка.
+# Формат входных данных
+# В первой строке входных данных содержится целое число n - число классов исключений.
+# В следующих n строках содержится описание наследования классов. В i-й строке указано от каких классов наследуется
+# i-й класс. Обратите внимание, что класс может ни от кого не наследоваться. Гарантируется, что класс не наследуется
+# сам от себя (прямо или косвенно), что класс не наследуется явно от одного класса более одного раза.
+# В следующей строке содержится число m - количество обрабатываемых исключений.
+# Следующие m строк содержат имена исключений в том порядке, в каком они были написаны у Антона в коде.
+# Гарантируется, что никакое исключение не обрабатывается дважды.
+# Формат выходных данных
+# Выведите в отдельной строке имя каждого исключения, обработку которого можно удалить из кода, не изменив при этом
+# поведение программы. Имена следует выводить в том же порядке, в котором они идут во входных данных.
 
-def search(child, parent):
-    if child == parent:
-        return True
-    #if child not in base or not base[child]:
-        #return 'No'
-    for prev_parent in base[child]:
-        if search(prev_parent, parent):
-            return True
-    return False
+# def search(child, parent):
+#     if child == parent:
+#         return True
+#     for prev_parent in base[child]:
+#         if search(prev_parent, parent):
+#             return True
+#     return False
+#
+#
+# base, queue, out = {}, [], []
+# for _ in range(int(input())):
+#     child, *parents = input().replace(":", " ").split()
+#     base[child] = parents
+# for _ in range(int(input())):
+#     queue.append(input())
+# for _ in range(len(queue)):
+#     a = queue.pop()
+#     for i in reversed(queue):
+#         if search(a, i):
+#             out.append(a)
+#             break
+# print(*reversed(out), sep='\n')
 
-base, queue = {}, []
-for _ in range(int(input())):
-    child, *parents = input().replace(":", " ").split()
-    base[child] = parents
-for _ in range(int(input())):
-    queue.append(input())
+# parents = {}
+# for _ in range(int(input())):
+#     a = input().split()
+#     parents[a[0]] = [] if len(a) == 1 else a[2:]
+#
+# def is_parent(child, parent):
+#     if child == parent: return True
+#     for p in parents[child]:
+#         if is_parent(p, parent): return True
+#     return False
+#
+# exceptions = []
+# for _ in range(int(input())):
+#     a = input().strip()
+#     for i in exceptions:
+#         if is_parent(a, i):
+#             print(a)
+#             break
+#     else:
+#         exceptions.append(a)
 
-print(base)
-print(queue)
+# n = int(input())
+# classes = {}
+# for i in range(n):
+#     line = input()
+#     parts = line.split(" : ")
+#     cls = parts[0]
+#     if len(parts) == 1:
+#         classes[cls] = []
+#     else:
+#         classes[cls] = parts[1].split(" ")
+#
+#
+# def check(src, dest):
+#     if src == dest:
+#         return True
+#     return any([check(child, dest) for child in classes[src]])
+#
+#
+# used = []
+#
+# for i in range(int(input())):
+#     cls = input()
+#     if any([check(cls, used_one) for used_one in used]):
+#         print(cls)
+#     used.append(cls)
+
+
+class NonPositiveError(Exception):
+    pass
+
+class PositiveList(list):
+    def append(self, x):
+        if x > 0:
+            list.append(self, x)
+        else:
+            raise NonPositiveError
+
+
+
+
+a = PositiveList()
+sss = 0
+a.append(sss)
+print(a)
