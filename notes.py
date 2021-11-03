@@ -8,25 +8,25 @@ def input_note_text(title):
 
 with open('D:\\notes.txt', 'r', encoding='cp1251') as inf:
     text_notes_in_memory = inf.read().strip().split('\n')
-    text_notes, ident = {}, {}
-    for string in text_notes_in_memory:
-        string = (string.strip().split('***'))
-        ident[string[0]] = string[1]
-        text_notes[string[1]] = string[2]
-        print(string[0], '-', string[1])
-    my_request = input('Введите номер нужной записи или "enter" для новой записи: ')
-    if my_request in ident.keys():
-        print('ОТВЕТ: ', *text_notes[ident[my_request]].split('___'), sep='\n- ')
-    elif my_request == '':
-        note_title = input('Название заметки: ').lower()
-        if note_title != '':
-            if note_title in ident.keys():
-                print('ЕСТЬ ТАКАЯ: ', *text_notes[ident[note_title]].split('___'), sep='\n- ')
-                input_note_text(ident[note_title])
-            else:
-                note_text = input('Заметка: ')
-                text_notes[note_title] = note_text
-                input_note_text(note_title)
+text_notes, ident = {}, {}
+for string in text_notes_in_memory:
+    string = (string.strip().split('***'))
+    ident[string[0]] = string[1]
+    text_notes[string[1]] = string[2]
+    print(string[0], '-', string[1])
+my_request = input('Введите номер нужной записи или "enter" для новой записи: ')
+if my_request in ident.keys():
+    print('ОТВЕТ: ', *text_notes[ident[my_request]].split('___'), sep='\n- ')
+elif my_request == '':
+    note_title = input('Название заметки: ').lower()
+    if note_title != '':
+        if note_title in ident.keys():
+            print('ЕСТЬ ТАКАЯ: ', *text_notes[ident[note_title]].split('___'), sep='\n- ')
+            input_note_text(ident[note_title])
+        else:
+            note_text = input('Заметка: ')
+            text_notes[note_title] = note_text
+            input_note_text(note_title)
 with open('D:\\notes.txt', 'w') as ouf:
     count = 0
     for note_title, note_text in text_notes.items():
