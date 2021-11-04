@@ -549,19 +549,71 @@
 # current += datetime.timedelta(days=days)
 # print("{} {} {}".format(current.year, current.month, current.day))
 
+# Алиса зашифровала свою информацию с помощью библиотеки simple-crypt. Она представила информацию в виде строки,
+# и затем записала в бинарный файл результат работы метода simplecrypt.encrypt.
+# Вам необходимо установить библиотеку simple-crypt, и с помощью метода simplecrypt.decrypt узнать, какой из паролей
+# служит ключом для расшифровки файла с интересной информацией.
+#
+# from simplecrypt import decrypt, DecryptionException
+#
+# with open("D:\\encrypted.bin", "rb") as inp:
+#     encrypted = inp.read().strip()
+# with open("D:\\passwords.txt", "r") as inf:
+#     passwords = inf.read().strip().split('\n')
+#
+# for password in passwords:
+#     try:
+#         print(decrypt(password, encrypted).decode('utf8'))
+#         break
+#     except DecryptionException:
+#         continue
+#
+# encrypted = open("encrypted.bin", "rb").read()
+# passwords = open("passwords.txt").readlines()
+# for p in passwords:
+#     p = p.strip()
+#     try:
+#         s = simplecrypt.decrypt(p, encrypted)
+#     except simplecrypt.DecryptionException:
+#         continue
+#     print(s.decode("utf-8"))
+#
+# import os
+# import urllib.request
+# from multiprocessing import Process
+#
+# import simplecrypt
+#
+# def decryptor(passw,text):
+#     try:
+#         print("Пробуем " + passw)
+#         result = simplecrypt.decrypt(passw.strip(), text)
+#         proc = os.getpid()
+#         print('Пароль {0} подошел. Результат: {1}. id процесса: {2}'.format(
+#             passw, result, proc))
+#     except:
+#         print(passw + " Не подошел :(")
+#
+# urllib.request.urlretrieve('https://stepik.org/media/attachments/lesson/24466/encrypted.bin', 'encrypted.bin')
+# urllib.request.urlretrieve("https://stepik.org/media/attachments/lesson/24466/passwords.txt", 'passwords.txt')
+#
+# if __name__ == '__main__':
+#     encrypted = ""
+#     with open("encrypted.bin", "rb") as inp:
+#         encrypted = inp.read()
+#
+#     with open('passwords.txt') as f:
+#         lineList = f.readlines()
+#         procs = []
+#
+#         for i in lineList:
+#             proc = Process(target=decryptor, args=(i.strip(), encrypted,))
+#             procs.append(proc)
+#             proc.start()
+#
+#         for proc in procs:
+#             proc.join()
 
-from simplecrypt import decrypt, DecryptionException
-
-with open("D:\\encrypted.bin", "rb") as inp:
-    encrypted = inp.read().strip()
-with open("D:\\passwords.txt", "r") as inf:
-    passwords = inf.read().strip().split('\n')
-
-for password in passwords:
-    try:
-        print(decrypt(password, encrypted).decode('utf8'))
-        break
-    except DecryptionException:
-        continue
-
+# bkl = urllib.request.urlopen('https://stepic.org/media/attachments/lesson/24466/encrypted.bin').read()
+# passwords = urllib.request.urlopen('https://stepic.org/media/attachments/lesson/24466/passwords.txt').read().strip().split()
 
