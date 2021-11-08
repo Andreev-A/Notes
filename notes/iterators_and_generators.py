@@ -525,28 +525,80 @@
 # 		lst.append(i)
 # print lst
 
+# Реализуйте функцию-генератор primes, которая будет генерировать простые числа в порядке возрастания, начиная с числа 2.
+# import itertools
+#
+# def primes():
+#     lst, i = [2], 1
+#     if i == 1:
+#         yield 2
+#     while True:
+#         i += 2
+#         if (i > 10) and (i % 10 == 5):
+#             continue
+#         for j in lst:
+#             if j * j - 1 > i:
+#                 lst.append(i)
+#                 yield i
+#                 break
+#             if i % j == 0:
+#                 break
+#         else:
+#             lst.append(i)
+#             yield i
+#
+# print(list(itertools.takewhile(lambda x: x <= 131, primes())))
 
-import itertools
+# В данном решении используется наблюдение: если у числа xx , есть какой-либо делитель отличный от 1 и xx, то этот
+# делитель обязательно не больше чем корень из x.
+# def primes():
+#     yield 2
+#     prime = 3
+#     while True:
+#         is_prime = True
+#         divisor = 3
+#         while divisor ** 2 <= prime:
+#             if prime % divisor == 0:
+#                 is_prime = False
+#                 break
+#             divisor += 2
+#         if is_prime:
+#             yield prime
+#         prime += 2
 
-
-def primes():
-    lst, i = [2], 1
-    if i == 1:
-        yield 2
-    while True:
-        i += 2
-        if (i > 10) and (i % 10 == 5):
-            continue
-        for j in lst:
-            if j * j - 1 > i:
-                lst.append(i)
-                yield i
-                break
-            if i % j == 0:
-                break
-        else:
-            lst.append(i)
-            yield i
-
-
-print(list(itertools.takewhile(lambda x: x <= 131, primes())))
+# list comprehension (генерация списков)
+# List comprehension - это компактный способ обработки списков.
+# Основные преимущества List comprehension перед обычной конструкцией(цикл for + if +обработка):
+# скорость(List comprehension быстрее, чем for )
+# краткость(в 1 строку можно записать довольно развесистую конструкцию, некоторые считают её лучше читаемой)
+# Примером List comprehension может служить конструкция вида: [n for n in range(1, 10000) if n % 2 == 0]
+# При этом условия может и не быть, например: [str(n) for n in range(10)]
+# Примеры list comprehension
+# Простая генерация списка:
+x = [-2, -1, 0, 1, 2]
+y = [i * i for i in x]
+print(y)
+# Генерация с использованием условия в конце:
+x = [-2, -1, 0, 1, 2]
+y = [i * i for i in x if i > 0]
+print(y)
+# Более сложная конструкция:
+z = [(x, y) for x in range(3) for y in range(3) if y >= x]
+print(z)
+# Данная конструкция будет эквивалентна следующему коду:
+z = []
+for x in range(3):
+    for y in range(3):
+        if y >= x:
+            z.append((x, y))
+print(z)
+# Если мы эту конструкцию поместим не квадратные скобки, а в круглые, то мы получим генератор, который будет перебирать
+# подходящие под условие объекты:
+z = ((x, y) for x in range(3) for y in range(3) if y >= x)
+print(z)
+print(next(z))
+print(next(z))
+# Кроме списков и генераторов, такой же синтаксис в Python 3 возможен для множеств и словарей:
+import builtins
+{ord(x) for x in 'spaam'}  # генерируем set {112, 115, 109, 97}
+{x: ord(x) for x in 'spaam'}  # генерируем dictionary {'s': 115, 'm': 109, 'p': 112, 'a': 97}
