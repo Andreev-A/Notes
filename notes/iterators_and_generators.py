@@ -575,30 +575,94 @@
 # При этом условия может и не быть, например: [str(n) for n in range(10)]
 # Примеры list comprehension
 # Простая генерация списка:
-x = [-2, -1, 0, 1, 2]
-y = [i * i for i in x]
-print(y)
+# x = [-2, -1, 0, 1, 2]
+# y = [i * i for i in x]
+# print(y)
 # Генерация с использованием условия в конце:
-x = [-2, -1, 0, 1, 2]
-y = [i * i for i in x if i > 0]
-print(y)
+# x = [-2, -1, 0, 1, 2]
+# y = [i * i for i in x if i > 0]
+# print(y)
 # Более сложная конструкция:
-z = [(x, y) for x in range(3) for y in range(3) if y >= x]
-print(z)
+# z = [(x, y) for x in range(3) for y in range(3) if y >= x]
+# print(z)
 # Данная конструкция будет эквивалентна следующему коду:
-z = []
-for x in range(3):
-    for y in range(3):
-        if y >= x:
-            z.append((x, y))
-print(z)
+# z = []
+# for x in range(3):
+#     for y in range(3):
+#         if y >= x:
+#             z.append((x, y))
+# print(z)
 # Если мы эту конструкцию поместим не квадратные скобки, а в круглые, то мы получим генератор, который будет перебирать
 # подходящие под условие объекты:
-z = ((x, y) for x in range(3) for y in range(3) if y >= x)
-print(z)
-print(next(z))
-print(next(z))
-# Кроме списков и генераторов, такой же синтаксис в Python 3 возможен для множеств и словарей:
-import builtins
-{ord(x) for x in 'spaam'}  # генерируем set {112, 115, 109, 97}
-{x: ord(x) for x in 'spaam'}  # генерируем dictionary {'s': 115, 'm': 109, 'p': 112, 'a': 97}
+# z = ((x, y) for x in range(3) for y in range(3) if y >= x)
+# print(z)
+# print(next(z))
+# print(next(z))
+# Кроме списков и генераторов, такой же синтаксис в Python 3 возможен для множеств и словарей (перебирать можно
+# элементы любого "итератора") :
+# import builtins
+# x = {ord(x) for x in 'spaam'}  # генерируем set {112, 115, 109, 97}
+# y = {x: ord(x) for x in 'spaam'}  # генерируем dictionary {'s': 115, 'm': 109, 'p': 112, 'a': 97}
+# print(x)
+# print(y)
+# Если список содержит последовательно пары key value, то так можно преобразовать в словарь:
+# d = ['Dota', 'sucks', 'Python', 'rules', 'Saperavi', 'depends']
+# dictus = {d[x]: d[x+1] for x in range(0, len(d), 2)}
+# print(dictus)
+# Кстати, генератор можно использовать внутри функции без дополнительных скобок:
+# mylist = [1, 2, 3]
+# mysum = sum(x**2 for x in mylist)
+# print(mysum)  # 14
+# Условие if не всегда идет вначале. Иногда полезна такая конструкция
+# [int(x) if x.isdigit() else x for x in a].  x.isdigit() - тут как пример
+# Да, странно что не упомянули что выражение-генератор можно проитерировать(обойти) только один раз.
+# То есть, если ниже в коде вы захотите обойти этот генератор z, из примера в видео, два раза, например циклом for
+# ,то ничего не получится.
+# Проверка времени исполнения показывает, что listcomp действительно формирует список быстрей
+# def ko():
+#     m = [(x, y) for x in range(3) for y in range(3) if y >= x]
+# if __name__ == '__main__':
+#     from timeit import Timer
+#     t = Timer("ko()", "from __main__ import ko")
+#     print(t.timeit())
+
+# x = [-2, -1, 0, 1, 2]
+# z = (i for i in'abvcf')
+# print(z) # <generator object <genexpr> at 0x000001725FE7CC80>
+# print(type(z)) # <class 'generator'>
+# def pr():
+#     for i in range(5):
+#         yield i
+# print(pr) # <function pr at 0x000001725F99A040>
+# print(type(pr)) # <class 'function'>
+# print(type(pr())) # <class 'generator'>
+# print(pr()) # <generator object pr at 0x000001E37BEF0890>
+# def pro_2():
+#     for i in range(5):
+#         return i
+# print(type(pro_2())) # <class 'int'>
+# print(next(pr())) # 0
+# print(next(pr)) # TypeError: 'function' object is not an iterator
+# Сама функция с yield все еще функция. Уже ,при вызове, возвращает генератор.
+
+# a = iter([1, 2, 3])
+# print(a) # <list_iterator object at 0x00000278FF682FA0>
+# print(next(a)) # 1
+# print(*a) # 2 3
+# print(type(a)) # <class 'list_iterator'>
+# print(next(pr())) # 0
+# print(next(pr())) # 0
+# print(*pr()) # 0 1 2 3 4
+# print(next(a)) # StopIteration
+# Тут видна разница генератора и итератора. Можно понять предыдущее задание. Когда yield в __iter__ пишем без __netx__.
+# В а будем перемещаться, пока не словим ошибку. В __next__ прописуем стоп. Посмотрел в визуализаторе c __iter__ прыгает
+# в __next__ и если не прописать стоп, будет бесконечный цикл.
+
+# a = [i for i in range(5)][1:]
+# a = list(i + 1 for i in range(4))
+# print(a)
+
+# Вы можете сами оценить время работы скрипта, используя простую конструкцию:
+# start_time = time.time()  # вычисляем время на начало вычислений
+# код, время выполнения которого Вы оцениваете
+# elapsed_time = time.time() - start_time  # считаем сколько времени прошло с начала вычислений
