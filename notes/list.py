@@ -24,3 +24,11 @@
 #   print(list(res)) или res = list(zip(profit, days)) или print(dict(zip(days, profit)))
 # ___сортировка по второму элементу: work_list.sort(key=lambda x: x[1]) или lst.sort(key=itemgetter(1)) с from operator import itemgetter
 # ___получить элемент по индексу удаляя его из последовательности: dots = [segments.pop(0)[1]] for l, r in segments:
+
+# Метод isupper() проверяет, все ли символы в строке находятся в верхнем регистре.
+# Метод не принимает никаких параметров
+# Метод в Python возвращает: Истинно, если все символы в строке являются прописными. False, если какие-либо символы в
+# строке являются строчными.
+a = 'sdf'
+a.isupper()
+print(a)
