@@ -114,18 +114,19 @@
 # С помощью функции listdir() мы можем узнать список папок и файлов.
 # Запуск функции без аргументов выдает файлы и папки внутри текущей директории:
 import os
+import os.path
 # print(os.listdir())
 # Если в качестве аргумента указать имя определенной папки, то функция покажет ее содержимое.
 # Функция os.getcwd() возвращает текущую папку:
 # print(os.getcwd())
-print(os.listdir("idea"))
+# print(os.listdir(".idea"))
 # Функция exists() библиотеки os.path позволяет проверить наличие файла или папки
 # print(os.path.exists("dict.py"))  # True
 # Мы также можем проверить является ли переданный параметр файлом или папкой с помощью функций isfile() и isdir():
 # print(os.path.isfile(dict.py))
 # print(os.path.isdir(dict.py))
 # Мы можем легко узнать абсолютный путь по относительному с помощью abspath()
-# print(os.path.abspath(dict.py))
+# print(os.path.abspath('dict.py'))
 # Можем сменить директорию с помощью chdir()
 # os.chdir('.idea')
 # print(os.getcwd())
@@ -136,20 +137,21 @@ print(os.listdir("idea"))
 # 2.	список всех папок, которые есть в данной директории
 # 3.	список всех файлов, которые есть в данной директории
 
-import os.path
-
-tree = os.walk('.')
-for current_dir, dirs, files in tree:
-    print(current_dir)
-    print(dirs)
-    print(files)
-    print('----------')
+# import os.path
+#
+# tree = os.walk('.')
+# for current_dir, dirs, files in tree:
+#     print(current_dir)
+#     print(dirs)
+#     print(files)
+#     print('----------')
 # Библиотека shutil
 # Функция copy() библиотеки shutil позволяет копировать файлы.
 # Она принимает 2 аргумента: откуда и куда копировать.
-# shutil.copy('test.txt', 'test3.txt')
+# import shutil
+# shutil.copy('test.txt', 'tests/test3.txt')
 # Функция copytree() позволяет скопировать целиком папку вместе с файлами:
-# shutil.copytree('img', 'img2')
+# shutil.copytree('tests', 'tests/tests')
 
 # А еще очень полезным в модуле os является возможность указания точного пути к открываемому файлу, так сказать
 # "кроссплатформенно" (т.е. без путаницы в / и \ в путях):
@@ -167,7 +169,7 @@ for current_dir, dirs, files in tree:
 
 # С помощью os.chdir("..") можно подниматься выше по директориям, а если в скобках указать путь, то перейти по этому пути
 
-os.chdir('\\'.join(os.getcwd().split('\\')[:-1]))
+# os.chdir('\\'.join(os.getcwd().split('\\')[:-1]))
 
 # Начать саму работу с файлом можно с помощью объекта класса io.TextIOWrapper, который возвращается функцией open().
 # У этого объекта есть несколько атрибутов, через которые можно получить информацию
