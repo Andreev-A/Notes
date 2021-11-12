@@ -167,6 +167,9 @@
 # исходный файл не существует и молча перезаписывает итоговый файл, если он существует В общем, при работе с модулем
 # проверять каждый чих, желательно в try/except
 
+# os.path.normpath(path) - нормализует путь, убирая избыточные разделители и ссылки на предыдущие директории. На Windows
+# преобразует прямые слеши в обратные.
+
 # С помощью os.chdir("..") можно подниматься выше по директориям, если в скобках указать путь, то перейти по этому пути
 # как подняться на уровень выше в дереве каталогов? Как вариант, (обратный слеш актуален для винды):
 # os.chdir('\\'.join(os.getcwd().split('\\')[:-1]))
@@ -279,16 +282,140 @@
 #     for line in f:
 #         w.write(line+'\n')
 
-import os
+# Вам дана в архиве (ссылка) файловая структура, состоящая из директорий и файлов.
+# Вам необходимо распаковать этот архив, и затем найти в данной в файловой структуре все директории, в которых есть хотя
+# бы один файл с расширением ".py".
+# Ответом на данную задачу будет являться файл со списком таких директорий, отсортированных в лексикографическом порядке
+# import os
+# out = []
+# for current_dir, dirs, files in os.walk('D:\\main'):
+#     for file in files:
+#         if file.endswith('.py'):
+#             out.append(current_dir.lstrip('D:\\').replace('\\', '/'))
+#             break
+# with open('D:\\main_ans.txt', 'w') as f:
+#     for element in sorted(out):
+#         f.write(element + '\n')
+#
+# for cur_dir, subdirs, files in os.walk("main"):
+#     for file in files:
+#         if file.endswith(".py"):
+#             print(cur_dir)
+#             break
+#
+# result = [cur_dir for cur_dir, dirs, files in os.walk("main") if any((fl.endswith(".py") for fl in files))]
+# with open("py_dirs.txt", "w") as w:
+#     w.write("\n".join(sorted(result)))
 
-os.chdir('D:\\main')
-out = []
-for current_dir, dirs, files in os.walk('.'):
-    for file in files:
-        if file.endswith('.py'):
-            out.append(current_dir.lstrip('.\\').replace('\\', '/'))
-            break
-f = open('D:\\main_ans.txt', 'w')
-for element in sorted(out):
-    f.write(element + '\n')
-f.close()
+# Пример обхода иерархии самого zip файла без распаковывания!!! Оригинальное задание показалась мне нелогичноым. Сами
+# посудите, зачем распаковывать весь архив лишь для того чтобы узнать есть в нём необходимые файлы или нет? Логичнее
+# сначала найти в архиве нужные файлы и только потом разпаковать только содержащие их папки!!! Код приведённый ниже как
+# раз выполняет первую часть задачи. В модуле zipfile нету точного аналога os.walk, поэтому пришлось немного поколдовать
+# чтобы не сохранять одни и те же имена папок по нескольку раз:
+# import zipfile, os
+# pydirs = list()
+# with zipfile.ZipFile('main.zip', 'r') as zip:
+#     for zip_path in zip.namelist():
+#         if  os.path.dirname(zip_path) not in pydirs and os.path.basename(zip_path).endswith('.py'):
+#             pydirs.append(os.path.dirname(zip_path))
+# print('\n'.join(sorted(pydirs)))
+
+# Мне понравилась твоя мысль, и я решил её развить далее:
+# Немного сократить (и местами оптимизировать) код. Например, если ты будешь использовать `set` вместо `list`, то тебе
+# не нужно будет проверять элемент на наличие в списке, и далее вообще всё свернуть в set comprehension.
+# Зачем сохранять файл на диске? Он маленький, поэтому его можно вообще оставить в памяти сразу после загрузки
+# Получилось вот так:
+# import os, requests, zipfile, io
+# url = 'https://stepik.org/media/attachments/lesson/24465/main.zip'
+# with zipfile.ZipFile(io.BytesIO(requests.get(url).content)) as source:
+#     pydirs = {os.path.dirname(path) for path in source.namelist() if os.path.basename(path).endswith('.py')}
+# print('\n'.join(sorted(pydirs)))
+# Поэтапно:
+# Выполняем GET-запрос, получаем содержание файла
+# Вешаем на полученный массив байт file-like обёртку
+# Закидываем полученный объект в конструктор ZipFile
+# Получаем все уникальные dirname, у которых basename заканчивается на '.py'
+# Печатаем
+# Это достаточное решение, потому что оно короткое, достаточно понятное (кроме строки with, её можно разбить на три
+# штуки) и не зависит от порядка вывода source.namelist(). Но улучшать есть куда (с точки зрения алгоритма): во-первых,
+# можно вместо set использовать bisect для поддержания сортированности и уникальности списка (однако, тогда это не
+# уместилось бы в одну строку и выглядело посложнее); во-вторых, пользуясь тем, что на моей машине source.namelist()
+# выдаёт список в сортированном порядке, можно просто добавлять элементы в список, сравнивая с последним добавленным,
+# что делает задачу линейной по сложности. Однако далеко не факт, что это реально ускорит, поскольку чем больше мы пишем
+# кода в пайтон, тем обычно он медленнее становится)
+
+# Три года назад у меня было на три года опыта меньше в программировании и в Python в частности. А ещё степик всегда
+# подстёгивает к борьбе за наименьшее количество строк, которой сложно сопротивляться. Если переписать моё решение на
+# что-то более поддерживаемое, то это будет вот так:
+# import os
+# dirs_with_py = sorted(
+#     dir_path for dir_path, _, files in os.walk("main")
+#     if any(file_path.endswith(".py") for file_path in files)
+# )
+# for dir_path in dirs_with_py:
+#     print(dir_path)
+# Но с того момента уже совсем укрепилась версия Python 3.4, и это позволяет использовать pathlib
+# import pathlib
+# root = pathlib.Path("main")
+# dirs_with_py = {path.parent for path in root.rglob("*.py")}
+# for dir_path in sorted(dirs_with_py):
+#     print(dir_path)
+# Важное замечание. Это решение работает значительно медленнее: `rglob` наверняка медленнее чем `walk` и ещё создаётся
+# дополнительный set. Но зато мы можем натурально прочитать вторую строчку: создайте множество директорий с py-файлами
+# внутри.
+# А теперь отвечу на вопрос )
+# Часть с `any` должна быть понятной. Если непонятно, то давай пробовать приблизиться к пониманию.
+# Сначала перепишем это в виде наивной функции. Вот так:
+# def any_py_file(paths):
+#     for path in paths:
+#         if path.endswith(".py"):
+#             return True
+#     return False
+# dirs_with_py = sorted(
+#     dir_path for dir_path, _, files in os.walk("main")
+#     if any_py_file(files)
+# )
+# Здесь мы можем увидеть вот такой паттерн:
+# def any_blah_blah(iterable):
+#     for item in iterable:
+#         if condition(item):
+#             return True
+#     return False
+# # Если мы видим такой паттерн, то это означает, что мы можем преобразовать iterable в последовательность значений True
+# # или False — в зависимости от условия. То есть как-то так:
+# def any_blah_blah(iterable):
+#     boolean_iterable = (condition(item) for item in iterable)
+#     for item in boolean_iterable:
+#         if item:
+#             return True
+#     return False
+# Тут я сделал круглые скобочки, а не квадратные — чтобы не инстанцировать список.
+# Далее опытный глаз может заметить, что последние 4 строчки — это функция any. Перепишем!
+# def any_blah_blah(iterable):
+#     boolean_iterable = (condition(item) for item in iterable)
+#     return any(boolean_iterable)
+# Обнаружим, что можно сразу запихать туда нужный итератор.
+# def any_blah_blah(iterable):
+#     return any(condition(item) for item in iterable)
+# Вернём наш пример
+# def any_py_file(paths):
+#     return any(path.endswith(".py") for path in paths)
+# dirs_with_py = sorted(
+#     dir_path for dir_path, _, files in os.walk("main")
+#     if any_py_file(files)
+# )
+# Обнаружим, что смысла выделять это в отдельную функцию больше нет
+# dirs_with_py = sorted(
+#     dir_path for dir_path, _, files in os.walk("main")
+#     if any(path.endswith(".py") for path in files)
+# )
+# Так как в программировании часто приходится работать с последовательностями, то эта работа часто бъётся на "кирпичики"
+# из функций работы с последовательностями. Из полезных и в действительности применяемых:
+# builtin-функции: all, any, enumerate, filter (редко, т.к. есть comprehension), map, max, min, next, range, reversed,
+# sorted, sum, zip
+# itertools
+# more-itertools
+# Рекомендую прокачивать понимание как работать с последовательностями без for-loop, дополнительных функций и так далее.
+# Это позволит сосредоточиться на той логике, которая отличает твою программу от множества других похожих
+
+
