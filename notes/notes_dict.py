@@ -56,14 +56,27 @@
 # Разница между sort() и sorted() в том, что первый - сортирует список на месте, возвращая None. Второй - возвращает
 # новый отсортированный список.
 # Так же, можно сортировать словари.
-x = {1: 'a', 3: 'ab', 2: 'abc'}
+# x = {1: 'a', 3: 'ab', 2: 'abc'}
 # По ключам:
-x = dict(sorted(x.items()))
-print(x)
+# x = dict(sorted(x.items()))
+# print(x)
 # {1: 'a', 2: 'abc', 3: 'ab'}
 # По значениям:
-x = dict(sorted(x.items(), key=lambda e: e[1]))
-print(x)
+# x = dict(sorted(x.items(), key=lambda e: e[1]))
+# print(x)
 # {1: 'a', 3: 'ab', 2: 'abc'}
 # dict.items() - возвращает пары (ключ, значение) и для сортировки по значениям указывается индекс 1, который ссылается
 # на значение в этой паре.
+
+capital_country = {"Russia": "Moscow",
+                   "United States": "Washington",
+                   "Canada": "Ottawa",
+                   "Germany": "Berlin",
+                   "France": "Paris",
+                   "Great Britain": "London"}
+
+for c in capital_country:
+    print("{country}: {capital}".format(country=c, capital=capital_country[c]))
+for country, capital in capital_country.items():
+    print(f"{country}: {capital}") # здесь я использую f-строку, внизу есть ссылка
+    print("{}: {}".format(country, capital))

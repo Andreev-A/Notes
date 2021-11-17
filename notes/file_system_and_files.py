@@ -121,12 +121,12 @@
 # print(os.getcwd())
 # print(os.listdir(".idea"))
 # Функция exists() библиотеки os.path позволяет проверить наличие файла или папки
-# print(os.path.exists("dict.py"))  # True
+# print(os.path.exists("notes_dict.py"))  # True
 # Мы также можем проверить является ли переданный параметр файлом или папкой с помощью функций isfile() и isdir():
-# print(os.path.isfile(dict.py))
-# print(os.path.isdir(dict.py))
+# print(os.path.isfile(notes_dict.py))
+# print(os.path.isdir(notes_dict.py))
 # Мы можем легко узнать абсолютный путь по относительному с помощью abspath()
-# print(os.path.abspath('dict.py'))
+# print(os.path.abspath('notes_dict.py'))
 # Можем сменить директорию с помощью chdir()
 # os.chdir('.idea')
 # print(os.getcwd())
