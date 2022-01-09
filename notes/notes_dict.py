@@ -21,6 +21,7 @@
 # {v: k for k, v in a.items()}  # поменять местами ключи и значения в словаре
 # letters_in_binary = dict({map(str, input().split(':')) for i in range(x)})  # с клавиатуры парами
 # = dict({map(str, input().split(': ')[::-1]) for _ in range(number_of_letters)})  # поменять значения
+# .update({"12": "Yes"})  # добавить в словарь
 
 #  словарь доступ  #####################################################################################################
 
@@ -31,17 +32,17 @@
 
 #  словарь вывод  ######################################################################################################
 
-#   for key, value in notes.items():  # ключ : значение
-#       print(key, ':', value)
-#   for key in notes.keys():  # ключ
-#       print(key)
+#   for name, value in notes.items():  # ключ : значение
+#       print(name, ':', value)
+#   for name in notes.keys():  # ключ
+#       print(name)
 #   for value in notes.values():  # значение
 #       print(value)
 #   def get_key(d, value):  # вывод ключа по значению
 #       for k, v in d.items():
 #           if v == value:
 #               return k
-# print(str(len(dots))+'\n'+' '.join(map(str, dots)))  # печать в двух строках
+# print(str(len(dots))+'\n_test'+' '.join(map(str, dots)))  # печать в двух строках
 # print(" ".join(map(str, a)))  # вывод массива целых чисел с пробелами
 # print('Выйграл игрок номер {}'.format(user_number))
 
@@ -62,7 +63,7 @@
 # print(x)
 # {1: 'a', 2: 'abc', 3: 'ab'}
 # По значениям:
-# x = dict(sorted(x.items(), key=lambda e: e[1]))
+# x = dict(sorted(x.items(), name=lambda e: e[1]))
 # print(x)
 # {1: 'a', 3: 'ab', 2: 'abc'}
 # dict.items() - возвращает пары (ключ, значение) и для сортировки по значениям указывается индекс 1, который ссылается
@@ -80,3 +81,20 @@ for c in capital_country:
 for country, capital in capital_country.items():
     print(f"{country}: {capital}") # здесь я использую f-строку, внизу есть ссылка
     print("{}: {}".format(country, capital))
+
+import operator
+x = {1: 2, 3: 4, 4: 3, 2: 1, 0: 0}
+sorted_x = sorted(x.items(), key=operator.itemgetter(1))
+
+# Может кому будет полезным  - сортировка словаря по  значению и ключу одновренменно.
+# sorted(dict_artist.items(), name=lambda x: (x[1], x[0])) - На выходе имеем list из кортежей
+
+# Важная особенность словарей в Python'е — они содержат ключи и значения в неупорядоченном виде, то есть вы не можете
+# гарантировать, что ключи, например, отсортированы, или хранятся в том порядке, в каком вы их туда добавили. Однако,
+# в Python'е существует OrderedDict, это тип, который содержится в модуле collections, который гарантирует вам, что
+# ключи содержатся именно в том порядке, в каком вы их добавили в словарь.
+# from collections import OrderedDict
+
+x = a.items()  # список tuple
+
+# ret[res_key].sort(name=lambda tup: tup[0])

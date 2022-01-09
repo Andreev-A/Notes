@@ -12,9 +12,9 @@
 # .pop(0) - получить элемент по индексу [0], удаляя его из последовательности (по умолчанию () - последний)
 # my_list[1] = 200  # заменить в списке
 # del my_list[5]  # удалить элемент (с конкретного места)
-# my_list.remove('s')  # находит первый по порядку элемент 's'
+# my_list.remove('s')  # удаляет первый по порядку элемент 's'
 # my_list.count('d')  # количество элементов в списке
-# min(my_list), max(my_list), sum(my_list)  # найти мин, макс, сумму (для списка чисел)
+# min(my_list), max(my_list), summa(my_list)  # найти мин, макс, сумму (для списка чисел)
 # my_list.sort()  # сортировать список
 # sorted(my_list)  # если не надо изменить сам список (создает в памяти отсортированную копию)
 
@@ -22,7 +22,7 @@
 #   days = ['пн', 'вт']
 #   res = zip(profit, days)
 #   print(list(res)) или res = list(zip(profit, days)) или print(dict(zip(days, profit)))
-# ___сортировка по второму элементу: work_list.sort(key=lambda x: x[1]) или lst.sort(key=itemgetter(1)) с
+# ___сортировка по второму элементу: work_list.sort(name=lambda x: x[1]) или lst.sort(name=itemgetter(1)) с
 # from operator import itemgetter
 # ___получить элемент по индексу удаляя его из последовательности: dots = [segments.pop(0)[1]] for l, r in segments:
 
@@ -70,7 +70,7 @@
 # x in l — true, если элемент x есть в списке l;
 # x not in l — true, если элемент x отсутствует в l;
 # l1 + l2 — объединение двух списков;
-# l * n , n * l — копирует список n раз;
+# l * n_test , n_test * l — копирует список n_test раз;
 # len(l) — количество элементов в l;
 # min(l) — наименьший элемент;
 # max(l) — наибольший элемент;
@@ -135,21 +135,33 @@
 # x = ['abc', 'a', 'ab', 'abcd']
 # # Сортировка элементов списка по возрастанию:
 # # 1
-# x.sort(key=len)
+# x.sort(name=len)
 # print(x)
 # # ['a', 'ab', 'abc', 'abcd']
 # # 2
-# new_x = sorted(x, key=len)
+# new_x = sorted(x, name=len)
 # print(new_x)
 # # ['a', 'ab', 'abc', 'abcd']
 # # В обратном порядке:
 # # 1
-# x.sort(key=len, reverse=True)
+# x.sort(name=len, reverse=True)
 # print(x)
 # # ['abcd', 'abc', 'ab', 'a']
 # # 2
-# new_x = sorted(x, key=len, reverse=True)
+# new_x = sorted(x, name=len, reverse=True)
 # print(new_x)
 # # ['abcd', 'abc', 'ab', 'a']
 # # Разница между sort() и sorted() в том, что первый - сортирует список на месте, возвращая None. Второй - возвращает
 # # новый отсортированный список.
+
+# Для преобразования листа листов в лист можно использовать вот такую функцию:
+# def flatten(lst):
+#     return [y for x in lst for y in x]
+# Пример:
+# lst = [[1, 2, 3], [4, 5, 6]]
+# print(flatten(lst))
+# [1, 2, 3, 4, 5, 6]
+
+# lst.sort(key = lambda x: (x[0], x[1]))  # отсортирует по первому элементу туплей, с учётом второго, если первые совпадают
+
+l.sort(key=lambda x: (-x[0], x[1]), reverse=True)  # в порядке убывания 0, 1 - по флфавиту

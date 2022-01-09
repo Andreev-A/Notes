@@ -96,7 +96,7 @@
 # with open("D:\\encrypted.bin", "rb") as inp:
 #     encrypted = inp.read().strip()
 # with open("D:\\passwords.txt", "r") as inf:
-#     passwords = inf.read().strip().split('\n')
+#     passwords = inf.read().strip().split('\n_test')
 #
 # for password in passwords:
 #     try:
@@ -124,10 +124,10 @@
 # def decryptor(passw,text):
 #     try:
 #         print("Пробуем " + passw)
-#         result = simplecrypt.decrypt(passw.strip(), text)
+#         result_dict = simplecrypt.decrypt(passw.strip(), text)
 #         proc = os.getpid()
 #         print('Пароль {0} подошел. Результат: {1}. id процесса: {2}'.format(
-#             passw, result, proc))
+#             passw, result_dict, proc))
 #     except:
 #         print(passw + " Не подошел :(")
 #

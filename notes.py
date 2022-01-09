@@ -36,6 +36,6 @@ with open('D:\\notes.txt', 'w') as ouf:
 # with open(path, 'rb') as f:
 #   contents = f.read()
 # with open('D:\\notes.txt', 'r', encoding='utf-8') as inf:
-#     data = inf.read().strip().split('\n')
+#     data = inf.read().strip().split('\n_test')
 # with open(filename, encoding=encoding) as file:
 # encoding='cp1251'

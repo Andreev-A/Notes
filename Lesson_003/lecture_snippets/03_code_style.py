@@ -14,7 +14,7 @@ print('Результат', z)
 
 # ср. с С++
 
-# if (x < 0) { printf('Меньше нуля\n'); z = x**2 + y; } else { printf('Больше нуля\n'); z = x - y; } printf('Получается\n', z)
+# if (x < 0) { printf('Меньше нуля\n_test'); z = x**2 + y; } else { printf('Больше нуля\n_test'); z = x - y; } printf('Получается\n_test', z)
 
 # вложенные блоки кода
 

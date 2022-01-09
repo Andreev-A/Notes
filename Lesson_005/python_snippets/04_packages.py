@@ -67,7 +67,7 @@ function5()
 # │   ├── mail
 # │   │   └── backends
 # │   ├── management
-# │   │   └── commands
+# │   │   └── responses
 # │   ├── serializers
 # │   └── servers
 # ├── db

@@ -435,8 +435,8 @@
 #     def __iter__(self):
 #         return self
 #
-#     def f2(self, n):
-#         return n / 2
+#     def f2(self, n_test):
+#         return n_test / 2
 #
 #     def __next__(self):
 #         if self.index < len(self.iterable):
@@ -475,8 +475,8 @@
 #         raise StopIteration
 #
 #
-# def f2(n):
-#     return n / 2
+# def f2(n_test):
+#     return n_test / 2
 #
 #
 # l = MyList([1, 2, 3, 4, 5], f2)
@@ -495,24 +495,24 @@
 # А если использовать внешний итератор, то все ок.
 
 # Решето Эратосфена:
-# n = int(input("n="))
-# a = range(n+1)
+# n_test = int(input("n_test="))
+# a = range(n_test+1)
 # a[1] = 0
 # lst = []
 #
 # i = 2
-# while i <= n:
+# while i <= n_test:
 #     if a[i] != 0:
 #         lst.append(a[i])
-#         for j in range(i, n+1, i):
+#         for j in range(i, n_test+1, i):
 #             a[j] = 0
 #     i += 1
 # print(lst)
 
 # Листинг 7
-# n = input("n=")
+# n_test = input("n_test=")
 # lst=[2]
-# for i in range(3, n+1, 2):
+# for i in range(3, n_test+1, 2):
 # 	if (i > 10) and (i%10==5):
 # 		continue
 # 	for j in lst:
@@ -571,8 +571,8 @@
 # Основные преимущества List comprehension перед обычной конструкцией(цикл for + if +обработка):
 # скорость(List comprehension быстрее, чем for )
 # краткость(в 1 строку можно записать довольно развесистую конструкцию, некоторые считают её лучше читаемой)
-# Примером List comprehension может служить конструкция вида: [n for n in range(1, 10000) if n % 2 == 0]
-# При этом условия может и не быть, например: [str(n) for n in range(10)]
+# Примером List comprehension может служить конструкция вида: [n_test for n_test in range(1, 10000) if n_test % 2 == 0]
+# При этом условия может и не быть, например: [str(n_test) for n_test in range(10)]
 # Примеры list comprehension
 # Простая генерация списка:
 # x = [-2, -1, 0, 1, 2]
@@ -605,13 +605,13 @@
 # y = {x: ord(x) for x in 'spaam'}  # генерируем dictionary {'s': 115, 'm': 109, 'p': 112, 'a': 97}
 # print(x)
 # print(y)
-# Если список содержит последовательно пары key value, то так можно преобразовать в словарь:
+# Если список содержит последовательно пары name value, то так можно преобразовать в словарь:
 # d = ['Dota', 'sucks', 'Python', 'rules', 'Saperavi', 'depends']
 # dictus = {d[x]: d[x+1] for x in range(0, len(d), 2)}
 # print(dictus)
 # Кстати, генератор можно использовать внутри функции без дополнительных скобок:
 # mylist = [1, 2, 3]
-# mysum = sum(x**2 for x in mylist)
+# mysum = summa(x**2 for x in mylist)
 # print(mysum)  # 14
 # Условие if не всегда идет вначале. Иногда полезна такая конструкция
 # [int(x) if x.isdigit() else x for x in a].  x.isdigit() - тут как пример

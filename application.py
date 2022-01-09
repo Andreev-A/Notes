@@ -1,20 +1,20 @@
-# def factorial(n):
-#     if n == 1:
+# def factorial(n_test):
+#     if n_test == 1:
 #         return 1
-#     factorial_n_minus_1 = factorial(n=n - 1)
-#     return n * factorial_n_minus_1
+#     factorial_n_minus_1 = factorial(n_test=n_test - 1)
+#     return n_test * factorial_n_minus_1
 #
 #
 # print(factorial(9))
 
-# Выведите одно число – сумму данных n чисел
-# n = int(input())
+# Выведите одно число – сумму данных n_test чисел
+# n_test = int(input())
 # out = 0
-# for _ in range(n):
+# for _ in range(n_test):
 #     out += int(input())
 # print(out)
 #
-# print(sum(int(input()) for _ in range(int(input()))))
+# print(summa(int(input()) for _ in range(int(input()))))
 
 
 # Реализуйте программу, которая будет вычислять количество различных объектов в списке.
@@ -33,9 +33,9 @@
 #         ans += 1
 # print(ans)
 #
-# n = len(objects)
-# ans = n
-# for i in range(n):
+# n_test = len(objects)
+# ans = n_test
+# for i in range(n_test):
 #     for j in range(i):
 #         if id(objects[i]) == id(objects[j]):
 #             ans -= 1
@@ -60,36 +60,36 @@
 # def closest_mod_5(x):
 #     return [x + i for i in range(5) if (x + i) % 5 == 0][0]
 
-# Пусть n = 3, т. е. есть три элемента (1, 2, 3). Пусть k = 2. Все различные сочетания из 3 элементов по 2:
+# Пусть n_test = 3, т. е. есть три элемента (1, 2, 3). Пусть k = 2. Все различные сочетания из 3 элементов по 2:
 # (1, 2), (1, 3), (2, 3). Различных сочетаний три, поэтому C(3, 2) = 3.
-# При C(n, 0) = 1, так как из n элементов выбрать 0 можно единственным образом, а именно, ничего не выбрать.
-# Также несложно понять, что если k > n, то C(n, k) = 0, так как невозможно, например, из трех элементов выбрать пять.
-# Для вычисления C(n, k) в других случаях используется следующая рекуррентная формула:
-# C(n, k) = C(n - 1, k) + C(n - 1, k - 1).
-# Реализуйте программу, которая для заданных n и k вычисляет C(n, k).
-# Вашей программе на вход подается строка, содержащая два целых числа n и k (1 ≤ n ≤ 10, 0 ≤ k ≤ 10).
-# Ваша программа должна вывести единственное число: C(n, k).
-# def C(n, k):
+# При C(n_test, 0) = 1, так как из n_test элементов выбрать 0 можно единственным образом, а именно, ничего не выбрать.
+# Также несложно понять, что если k > n_test, то C(n_test, k) = 0, так как невозможно, например, из трех элементов выбрать пять.
+# Для вычисления C(n_test, k) в других случаях используется следующая рекуррентная формула:
+# C(n_test, k) = C(n_test - 1, k) + C(n_test - 1, k - 1).
+# Реализуйте программу, которая для заданных n_test и k вычисляет C(n_test, k).
+# Вашей программе на вход подается строка, содержащая два целых числа n_test и k (1 ≤ n_test ≤ 10, 0 ≤ k ≤ 10).
+# Ваша программа должна вывести единственное число: C(n_test, k).
+# def C(n_test, k):
 #     if k == 0:
 #         return 1
-#     elif k > n:
+#     elif k > n_test:
 #         return 0
 #     else:
-#         return C(n - 1, k) + C(n - 1, k - 1)
+#         return C(n_test - 1, k) + C(n_test - 1, k - 1)
 #
-# n, k = map(int, input().split())
-# print(C(n, k))
+# n_test, k = map(int, input().split())
+# print(C(n_test, k))
 # print(C(*map(int, input().split())))
 # print(C(*(int(i)for i in input().split())))
 #
-# n, k = map(int, input().split())
-# sz = max(n, k) + 1
+# n_test, k = map(int, input().split())
+# sz = max(n_test, k) + 1
 # c = [[0] * sz for _ in range(sz)]
 # c[0][0] = 1
 # for i in range(1, sz):
 #     for j in range(i + 1):
 #         c[i][j] = c[i - 1][j] + c[i - 1][j - 1]
-# print(c[n][k])
+# print(c[n_test][k])
 #
 # Реализуйте программу, которая будет эмулировать работу с пространствами имен. Необходимо реализовать поддержку
 # создания пространств имен и добавление в них переменных.
@@ -142,10 +142,10 @@
 #             nms = dct[nms][0]
 #         print(nms)
 #
-# n = int(input())
+# n_test = int(input())
 # parent = {"global": None}
 # vs = {"global": set()}
-# for _ in range(n):
+# for _ in range(n_test):
 #     t, fst, snd = input().split()
 #     if t == "create":
 #         parent[fst] = snd
@@ -196,7 +196,7 @@
 #     def add(self, *a):
 #         self.my_list.extend(a)
 #         while len(self.my_list) >= 5:
-#             print(sum(self.my_list[:5]))
+#             print(summa(self.my_list[:5]))
 #             del(self.my_list[:5])
 #         # добавить следующую часть последовательности
 #
@@ -213,7 +213,7 @@
 #         for i in a:
 #             self.part.append(i)
 #             if len(self.part) == 5:
-#                 print(sum(self.part))
+#                 print(summa(self.part))
 #                 self.part.clear()
 #
 #     def get_current_part(self):
@@ -231,8 +231,8 @@
 # Важное примечание: Создавать классы не требуется.
 # Мы просим вас промоделировать этот процесс, и понять существует ли путь от одного класса до другого.
 # Формат входных данных
-# В первой строке входных данных содержится целое число n - число классов.
-# В следующих n строках содержится описание наследования классов. В i-й строке указано от каких классов наследуется
+# В первой строке входных данных содержится целое число n_test - число классов.
+# В следующих n_test строках содержится описание наследования классов. В i-й строке указано от каких классов наследуется
 # i-й класс. Обратите внимание, что класс может ни от кого не наследоваться. Гарантируется, что класс не наследуется
 # сам от себя (прямо или косвенно), что класс не наследуется явно от одного класса более одного раза.
 # В следующей строке содержится число q - количество запросов.
@@ -261,9 +261,9 @@
 #     print(search(start, end))
 #
 # Пример изящной реализации функции is_parent с использованием стандартной библиотеки языка Python
-# n = int(input())
+# n_test = int(input())
 # parents = {}
-# for _ in range(n):
+# for _ in range(n_test):
 #     a = input().split()
 #     parents[a[0]] = [] if len(a) == 1 else a[2:]
 #
@@ -276,9 +276,9 @@
 #     a, b = input().split()
 #     print("Yes" if is_parent(b, a) else "No")
 #
-# n = int(input())
+# n_test = int(input())
 # parents = {}
-# for _ in range(n):
+# for _ in range(n_test):
 #     a = input().split()
 #     parents[a[0]] = [] if len(a) == 1 else a[2:]
 #
@@ -316,7 +316,7 @@
 # умножения и целочисленного деления.
 #
 # class ExtendedStack(list):
-#     def sum(self):
+#     def summa(self):
 #         self.append(self.pop() + self.pop())
 #         # операция сложения
 #
@@ -363,4 +363,27 @@
 ########################################################################################################################
 
 
+class Vec2d:
+    def __init__(self, x_or_pair, y=None):
+        if y is None and type(x_or_pair) == tuple:
+            self.x = x_or_pair[0]
+            self.y = x_or_pair[1]
+        else:
+            self.x = x_or_pair
+            self.y = y
 
+    def __mul__(self, k):
+        return self.x * k.x, self.y * k.x
+
+    def int_pair(self):
+        return (int(self.x), int(self.y))
+
+lst = [(1, 2), (3, 4)]
+
+def speed(k):
+    global lst
+    list(map(lambda pair: Vec2d(pair) * Vec2d(k), lst))
+
+
+speed(2)
+print(lst)

@@ -20,19 +20,19 @@ def fib2(n):
         cache[n] = n if n <= 1 else fib2(n - 1) + fib2(n - 2)
     return cache[n]
 
-# строка - n if n <= 1 else fib2(n - 1) + fib2(n - 2)
-# if n <= 1:
-#     cache[n] = n
+# строка - n_test if n_test <= 1 else fib2(n_test - 1) + fib2(n_test - 2)
+# if n_test <= 1:
+#     cache[n_test] = n_test
 # else:
-#     cache[n] = fib2(n - 1) + fib2(n - 2)
+#     cache[n_test] = fib2(n_test - 1) + fib2(n_test - 2)
 
 # Декоратор (без глобальной переменной)
 # def memo(f):
 #     cache = {}
-#     def inner(n):  # функция "обертка" принимает один аргумент - n
-#         if n not in cache:
-#             cache[n] = f(n)
-#         return cache[n]
+#     def inner(n_test):  # функция "обертка" принимает один аргумент - n_test
+#         if n_test not in cache:
+#             cache[n_test] = f(n_test)
+#         return cache[n_test]
 #     return inner
 #
 # fib1 = memo(fib1)
@@ -47,30 +47,30 @@ def fib2(n):
 #
 # def memo(f):
 #     cache = {}
-#     def inner(n):
-#         if n not in cache:
-#             cache[n] = f(n)
-#         return cache[n]
+#     def inner(n_test):
+#         if n_test not in cache:
+#             cache[n_test] = f(n_test)
+#         return cache[n_test]
 #     return inner
 #
 # @memo # ИЛИ также можно заменить эту строчку на @lru_cache(maxsize=None)
-# def fib1(n):
-#     assert n >= 0
-#     return n if n <= 1 else fib1(n - 1) + fib1(n - 2)
+# def fib1(n_test):
+#     assert n_test >= 0
+#     return n_test if n_test <= 1 else fib1(n_test - 1) + fib1(n_test - 2)
 
 # На этом этапе у некоторых (меня в том числе) возникла путаница с именами функций, что привело к тому, что
 # кэширование не заработало. Это неприятно, когда что-то не работает.
 # Посмотрим, как именно мы меняем поведение функции с помощью декоратора
 
-# def fib(n):
-#     return n if n < 2 else fib(n - 1) + fib(n - 2)
+# def fib(n_test):
+#     return n_test if n_test < 2 else fib(n_test - 1) + fib(n_test - 2)
 #
 # def memo(f):
 #     cache = {}
-#     def wrap(n):
-#         if n not in cache:
-#             cache[n] = f(n)
-#         return cache[n]
+#     def wrap(n_test):
+#         if n_test not in cache:
+#             cache[n_test] = f(n_test)
+#         return cache[n_test]
 #     return wrap
 #
 # fib = memo(f=fib)
@@ -84,28 +84,28 @@ def fib2(n):
 # Для лучшего понимаю, можно записать.
 # cache = {}
 #
-# def f(n):
-#     return n if n < 2 else fib(n - 1) + fib(n - 2)
+# def f(n_test):
+#     return n_test if n_test < 2 else fib(n_test - 1) + fib(n_test - 2)
 #
-# def fib(n):
-#     if n not in cache:
-#         cache[n] = f(n)
-#     return cache[n]
+# def fib(n_test):
+#     if n_test not in cache:
+#         cache[n_test] = f(n_test)
+#     return cache[n_test]
 # Такая функция будет работать быстро и верно. Следовательно называя новую функцию как попало и затем вызывая её
 # random_name = memo(f=fib)
 # random_name(80)
 # мы обрекаем себя на вызов рекурсивной неоптимизированной функции fib
 # cache = {}
-# def f(n): #2
-#     return n if n < 2 else fib(n - 1) + fib(n - 2)
+# def f(n_test): #2
+#     return n_test if n_test < 2 else fib(n_test - 1) + fib(n_test - 2)
 #
-# def fib(n): #3,.. n
-#     return n if n < 2 else fib(n - 1) + fib(n - 2)
+# def fib(n_test): #3,.. n_test
+#     return n_test if n_test < 2 else fib(n_test - 1) + fib(n_test - 2)
 #
-# def random_name(n): #1
-#     if n not in cache:
-#         cache[n] = f(n)
-#     return cache[n]
+# def random_name(n_test): #1
+#     if n_test not in cache:
+#         cache[n_test] = f(n_test)
+#     return cache[n_test]
 
 # Есть ограничение на кол-во вызовов рекурсивных функций. Пишем функцию использующую итерацию вместо рекурсии.
 def fib3(n):

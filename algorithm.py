@@ -1,10 +1,10 @@
-# Дано целое число 1 ≤ n ≤ 40, необходимо вычислить n-е число Фибоначчи
+# Дано целое число 1 ≤ n_test ≤ 40, необходимо вычислить n_test-е число Фибоначчи
 # 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377,
 #
-# def fib(n):
-#     if 1 <= n <= 40:
+# def fib(n_test):
+#     if 1 <= n_test <= 40:
 #         a, b = 0, 1
-#         for _ in range(n):
+#         for _ in range(n_test):
 #             a, b = b, a + b
 #         return a
 #
@@ -14,28 +14,28 @@
 #         prev, cur = cur, prev + cur
 #     return cur
 
-# Дано число 1 <= n <= 10^7, необходимо найти последнюю цифру n-го числа Фибоначчи.
+# Дано число 1 <= n_test <= 10^7, необходимо найти последнюю цифру n_test-го числа Фибоначчи.
 # Как мы помним, числа Фибоначчи растут очень быстро, поэтому при их вычислении нужно быть аккуратным с переполнением.
 # В данной задаче, впрочем, этой проблемы можно избежать, поскольку нас интересует только последняя цифра числа
 # Фибоначчи: если 0 <= a,b <= 9 — последние цифры чисел F_i и F_i+1 соответственно, то (a+b) mod10 — последняя цифра
 # числа F_i+2. Используем период Пизано.
 #
-# def fib_digit(n):
-#     if 1 <= n <= 10 ** 7:
+# def fib_digit(n_test):
+#     if 1 <= n_test <= 10 ** 7:
 #         a, b = 0, 1
-#         for _ in range(n):
+#         for _ in range(n_test):
 #             a, b = b, (a + b) % 10
 #         return a
 
-# Даны целые числа 1 <= n <= 10^18 и 2 <= m <= 10^5 , необходимо найти остаток от деления n-го числа Фибоначчи на m
+# Даны целые числа 1 <= n_test <= 10^18 и 2 <= m <= 10^5 , необходимо найти остаток от деления n_test-го числа Фибоначчи на m
 #
-# def fib_mod(n, m):
+# def fib_mod(n_test, m):
 #     list = [0, 1, 1]
-#     for i in range(2, n + 2):
+#     for i in range(2, n_test + 2):
 #         if list[i - 1] == 0 and list[i] == 1:
 #             break
 #         list.append((list[i - 1] + list[i]) % m)
-#     out = list[n % (len(list) - 2)]
+#     out = list[n_test % (len(list) - 2)]
 #     return out
 
 # По данным двум числам 1 <= a, b <= 2*10^9 найдите их наибольший общий делитель.
@@ -56,9 +56,9 @@
 #     a, b = b, a % b
 # print(a)
 
-# По данным n отрезкам необходимо найти множество точек минимального размера, для которого каждый из отрезков содержит
+# По данным n_test отрезкам необходимо найти множество точек минимального размера, для которого каждый из отрезков содержит
 # хотя бы одну из точек.
-# В первой строке дано число 1<=n<=100 отрезков. Каждая из последующих n строк содержит по два числа 0<=l<=r<=10^9,
+# В первой строке дано число 1<=n_test<=100 отрезков. Каждая из последующих n_test строк содержит по два числа 0<=l<=r<=10^9,
 # задающих начало и конец отрезка. Выведите оптимальное число m точек и сами m точек. Если таких множеств точек
 # несколько, выведите любое из них.
 
@@ -68,7 +68,7 @@
 # 2 5
 # 5 6
 # work_list = [list(map(int, input().split())) for i in range(int(input()))]
-# work_list.sort(key=lambda x: x[1])
+# work_list.sort(name=lambda x: x[1])
 # point_list = [work_list[0][1]]
 # for i in range(len(work_list) - 1):
 #     if not work_list[i + 1][0] <= point_list[-1]:
@@ -76,12 +76,12 @@
 # print(len(point_list))
 # print(*point_list)
 #
-# segments = sorted([sorted(map(int,input().split())) for i in range(int(input()))], key=lambda x: x[1])
+# segments = sorted([sorted(map(int,input().split())) for i in range(int(input()))], name=lambda x: x[1])
 # dots = [segments.pop(0)[1]]
 # for l, r in segments:
 #     if l > dots[-1]:
 #         dots.append(r)
-# print(str(len(dots)) + '\n' + ' '.join(map(str, dots)))
+# print(str(len(dots)) + '\n_test' + ' '.join(map(str, dots)))
 #
 # points = [list(map(int, input().split())) for i in range(int(input()))]
 # out = []
@@ -97,9 +97,9 @@
 #     dots.append(segs[-1][0])
 #     while segs and dots[-1] <= segs[-1][1]:
 #         segs.pop()
-# print(str(len(dots))+'\n'+' '.join(map(str, dots)))
+# print(str(len(dots))+'\n_test'+' '.join(map(str, dots)))
 
-# По данному числу 1 <= n <= 10^9 найдите максимальное число k, для которого n можно представить как сумму
+# По данному числу 1 <= n_test <= 10^9 найдите максимальное число k, для которого n_test можно представить как сумму
 # k различных натуральных слагаемых. Выведите в первой строке число k, во второй — k слагаемых.
 #
 # entered_number = int(input())
@@ -125,8 +125,8 @@
 # print(len(b))
 # print(*b)
 
-# Первая строка содержит количество предметов 1 <= n <= 10^3 и вместимость рюкзака 0 <= W <= 2 * 10^6. Каждая из
-# следующих n строк задаёт стоимость 0 <= c_i <= 2 * 10^6 и объём 0 <= w_i <= 2 * 10^6 предмета (n, W, c_i, w_i  —
+# Первая строка содержит количество предметов 1 <= n_test <= 10^3 и вместимость рюкзака 0 <= W <= 2 * 10^6. Каждая из
+# следующих n_test строк задаёт стоимость 0 <= c_i <= 2 * 10^6 и объём 0 <= w_i <= 2 * 10^6 предмета (n_test, W, c_i, w_i  —
 # целые числа). Выведите максимальную стоимость частей предметов (от каждого предмета можно отделить любую часть,
 # стоимость и объём при этом пропорционально уменьшатся), помещающихся в данный рюкзак, с точностью не менее трёх
 # знаков после запятой.
@@ -212,7 +212,7 @@ def main():
     n, capacity = next(reader)
     # читаем остальные элементы в потоке в список парами
     values_and_weights = list(reader)
-    # не используем n явно просто проверим что правильно считали
+    # не используем n_test явно просто проверим что правильно считали
     assert len(values_and_weights) == n
     # вызовем функцию для решения и выведем ответ
     opt_value = fractional_knapsack(capacity, values_and_weights)
@@ -261,7 +261,7 @@ if __name__ == '__main__':
     test()
 
 #
-# Постройте алгоритм, который получает на вход натуральное число n и за время O(n) находит минимальное число монет
+# Постройте алгоритм, который получает на вход натуральное число n_test и за время O(n_test) находит минимальное число монет
 # def num_coin_opt(price: int):
 #     coins = [10, 25, 1]
 #     coins.sort(reverse=True)
@@ -286,7 +286,7 @@ if __name__ == '__main__':
 #     work_list.append([letter, string.count(letter)])
 # number_of_letters = len(work_list)
 # while len(work_list) > 1:
-#     work_list.sort(key=lambda x: x[1])
+#     work_list.sort(name=lambda x: x[1])
 #     work_list.append([work_list[0][0] + work_list[1][0], work_list[0][1] + work_list[1][1]])
 #     for i in range(2):
 #         for j in work_list.pop(0)[0]:
@@ -318,7 +318,7 @@ if __name__ == '__main__':
 #     sss = input().strip()
 #     count = collections.Counter(sss)
 #     codes = dict.fromkeys(count, '0' if len(count) == 1 else '')
-#     tree = [[count[key], key] for key in count]
+#     tree = [[count[name], name] for name in count]
 #     while len(tree) > 1:
 #         val1, s1 = popmin(tree, codes, '0')
 #         val2, s2 = popmin(tree, codes, '1')
@@ -345,13 +345,13 @@ if __name__ == '__main__':
 # encoded = string.translate(str.maketrans(dict(table)))
 #
 # print(len(table), len(encoded))
-# print(*map('{0[0]}: {0[1]}'.format, table), encoded, sep='\n')
+# print(*map('{0[0]}: {0[1]}'.format, table), encoded, sep='\n_test')
 #
 # from collections import Counter
 #
 # line = input()
 # count = Counter(line)
-# d = {key:"" for key in set(count)}
+# d = {name:"" for name in set(count)}
 # if len(d) > 1:
 #     while len(count) > 1:
 #         a, b = count.most_common()[:-3:-1]
@@ -366,7 +366,7 @@ if __name__ == '__main__':
 # cod_line = ''.join(d[k] for k in line)
 #
 # print(len(d), len(cod_line))
-# print(*[f'{k}: {d[k]}' for k, z in Counter(line).most_common()], sep='\n')
+# print(*[f'{k}: {d[k]}' for k, z in Counter(line).most_common()], sep='\n_test')
 # print(cod_line)
 
 # Восстановите строку по её коду и беспрефиксному коду символов. В первой строке входного файла заданы два целых числа k
@@ -396,9 +396,9 @@ if __name__ == '__main__':
 #     letter = ''
 # print(decoded_string)
 
-# Первая строка входа содержит число операций 1 <= n <= 10^5. Каждая из последующих n строк задают операцию одного из
+# Первая строка входа содержит число операций 1 <= n_test <= 10^5. Каждая из последующих n_test строк задают операцию одного из
 # следующих двух типов:
-# Insert x, где 0 <= n <= 10^9 — целое число
+# Insert x, где 0 <= n_test <= 10^9 — целое число
 # ExtractMax
 # Первая операция добавляет число x в очередь с приоритетами, вторая — извлекает максимальное число и выводит его.
 #
@@ -430,7 +430,7 @@ if __name__ == '__main__':
 #                 index = prev_index
 #             else:
 #                 break
-# print(*extract_max, sep='\n')
+# print(*extract_max, sep='\n_test')
 #
 # def up(i):
 #     while i > 0 and a[(i - 1)//2] < a[i]:

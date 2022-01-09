@@ -152,7 +152,7 @@ while True:
 #     # Get the dispatcher to register handlers
 #     dispatcher = updater.dispatcher
 #
-#     # on different commands - answer in Telegram
+#     # on different responses - answer in Telegram
 #     dispatcher.add_handler(CommandHandler("start", start))
 #     dispatcher.add_handler(CommandHandler("help", help_command))
 #

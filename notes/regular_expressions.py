@@ -47,6 +47,7 @@
 
 # Функция findall
 # Находит в строке все подстроки, которые подходят под заданный шаблон. Возвращает все непересекающиеся подстроки.
+# Для того, чтобы группа не попадала в список возвращаемый findall, есть специальный синтаксис (?:выражение).
 # pattern = r"a[abc]c"
 # string = "abc, a.c, aac, a-c, aBc, azc, aaa"
 # all_inclusions = re.findall(pattern, string)
@@ -100,33 +101,36 @@
 # короткая запись часто используемых выражений:
 # \d ~ [0-9] -- цифры
 # \D ~ [^0-9]
-# \s ~ [ \t\n\r\f\v] -- пробельные символы
-# \S ~ [^ \t\n\r\f\v]
+# \s ~ [ \t\n_test\r\f\v] -- пробельные символы
+# \S ~ [^ \t\n_test\r\f\v]
 # \w ~ [a-zA-Z0-9_] -- буквы + цифры + _
 # \W ~ [^a-zA-Z0-9_]
 # пример - r"a[\w.]c" - буквы + цифры + _ и точка (дополнить короткую запись)
 # пример - r"a.c" - любой символ, кроме переноса строки
-# пример - r"ab*c" - любое число повторений заданного символа, включая 0
-# пример - r"ab+c" - любое число повторений заданного символа, большее 0
+# пример - r"ab*c" - любое число повторений заданного символа, включая его отсутствие
+# пример - r"ab+c" - любое число повторений заданного символа, один и более
 # пример - r"ab?c" - означает 0 или 1 вхождение символа
 # пример - r"ab{3}c" - задает конкретное количество или диапазон вхождений символа - {2, 5}. В фигурных скобках после
-# запятой можно ничего не ставить и искать больше или равно символов чем n - {3, }, { , 3}.
+# запятой можно ничего не ставить и искать больше или равно символов чем n_test - {3, }, { , 3}.
 # pattern = r"ab{2,4}a"
 # string = "aa, aba, abba, abbba, abbbba, abbbbba"
 # all_inclusions = re.findall(pattern, string)
 # print(all_inclusions)  # ['abba', 'abbba', 'abbbba']
+
 # Метасимволы являются “жадными”. Поэтому по умолчанию, если под шаблон подходят несколько вариантов вхождений, то
 # вернется самый длинный из них.
 # pattern = r"a[ab]+a"
 # string = "abaaba"
 # print(re.match(pattern, string))  # <re.Match object; span=(0, 6), match='abaaba'>
 # print(re.findall(pattern, string))  # ['abaaba']
+
 # Мы можем указать функции, что хотим искать не жадным способом (ленивым) Т.е. найти наименьшее вхождение, которое бы
 # удовлетворило нашему регулярному выражению. Для этого мы можем использовать ? после нашего метасимвола:
 # pattern = r"a[ab]+?a"
 # string = "abaaba"
 # print(re.match(pattern, string))  # <re.Match object; span=(0, 3), match='aba'>
 # print(re.findall(pattern, string))  # ['aba', 'aba']
+
 # То есть можем использовать для нахождения повторов символа или группы, но аккуратно - т.к. по умолчанию он "жадный".
 # пример - r"(test)*" - группировка нескольких символов
 # pattern = r"(test)*"
@@ -149,17 +153,21 @@
 # print(match)  # <re.Match object; span=(0, 9), match='Hello abc'>
 # print(match.group())  # Hello abc
 # print(match.group(1))  # abc
+
 # Использование группы внутри регулярного выражения
 # pattern = r"(\w+)-\1"  # \1 - говорит - найди такую же группу, как ты собрал ранее (номер группы по открывающей скобке)
 # string = "test-test"  # не допустим "test-text" потому что не совпадает с первой группой
 # match = re.match(pattern, string)
 # print(match)  # <re.Match object; span=(0, 9), match='test-test'>
+
 # Оставить только первую группу из повторяющихся
 # pattern = r"(\w+)-\1"
 # string = "test-test chow-chow"
 # duplicates = re.sub(pattern, r'\1', string)
 # print(duplicates)  # test chow
+
 # Аккуратно с группами с findall - будет возвращать кортеж групп
+# Для того, чтобы группа не попадала в список возвращаемый findall, есть специальный синтаксис (?:выражение).
 # pattern = r"(\w+)-\1"
 # string = "test-test chow-chow"
 # duplicates = re.findall(pattern, string)
@@ -208,7 +216,7 @@
 # Рекомендуют сразу применять "сырые" строки, чтобы таких накладок не было. Применил, и думать забыл.
 # Escape-последовательности, это такой набор символов, с помощью которого можно вывести на экран невидимые, или
 # управляющие символы. Например:
-# перевод строки (\n):
+# перевод строки (\n_test):
 # print("Hello\nHello")
 # Hello
 # Hello
@@ -248,7 +256,7 @@
 #         print(i, end=' ')
 # for i in range(1000, 1111):
 #     if i % 10 == 0:
-#         print('\n', i, end=' ')
+#         print('\n_test', i, end=' ')
 #     print(chr(i), end=' ')
 # print()
 # print_chr()
@@ -353,3 +361,455 @@
 #     print(re.sub(r"human", "computer", line))  #
 #
 # print(re.sub(r'human', 'computer', sys.stdin.read()), end='')
+
+# Вам дана последовательность строк.
+# В каждой строке замените первое вхождение слова, состоящего только из латинских букв "a" (регистр не важен), на
+# слово "argh".
+# import sys
+# import re
+# for line in sys.stdin:
+#     line = line.strip()
+#     print(re.sub(r"\b[aA]+\b", "argh", line, 1))  #
+#
+# for line in sys.stdin:  # Пример правильного использования аргумента count и использования флага re.IGNORCASE
+#     line = line.strip()
+#     line = re.sub(r"\ba+\b", "argh", line, count=1, flags=re.IGNORECASE)
+#     print(line)
+#
+# [print(re.sub(r'\b[aA]+\b', 'argh', line.rstrip(), 1)) for line in sys.stdin]
+
+# Вам дана последовательность строк.
+# В каждой строке поменяйте местами две первых буквы в каждом слове, состоящем хотя бы из двух букв.
+# Буквой считается символ из группы \w.
+# import sys
+# import re
+# # for line in sys.stdin:
+# #     line = line.strip()
+# #     print(re.sub(r"\b(\w)(\w)(\b|\B)", r"\2\1", line))  #
+#
+# for line in sys.stdin:  # пример правильного решения
+#     line = line.strip()
+#     line = re.sub(r"\b(\w)(\w)(\w*)\b", r"\2\1\3", line)
+#     print(line)
+#
+# for line in sys.stdin:
+#     line = line.rstrip()
+#     print(re.sub(r'\b(\w)(\w)', r"\2\1", line))
+
+# Вам дана последовательность строк.
+# В каждой строке замените все вхождения нескольких одинаковых букв на одну букву.
+# Буквой считается символ из группы \w.
+# import sys
+# import re
+# for line in sys.stdin:
+#     line = line.strip()
+#     print(re.sub(r"(\w)\1+", r"\1", line))  #
+
+# Существенной проблемой, однако, является то, что в простейшем варианте регэкспы работают только для латиницы.
+# Использование их с кириллицей требует определённых дополнительных усилий.
+# Собственно, дело в том, что все строки в Питоне хранятся в формате str, который всегда имеет определённую кодировку
+# (utf8, cp1251, koi8r и т. д.), а сам Питон работает с текстом в формате unicode. Для латиницы это обычно проблем не
+# вызывает, а вот для кириллицы разница существенная.
+# Рецепт борьбы прост. Надо проводить все действия в формате unicode. Для того, чтобы задать строку в юникоде,
+# необходимо перед ней добавить букву u:
+# > text = u'Текст'
+# Если у вас уже есть некий текст в известной кодировке (например, вы прочли его из файла или скачали из интернета), то
+# его следует перекодировать в юникод с помощью команд unicode или decode:
+# > unicode_text = unicode(utf8_text, 'utf8')
+# > unicode_text = utf8_text.decode('utf8')
+# Далее необходимо при использовании регулярных выражений не забывать и их переводить в юникод:
+# > regexp = re.compile(u'[а-я]')
+# Проверьте, теперь команда
+# > re.sub(regexp, '', 'КрасОТИЩЕ')
+# должна выдавать
+# > КОТИЩЕ
+
+
+# input = '10010'
+# res = 0
+# if input.isdigit():
+#     for i, val in enumerate(input):
+#         if i % 2:
+#             res += int(val)
+#         else:
+#             res -= int(val)
+# if not (res) % 3:
+#     print('yes')
+
+# Используя некоторые базовые правила регулярных выражений, это упрощает
+# (1(01*0)*1|0)*
+
+
+# import sys
+# import re
+#
+# for line in sys.stdin:
+#     line = line.strip()
+#     if re.search(r"\A[01]+\Z",line):
+#          if re.fullmatch(r"REG-EXP",line[::-1]):
+#              print(line)
+
+import requests
+
+res = requests.get("https://www.google.com/search/",
+                   params={"q": "Stepik"})
+print(res.status_code)
+print(res.headers['Content-Type'])
+print(res.url)
+print(res.text)
+
+
+# Основы регулярных выражений
+# Регулярками называются шаблоны, которые используются для поиска соответствующего фрагмента текста и сопоставления
+# символов.
+# Грубо говоря, у нас есть input-поле, в которое должен вводиться email-адрес. Но пока мы не зададим проверку валидности
+# введённого email-адреса, в этой строке может оказаться совершенно любой набор символов, а нам это не нужно.
+# Чтобы выявить ошибку при вводе некорректного адреса электронной почты, можно использовать следующее рег. выражение:
+# r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+$'
+# По сути, наш шаблон — это набор символов, который проверяет строку на соответствие заданному правилу.
+# Давайте разберёмся, как это работает.
+# Синтаксис RegEx
+# Синтаксис у регулярок необычный. Символы могут быть как буквами или цифрами, так и метасимволами, которые задают
+# шаблон строки:
+
+
+
+# Также есть дополнительные конструкции, которые позволяют сокращать регулярные выражения:
+# \d — соответствует любой одной цифре и заменяет собой выражение [0-9];
+# \D — исключает все цифры и заменяет [^0-9];
+# \w — заменяет любую цифру, букву, а также знак нижнего подчёркивания;
+# \W — любой символ кроме латиницы, цифр или нижнего подчёркивания;
+# \s — соответствует любому пробельному символу;
+# \S — описывает любой непробельный символ.
+# Для чего используются регулярные выражения
+# для определения нужного формата, например телефонного номера или email-адреса;
+# для разбивки строк на подстроки;
+# для поиска, замены и извлечения символов;
+# для быстрого выполнения нетривиальных операций.
+# Синтаксис  таких выражений в основном стандартизирован, так что вам следует понять их лишь раз, чтобы использовать в
+# любом языке программирования.
+# Примечание Не стоит забывать, что регулярные выражения не всегда оптимальны, и для простых операций часто достаточно
+# встроенных в Python функций.
+
+# Регулярные выражения в Python
+# В Python для работы с регулярками есть модуль re. Его нужно просто импортировать:
+# import re
+# А вот наиболее популярные методы, которые предоставляет модуль:
+# re.match()
+# re.search()
+# re.findall()
+# re.split()
+# re.sub()
+# re.compile()
+# Рассмотрим каждый из них подробнее.
+
+# re.match(pattern, string)
+# Этот метод ищет по заданному шаблону в начале строки. Например, если мы вызовем метод match() на строке «AV Analytics
+# AV» с шаблоном «AV», то он завершится успешно. Но если мы будем искать «Analytics», то результат будет отрицательный:
+#
+# import re
+# result_dict = re.match(r'AV', 'AV Analytics Vidhya AV')
+# print result_dict
+#
+# Результат:
+# <_sre.SRE_Match object at 0x0000000009BE4370>
+# Искомая подстрока найдена. Чтобы вывести её содержимое, применим метод group() (мы используем «r» перед строкой
+# шаблона, чтобы показать, что это «сырая» строка в Python):
+#
+# result_dict = re.match(r'AV', 'AV Analytics Vidhya AV')
+# print result_dict.group(0)
+#
+# Результат:
+# AV
+# Теперь попробуем найти «Analytics» в данной строке. Поскольку строка начинается на «AV», метод вернет None:
+#
+# result_dict = re.match(r'Analytics', 'AV Analytics Vidhya AV')
+# print result_dict
+#
+# Результат:
+# None
+# Также есть методы start() и end() для того, чтобы узнать начальную и конечную позицию найденной строки.
+#
+# result_dict = re.match(r'AV', 'AV Analytics Vidhya AV')
+# print result_dict.start()
+# print result_dict.end()
+#
+# Результат:
+# 0
+# 2
+# Эти методы иногда очень полезны для работы со строками.
+
+# re.search(pattern, string)
+# Метод похож на match(), но ищет не только в начале строки. В отличие от предыдущего, search() вернёт объект, если мы
+# попытаемся найти «Analytics»:
+#
+# result_dict = re.search(r'Analytics', 'AV Analytics Vidhya AV')
+# print result_dict.group(0)
+#
+# Результат:
+# Analytics
+# Метод search() ищет по всей строке, но возвращает только первое найденное совпадение.
+#
+# re.findall(pattern, string)
+# Возвращает список всех найденных совпадений. У метода findall() нет ограничений на поиск в начале или конце строки. Если мы будем искать «AV» в нашей строке, он вернет все вхождения «AV». Для поиска рекомендуется использовать именно findall(), так как он может работать и как re.search(), и как re.match().
+#
+# result_dict = re.findall(r'AV', 'AV Analytics Vidhya AV')
+# print result_dict
+#
+# Результат:
+# ['AV', 'AV']
+# re.split(pattern, string, [maxsplit=0])
+# Этот метод разделяет строку по заданному шаблону.
+#
+# result_dict = re.split(r'y', 'Analytics')
+# print result_dict
+#
+# Результат:
+# ['Anal', 'tics']
+# В примере мы разделили слово «Analytics» по букве «y». Метод split() принимает также аргумент maxsplit со значением по
+# умолчанию, равным 0. В данном случае он разделит строку столько раз, сколько возможно, но если указать этот аргумент,
+# то разделение будет произведено не более указанного количества раз. Давайте посмотрим на примеры Python RegEx:
+#
+# result_dict = re.split(r'i', 'Analytics Vidhya')
+# print result_dict
+#
+# Результат:
+# ['Analyt', 'cs V', 'dhya'] # все возможные участки.
+# result_dict = re.split(r'i', 'Analytics Vidhya',maxsplit=1)
+# print result_dict
+#
+# Результат:
+# ['Analyt', 'cs Vidhya']
+# Мы установили параметр maxsplit равным 1, и в результате строка была разделена на две части вместо трех.
+#
+# re.sub(pattern, repl, string)
+# Ищет шаблон в строке и заменяет его на указанную подстроку. Если шаблон не найден, строка остается неизменной.
+#
+# result_dict = re.sub(r'India', 'the World', 'AV is largest Analytics community of India')
+# print result_dict
+#
+# Результат:
+# 'AV is largest Analytics community of the World'
+# re.compile(pattern, repl, string)
+# Мы можем собрать регулярное выражение в отдельный объект, который может быть использован для поиска. Это также
+# избавляет от переписывания одного и того же выражения.
+#
+# pattern = re.compile('AV')
+# result_dict = pattern.findall('AV Analytics Vidhya AV')
+# print result_dict
+# result2 = pattern.findall('AV is largest analytics community of India')
+# print result2
+#
+# Результат:
+# ['AV', 'AV']
+# ['AV']
+# До сих пор мы рассматривали поиск определенной последовательности символов. Но что, если у нас нет определенного
+# шаблона, и нам надо вернуть набор символов из строки, отвечающий определенным правилам? Такая задача часто стоит при
+# извлечении информации из строк. Это можно сделать, написав выражение с использованием специальных символов. Вот
+# наиболее часто используемые из них:
+
+# Оператор	Описание
+# .	Один любой символ, кроме новой строки \n_test.
+# ?	0 или 1 вхождение шаблона слева
+# +	1 и более вхождений шаблона слева
+# *	0 и более вхождений шаблона слева
+# \w	Любая цифра или буква (\W — все, кроме буквы или цифры)
+# \d	Любая цифра [0-9] (\D — все, кроме цифры)
+# \s	Любой пробельный символ (\S — любой непробельный символ)
+# \b	Граница слова
+# [..]	Один из символов в скобках ([^..] — любой символ, кроме тех, что в скобках)
+# \	Экранирование специальных символов (\. означает точку или \+ — знак «плюс»)
+# ^ и $	Начало и конец строки соответственно
+# {n_test,m}	От n_test до m вхождений ({,m} — от 0 до m)
+# a|b	Соответствует a или b
+# ()	Группирует выражение и возвращает найденный текст
+# \t, \n_test, \r	Символ табуляции, новой строки и возврата каретки соответственно
+# Больше информации по специальным символам можно найти в документации для регулярных выражений в Python 3.
+#
+# Перейдём к практическому применению Python регулярных выражений и рассмотрим примеры.
+#
+# Задачи
+# Вернуть первое слово из строки
+# Сначала попробуем вытащить каждый символ (используя .)
+#
+# result_dict = re.findall(r'.', 'AV is largest Analytics community of India')
+# print result_dict
+#
+# Результат:
+# ['A', 'V', ' ', 'i', 's', ' ', 'l', 'a', 'r', 'g', 'e', 's', 't', ' ', 'A', 'n_test', 'a', 'l', 'y', 't', 'i', 'c', 's',
+# ' ', 'c', 'o', 'm', 'm', 'u', 'n_test', 'i', 't', 'y', ' ', 'o', 'f', ' ', 'I', 'n_test', 'd', 'i', 'a']
+# Для того, чтобы в конечный результат не попал пробел, используем вместо . \w.
+
+# result_dict = re.findall(r'\w', 'AV is largest Analytics community of India')
+# print result_dict
+#
+# Результат:
+# ['A', 'V', 'i', 's', 'l', 'a', 'r', 'g', 'e', 's', 't', 'A', 'n_test', 'a', 'l', 'y', 't', 'i', 'c', 's', 'c', 'o', 'm',
+# 'm', 'u', 'n_test', 'i', 't', 'y', 'o', 'f', 'I', 'n_test', 'd', 'i', 'a']
+# Теперь попробуем достать каждое слово (используя * или +)
+#
+# result_dict = re.findall(r'\w*', 'AV is largest Analytics community of India')
+# print result_dict
+#
+# Результат:
+# ['AV', '', 'is', '', 'largest', '', 'Analytics', '', 'community', '', 'of', '', 'India', '']
+# И снова в результат попали пробелы, так как * означает «ноль или более символов». Чтобы их убрать, используем +:
+#
+# result_dict = re.findall(r'\w+', 'AV is largest Analytics community of India')
+# print result_dict
+# Результат:
+# ['AV', 'is', 'largest', 'Analytics', 'community', 'of', 'India']
+# Теперь вытащим первое слово, используя ^:
+#
+# result_dict = re.findall(r'^\w+', 'AV is largest Analytics community of India')
+# print result_dict
+#
+# Результат:
+# ['AV']
+# Если мы используем $ вместо ^, то мы получим последнее слово, а не первое:
+#
+# result_dict = re.findall(r'\w+$', 'AV is largest Analytics community of India')
+# print result_dict
+#
+# Результат:
+# [‘India’]
+# Вернуть первые два символа каждого слова
+# Вариант 1: используя \w, вытащить два последовательных символа, кроме пробельных, из каждого слова:
+#
+# result_dict = re.findall(r'\w\w', 'AV is largest Analytics community of India')
+# print result_dict
+#
+# Результат:
+# ['AV', 'is', 'la', 'rg', 'es', 'An', 'al', 'yt', 'ic', 'co', 'mm', 'un', 'it', 'of', 'In', 'di']
+# Вариант 2: вытащить два последовательных символа, используя символ границы слова (\b):
+#
+# result_dict = re.findall(r'\b\w.', 'AV is largest Analytics community of India')
+# print result_dict
+#
+# Результат:
+# ['AV', 'is', 'la', 'An', 'co', 'of', 'In']
+# Вернуть домены из списка email-адресов
+# Сначала вернём все символы после «@»:
+#
+# result_dict = re.findall(r'@\w+', 'abc.test@gmail.com, xyz@test.in, test.first@analyticsvidhya.com, first.test@rest.biz')
+# print result_dict
+#
+# Результат:
+# ['@gmail', '@test', '@analyticsvidhya', '@rest']
+# Как видим, части «.com», «.in» и т. д. не попали в результат. Изменим наш код:
+#
+# result_dict = re.findall(r'@\w+.\w+', 'abc.test@gmail.com, xyz@test.in, test.first@analyticsvidhya.com, first.test@rest.biz')
+# print result_dict
+#
+# Результат:
+# ['@gmail.com', '@test.in', '@analyticsvidhya.com', '@rest.biz']
+# Второй вариант — вытащить только домен верхнего уровня, используя группировку — ( ):
+#
+# result_dict = re.findall(r'@\w+.(\w+)', 'abc.test@gmail.com, xyz@test.in, test.first@analyticsvidhya.com, first.test@rest.biz')
+# print result_dict
+#
+# Результат:
+# ['com', 'in', 'com', 'biz']
+# Извлечь дату из строки
+# Используем \d для извлечения цифр.
+#
+# result_dict = re.findall(r'\d{2}-\d{2}-\d{4}', 'Amit 34-3456 12-05-2007, XYZ 56-4532 11-11-2011, ABC 67-8945 12-01-2009')
+# print result_dict
+#
+# Результат:
+# ['12-05-2007', '11-11-2011', '12-01-2009']
+# Для извлечения только года нам опять помогут скобки:
+#
+# result_dict = re.findall(r'\d{2}-\d{2}-(\d{4})', 'Amit 34-3456 12-05-2007, XYZ 56-4532 11-11-2011, ABC 67-8945 12-01-2009')
+# print result_dict
+#
+# Результат:
+# ['2007', '2011', '2009']
+# Задачи по Python для начинающих от Tproger и GeekBrains
+# tproger.ru
+#
+# Извлечь слова, начинающиеся на гласную
+# Для начала вернем все слова:
+#
+# result_dict = re.findall(r'\w+', 'AV is largest Analytics community of India')
+# print result_dict
+#
+# Результат:
+# ['AV', 'is', 'largest', 'Analytics', 'community', 'of', 'India']
+# А теперь — только те, которые начинаются на определенные буквы (используя []):
+#
+# result_dict = re.findall(r'[aeiouAEIOU]\w+', 'AV is largest Analytics community of India')
+# print result_dict
+#
+# Результат:
+# ['AV', 'is', 'argest', 'Analytics', 'ommunity', 'of', 'India']
+# Выше мы видим обрезанные слова «argest» и «ommunity». Для того, чтобы убрать их, используем \b для обозначения
+# границы слова:
+#
+# result_dict = re.findall(r'\b[aeiouAEIOU]\w+', 'AV is largest Analytics community of India')
+# print result_dict
+#
+# Результат:
+# ['AV', 'is', 'Analytics', 'of', 'India']
+# Также мы можем использовать ^ внутри квадратных скобок для инвертирования группы:
+#
+# result_dict = re.findall(r'\b[^aeiouAEIOU]\w+', 'AV is largest Analytics community of India')
+# print result_dict
+#
+# Результат:
+# [' is', ' largest', ' Analytics', ' community', ' of', ' India']
+# В результат попали слова, «начинающиеся» с пробела. Уберем их, включив пробел в диапазон в квадратных скобках:
+#
+# result_dict = re.findall(r'\b[^aeiouAEIOU ]\w+', 'AV is largest Analytics community of India')
+# print result_dict
+#
+# Результат:
+# ['largest', 'community']
+# Проверить формат телефонного номера
+# Номер должен быть длиной 10 знаков и начинаться с 8 или 9. Есть список телефонных номеров, и нужно проверить их,
+# используя регулярки в Python:
+#
+# li = ['9999999999', '999999-999', '99999x9999']
+#
+# for val in li:
+#     if re.match(r'[8-9]{1}[0-9]{9}', val) and len(val) == 10:
+#         print 'yes'
+#     else:
+#         print 'no'
+#
+# Результат:
+# yes
+# no
+# no
+# Разбить строку по нескольким разделителям
+# Возможное решение:
+#
+# line = 'asdf fjdk;afed,fjek,asdf,foo' # String has multiple delimiters (";",","," ").
+# result_dict = re.split(r'[;,\s]', line)
+# print result_dict
+#
+# Результат:
+# ['asdf', 'fjdk', 'afed', 'fjek', 'asdf', 'foo']
+# Также мы можем использовать метод re.sub() для замены всех разделителей пробелами:
+#
+# line = 'asdf fjdk;afed,fjek,asdf,foo'
+# result_dict = re.sub(r'[;,\s]',' ', line)
+# print result_dict
+#
+# Результат:
+# asdf fjdk afed fjek asdf foo
+# Извлечь информацию из html-файла
+# Допустим, нужно извлечь информацию из html-файла, заключенную между <td> и </td>, кроме первого столбца с номером.
+# Также будем считать, что html-код содержится в строке.
+#
+# Пример содержимого html-файла:
+#
+# 1NoahEmma2LiamOlivia3MasonSophia4JacobIsabella5WilliamAva6EthanMia7MichaelEmily
+# С помощью регулярных выражений в Python это можно решить так (если поместить содержимое файла в переменную test_str):
+#
+# result_dict = re.findall(r'\d([A-Z][A-Za-z]+)([A-Z][A-Za-z]+)', test_str)
+# print result_dict
+#
+# Результат:
+# [('Noah', 'Emma'), ('Liam', 'Olivia'), ('Mason', 'Sophia'), ('Jacob', 'Isabella'), ('William', 'Ava'), ('Ethan',
+# 'Mia'), ('Michael', 'Emily')]
