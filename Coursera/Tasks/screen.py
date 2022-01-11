@@ -338,13 +338,10 @@ if __name__ == "__main__":
     while working:
 
         if screen:
-            knot = knot_1
-            steps, change_speed = knot_1.count, knot_1.change_speed
-            screen_name, speed = 'First screen', knot_1.factor_speed
+            knot, screen_name = knot_1, 'First screen'
         else:
-            knot = knot_2
-            steps, change_speed = knot_2.count, knot_2.change_speed
-            screen_name, speed = 'Second screen', knot_2.factor_speed
+            knot, screen_name = knot_2, 'Second screen'
+        steps, speed = knot.count, knot.factor_speed
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 working = False
