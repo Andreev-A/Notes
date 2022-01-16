@@ -9,10 +9,10 @@
 
 # Выведите одно число – сумму данных n_test чисел
 # n_test = int(input())
-# out = 0
+# my_input = 0
 # for _ in range(n_test):
-#     out += int(input())
-# print(out)
+#     my_input += int(input())
+# print(my_input)
 #
 # print(summa(int(input()) for _ in range(int(input()))))
 

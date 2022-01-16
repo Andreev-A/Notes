@@ -479,7 +479,7 @@
 #     return False
 #
 #
-# base, queue, out = {}, [], []
+# base, queue, my_input = {}, [], []
 # for _ in range(int(input())):
 #     child, *parents = input().replace(":", " ").split()
 #     base[child] = parents
@@ -489,9 +489,9 @@
 #     a = queue.pop()
 #     for i in reversed(queue):
 #         if search(a, i):
-#             out.append(a)
+#             my_input.append(a)
 #             break
-# print(*reversed(out), sep='\n_test')
+# print(*reversed(my_input), sep='\n_test')
 
 # parents = {}
 # for _ in range(int(input())):

@@ -35,8 +35,8 @@
 #         if list[i - 1] == 0 and list[i] == 1:
 #             break
 #         list.append((list[i - 1] + list[i]) % m)
-#     out = list[n_test % (len(list) - 2)]
-#     return out
+#     my_input = list[n_test % (len(list) - 2)]
+#     return my_input
 
 # По данным двум числам 1 <= a, b <= 2*10^9 найдите их наибольший общий делитель.
 
@@ -84,12 +84,12 @@
 # print(str(len(dots)) + '\n_test' + ' '.join(map(str, dots)))
 #
 # points = [list(map(int, input().split())) for i in range(int(input()))]
-# out = []
+# my_input = []
 # for p in reversed(sorted(points)):
-#     if not out or out[-1] > p[1]:
-#         out.append(p[0])
-# print(len(out))
-# print(*out)
+#     if not my_input or my_input[-1] > p[1]:
+#         my_input.append(p[0])
+# print(len(my_input))
+# print(*my_input)
 #
 # segs = sorted([[int(i) for i in input().split()] for j in range(int(input()))])
 # dots = []

@@ -322,62 +322,142 @@ animal.make_noise()
 # улучшит читаемость кода, так как в нем не будет лишних сущностей, мешающих пониманию а так же может немного улучшить
 # производительность, так как не будет выполняться код собственно паттерна.
 # Пример использования адаптера
-import re
+# import re
+# from abc import ABC, abstractmethod
+#
+# text = '''
+# Design Patterns: Elements of Reusable Object-Oriented Software is a software engineering book describing software design
+# patterns. The book's authors are Erich Gamma, Richard Helm, Ralph Johnson and John Vlissides with a foreword by
+# Grady Booch. The book is divided into two parts, with the first two chapters exploring the capabilities and pitfalls
+# of object-oriented programming, and the remaining chapters describing 23 classic software design patterns. The book
+# includes examples in C++ and Smalltalk.
+# It has been influential to the field of software engineering and is regarded as an important source for object-oriented
+# design theory and practice. More than 500,000 copies have been sold in English and in 13 other languages. The authors
+#  are often referred to as the Gang of Four (GoF).
+# '''
+#
+#
+# class System:  # Класс, представляющий систему
+#     def __init__(self, text):
+#         tmp = re.sub(r'\W', ' ', text.lower())
+#         tmp = re.sub(r' +', ' ', tmp).strip()
+#         self.text = tmp
+#
+#     def get_processed_text(self, processor):  # Метод, требующий на вход класс-обработчик
+#         result = processor.process_text(self.text)  # Вызов метода обработчика
+#         print(*result, sep='\n')
+#
+#
+# class TextProcessor:  # Абстрактный интерфейс обработчика
+#     @abstractmethod
+#     def process_text(self, text):
+#         pass
+#
+#
+# class WordCounter:  # Обработчик, несовместимый с основной системой
+#     def count_words(self, text):
+#         self.__words = dict()
+#         for word in text.split():
+#             self.__words[word] = self.__words.get(word, 0) + 1
+#
+#     def get_count(self, word):
+#         return self.__words.get(word, 0)
+#
+#     def get_all_words(self):
+#         return self.__words.copy()
+#
+#
+# class WordCounterAdapter(TextProcessor):  # Адаптер к обработчику
+#     def __init__(self, adaptee):  # В конструкторе указывается, к какому объекту следует подключить адаптер
+#         self.adaptee = adaptee
+#
+#     def process_text(self, text):  # Реализация интерфейса обработчика, требуемого системой.
+#         self.adaptee.count_words(text)
+#         words = self.adaptee.get_all_words().keys()
+#         return sorted(words, key=lambda x: self.adaptee.get_count(x), reverse=True)
+#
+#
+# system = System(text)
+# counter = WordCounter()
+# adapter = WordCounterAdapter(counter)
+# system.get_processed_text(adapter)
+
+######################################################################################################################
+# Паттерн Наблюдатель (Observer)
+# Паттерн Наблюдатель является поведенческим паттерном проектирования. Он предназначен для организации взаимодействия
+# между классами. Он реализует взаимодействия типа один ко многим, при котором множество объектов получают информацию
+# об изменениях основного объекта.
+# По данному принципу работает огромное количество приложений. Это могут быть новостные рассылки, уведомления от
+# приложений на смартфонах, автоматическая рассылка почты, системы достижений в играх и многое другое.
+# Вместо решения, при котором объект наблюдатель опрашивает наблюдаемый объект о произошедших изменениях, наблюдаемый
+# объект самостоятельно уведомляет о них наблюдателя.
+# В паттерне Наблюдатель в наблюдаемой системе должен быть имплементирован интерфейс наблюдаемого объекта, позволяющий
+# "подписывать" пользователя на обновления объекта и отправлять всем подписанным пользователям уведомления об
+# изменениях. Также должны существовать наблюдатели, реализующие интерфейс наблюдателя.
+# Для паттерна Observer необходимы следующие классы:
+# - Абстрактный наблюдаемый объект
+# - Абстрактный наблюдатель
+# - Конкретный наблюдаемый объект
+# - Конкретные наблюдатели
+# У наблюдаемого объекта должны быть реализованы методы:
+# - Подписать наблюдателя на обновления
+# - Отписать от обновления
+# - Уведомить всех подписчиков об изменениях
+# У наблюдателя должен быть реализован метод update, который будет вызван наблюдаемым объектом при обновлении.
+# Использование паттерна Наблюдатель
+# При использовании паттерна Наблюдатель создаются наблюдатели и система. Для использования паттерна наблюдатель
+# подписывается на обновления системы. При изменениях система оповещает об изменениях всех текущих подписчиков при
+# помощи вызова у подписчиков метода update.
+# Реализация паттерна Наблюдатеь
 from abc import ABC, abstractmethod
 
-text = '''
-Design Patterns: Elements of Reusable Object-Oriented Software is a software engineering book describing software design
-patterns. The book's authors are Erich Gamma, Richard Helm, Ralph Johnson and John Vlissides with a foreword by 
-Grady Booch. The book is divided into two parts, with the first two chapters exploring the capabilities and pitfalls
-of object-oriented programming, and the remaining chapters describing 23 classic software design patterns. The book
-includes examples in C++ and Smalltalk.
-It has been influential to the field of software engineering and is regarded as an important source for object-oriented
-design theory and practice. More than 500,000 copies have been sold in English and in 13 other languages. The authors
- are often referred to as the Gang of Four (GoF).
-'''
+
+class NotificationManager:  # Наблюдаемая система
+    def __init__(self):
+        self.__subscribers = set()  # При инициализации множество подписчиков задается пустым
+
+    def subscribe(self, subscriber):
+        self.__subscribers.add(
+            subscriber)  # Для того чтобы подписать пользователя, он добавляется во множество подписчиков
+
+    def unsubcribe(self, subscriber):
+        self.__subscribers.remove(subscriber)  # Удаление подписчика из списка
+
+    def notify(self, message):
+        for subscriber in self.__subscribers:
+            subscriber.update(message)  # Отправка уведомления всем подписчикам
 
 
-class System:  # Класс, представляющий систему
-    def __init__(self, text):
-        tmp = re.sub(r'\W', ' ', text.lower())
-        tmp = re.sub(r' +', ' ', tmp).strip()
-        self.text = tmp
-
-    def get_processed_text(self, processor):  # Метод, требующий на вход класс-обработчик
-        result = processor.process_text(self.text)  # Вызов метода обработчика
-        print(*result, sep='\n')
-
-
-class TextProcessor:  # Абстрактный интерфейс обработчика
+class AbstractObserver(ABC):
     @abstractmethod
-    def process_text(self, text):
+    def update(self, message):  # Абстрактный наблюдатель задает метод update
         pass
 
 
-class WordCounter:  # Обработчик, несовместимый с основной системой
-    def count_words(self, text):
-        self.__words = dict()
-        for word in text.split():
-            self.__words[word] = self.__words.get(word, 0) + 1
+class MessageNotifier(AbstractObserver):
+    def __init__(self, name):
+        self.__name = name
 
-    def get_count(self, word):
-        return self.__words.get(word, 0)
-
-    def get_all_words(self):
-        return self.__words.copy()
+    def update(self, message):  # Конкретная реализация метода update
+        print(f'{self.__name} recieved message!')
 
 
-class WordCounterAdapter(TextProcessor):  # Адаптер к обработчику
-    def __init__(self, adaptee):  # В конструкторе указывается, к какому объекту следует подключить адаптер
-        self.adaptee = adaptee
+class MessagePrinter(AbstractObserver):
+    def __init__(self, name):
+        self.__name = name
 
-    def process_text(self, text):  # Реализация интерфейса обработчика, требуемого системой.
-        self.adaptee.count_words(text)
-        words = self.adaptee.get_all_words().keys()
-        return sorted(words, key=lambda x: self.adaptee.get_count(x), reverse=True)
+    def update(self, message):  # Конкретная реализация метода update
+        print(f'{self.__name} recieved message: {message}')
 
 
-system = System(text)
-counter = WordCounter()
-adapter = WordCounterAdapter(counter)
-system.get_processed_text(adapter)
+notifier1 = MessageNotifier("Notifier1")
+printer1 = MessagePrinter("Printer1")
+printer2 = MessagePrinter("Printer2")
+
+manager = NotificationManager()
+
+manager.subscribe(notifier1)
+manager.subscribe(printer1)
+manager.subscribe(printer2)
+
+manager.notify("Hi!")

@@ -448,7 +448,7 @@ print(*s, sep='\n')
 # requests.get('https://github.com/', timeout=0.001)
 # Traceback (most recent call last):
 #   File "<stdin>", line 1, in <module>
-# requests.exceptions.Timeout: HTTPConnectionPool(host='github.com', port=80): Request timed out. (timeout=0.001)
+# requests.exceptions.Timeout: HTTPConnectionPool(host='github.com', port=80): Request timed my_input. (timeout=0.001)
 # Примечание
 # timeout не является ограничением по времени на загрузку всего ответа; скорее, возникает исключение, если сервер не
 # отправил ответ в течение timeout нескольких секунд (точнее, если на базовый сокет в течение timeout секунд не было
@@ -738,7 +738,7 @@ print(*s, sep='\n')
 # import requests
 # r = requests.get('https://httpbin.org/stream/20', stream=True)
 # for line in r.iter_lines():
-#     # filter out keep-alive new lines
+#     # filter my_input keep-alive new lines
 #     if line:
 #         decoded_line = line.decode('utf-8')
 #         print(json.loads(decoded_line))
