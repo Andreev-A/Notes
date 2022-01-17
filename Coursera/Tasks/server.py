@@ -37,8 +37,8 @@
 #     if not data:
 #         break
 #     request = data.decode('utf-8')
-#     print(f'Получен запрос: {ascii(request)}')
-#     print(f'Отправлен ответ {ascii(response.decode("utf-8"))}')
+#     print(input_file'Получен запрос: {ascii(request)}')
+#     print(input_file'Отправлен ответ {ascii(response.decode("utf-8"))}')
 #     conn.send(response)  # возьмем данные и отправим их клиенту
 #
 # conn.close()  # Теперь можно и закрыть соединение
@@ -176,7 +176,7 @@
 #     except ClientError:
 #         pass
 #     except BaseException as err:
-#         print(f"Ошибка соединения с сервером: {err.__class__}: {err}")
+#         print(input_file"Ошибка соединения с сервером: {err.__class__}: {err}")
 #         sys.exit(1)
 #     else:
 #         print("Неверная команда, отправленная серверу, должна возвращать ошибку протокола")
@@ -190,8 +190,8 @@
 #         print('Сервер вернул ответ на валидный запрос, который клиент определил, '
 #               'как не корректный.. ')
 #     except BaseException as err:
-#         print(f"Сервер должен поддерживать соединение с клиентом между запросами, "
-#               f"повторный запрос к серверу завершился ошибкой: {err.__class__}: {err}")
+#         print(input_file"Сервер должен поддерживать соединение с клиентом между запросами, "
+#               input_file"повторный запрос к серверу завершился ошибкой: {err.__class__}: {err}")
 #         sys.exit(1)
 #
 #     assert data_1 == data_2 == {}, \
@@ -205,8 +205,8 @@
 #         print('Сервер вернул ответ на валидный запрос, который клиент определил'
 #               ', как не корректный.. ')
 #     except BaseException as err:
-#         print(f"Сервер должен поддерживать соединение с несколькими клиентами: "
-#               f"{err.__class__}: {err}")
+#         print(input_file"Сервер должен поддерживать соединение с несколькими клиентами: "
+#               input_file"{err.__class__}: {err}")
 #         sys.exit(1)
 #
 #     assert data_1 == data_2 == {}, \
@@ -221,7 +221,7 @@
 #         client1.put("k2", 40, timestamp=5)
 #         client1.put("k2", 41, timestamp=5)
 #     except Exception as err:
-#         print(f"Ошибка вызова client.put(...) {err.__class__}: {err}")
+#         print(input_file"Ошибка вызова client.put(...) {err.__class__}: {err}")
 #         sys.exit(1)
 #
 #     expected_metrics = {
@@ -232,11 +232,11 @@
 #     try:
 #         metrics = client1.get("*")
 #         if metrics != expected_metrics:
-#             print(f"client.get('*') вернул неверный результат. Ожидается: "
-#                   f"{expected_metrics}. Получено: {metrics}")
+#             print(input_file"client.get('*') вернул неверный результат. Ожидается: "
+#                   input_file"{expected_metrics}. Получено: {metrics}")
 #             sys.exit(1)
 #     except Exception as err:
-#         print(f"Ошибка вызова client.get('*') {err.__class__}: {err}")
+#         print(input_file"Ошибка вызова client.get('*') {err.__class__}: {err}")
 #         sys.exit(1)
 #
 #     expected_metrics = {"k2": [(4, 30.0), (5, 41.0)]}
@@ -244,23 +244,23 @@
 #     try:
 #         metrics = client2.get("k2")
 #         if metrics != expected_metrics:
-#             print(f"client.get('k2') вернул неверный результат. Ожидается: "
-#                   f"{expected_metrics}. Получено: {metrics}")
+#             print(input_file"client.get('k2') вернул неверный результат. Ожидается: "
+#                   input_file"{expected_metrics}. Получено: {metrics}")
 #             sys.exit(1)
 #     except Exception as err:
-#         print(f"Ошибка вызова client.get('k2') {err.__class__}: {err}")
+#         print(input_file"Ошибка вызова client.get('k2') {err.__class__}: {err}")
 #         sys.exit(1)
 #
 #     try:
 #         result = client1.get("k3")
 #         if result != {}:
 #             print(
-#                 f"Ошибка вызова метода get с ключом, который еще не был добавлен. "
-#                 f"Ожидается: пустой словарь. Получено: {result}")
+#                 input_file"Ошибка вызова метода get с ключом, который еще не был добавлен. "
+#                 input_file"Ожидается: пустой словарь. Получено: {result}")
 #             sys.exit(1)
 #     except Exception as err:
-#         print(f"Ошибка вызова метода get с ключом, который еще не был добавлен: "
-#               f"{err.__class__} {err}")
+#         print(input_file"Ошибка вызова метода get с ключом, который еще не был добавлен: "
+#               input_file"{err.__class__} {err}")
 #         sys.exit(1)
 #
 #     print("Похоже, что все верно! Попробуйте отправить решение на проверку.")
@@ -309,8 +309,8 @@
 #                     for name in result_dict.keys():
 #                         for timestamp in sorted(result_dict[name]):
 #                             responses.append(
-#                                 f"{name} {result_dict[name][timestamp]}"
-#                                 f" {timestamp}"
+#                                 input_file"{name} {result_dict[name][timestamp]}"
+#                                 input_file" {timestamp}"
 #                             )
 #                     if responses:
 #                         result += '\n'.join(responses) + '\n'
@@ -333,7 +333,7 @@
 #         try:
 #             resp = self.process_data(decoded_data)
 #         except ClientError as err:
-#             self.transport.write(f"error\n{err}\n\n".encode())
+#             self.transport.write(input_file"error\n{err}\n\n".encode())
 #             return
 #         self.transport.write(resp.encode())
 #
@@ -449,7 +449,7 @@
 #             raw_data = self.driver(request.rstrip(self.sep))
 #
 #             for key, values in raw_data.items():
-#                 message += self.sep.join(f'{key} {value} {timestamp}' \
+#                 message += self.sep.join(input_file'{key} {value} {timestamp}' \
 #                                          for timestamp, value in sorted(values.items()))
 #                 message += self.sep
 #
@@ -458,7 +458,7 @@
 #             message = self.error_message + self.sep
 #             code = self.code_err
 #
-#         response = f'{code}{self.sep}{message}{self.sep}'
+#         response = input_file'{code}{self.sep}{message}{self.sep}'
 #         # отправляем ответ
 #         self.transport.write(response.encode())
 #
@@ -533,7 +533,7 @@
 #                 continue
 #             for key, values in response.items():
 #                 for timestamp, value in values:
-#                     rows.append(f"{key} {value} {timestamp}")
+#                     rows.append(input_file"{key} {value} {timestamp}")
 #
 #         result = "ok\n"
 #
@@ -641,7 +641,7 @@
 #             resp = self.process_data(decoded_data)
 #         except (ParseError, ExecutorError) as err:
 #             # формируем ошибку, в случае ожидаемых исключений
-#             self.transport.write(f"error\n{err}\n\n".encode())
+#             self.transport.write(input_file"error\n{err}\n\n".encode())
 #             return
 #
 #         # формируем успешный ответ

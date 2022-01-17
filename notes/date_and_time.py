@@ -30,7 +30,7 @@
 # print(now_time.strftime("%d.%m.%Y %I:%M %p"))  # форматируем дату
 # print(a.year, a.month, a.day)  # возвращают аргументы в формате int
 # print("{} {} {}".format(year, month, day))
-# print(f'{inp.year} {inp.month} {inp.day}')
+# print(input_file'{inp.year} {inp.month} {inp.day}')
 # На винде пишем так:  datetime.datetime.strftime(Дата в формате datetime , '%Y %#m %#d' )
 # На линукс пишем так:  datetime.datetime.strftime(Дата в формате datetime , '%Y %-m %-d' )
 #

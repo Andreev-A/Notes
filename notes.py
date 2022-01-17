@@ -33,8 +33,8 @@ with open('D:\\notes.txt', 'w') as ouf:
         count += 1
         print(str(count) + '***' + note_title + '***' + note_text, file=ouf)
 
-# with open(path, 'rb') as f:
-#   contents = f.read()
+# with open(path, 'rb') as input_file:
+#   contents = input_file.read()
 # with open('D:\\notes.txt', 'r', encoding='utf-8') as inf:
 #     data = inf.read().strip().split('\n_test')
 # with open(filename, encoding=encoding) as file:

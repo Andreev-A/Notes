@@ -2,20 +2,20 @@
 # по работе с файлами:
 # - чтение из файла, метод read возвращает строку с текущим содержанием файла
 # - запись в файл, метод write принимает в качестве аргумента строку с новым содержанием файла
-# - сложение объектов типа File, результатом сложения является объект класса File, при этом создается новый файл и
+# - сложение объектов типа file, результатом сложения является объект класса file, при этом создается новый файл и
 # файловый объект, в котором содержимое второго файла добавляется к содержимому первого файла. Новый файл должен
 # создаваться в директории, полученной с помощью функции tempfile.gettempdir. Для получения нового пути можно
 # использовать os.path.join.
-# - возвращать в качестве строкового представления объекта класса File полный путь до файла
+# - возвращать в качестве строкового представления объекта класса file полный путь до файла
 # - поддерживать протокол итерации, причем итерация проходит по строкам файла
-# При создании экземпляра класса File в конструктор передается полный путь до файла на файловой системе. Если файла с
+# При создании экземпляра класса file в конструктор передается полный путь до файла на файловой системе. Если файла с
 # таким путем не существует, он должен быть создан при инициализации.
 # Пример работы: (Тест в другом модуле)
-# from solution import File
+# from solution import file
 # import os.path
 # path_to_file = 'asd'
 # print(os.path.exists(path_to_file))  # False
-# file_obj = File(path_to_file)
+# file_obj = file(path_to_file)
 # os.path.exists(path_to_file)  # True
 # print(file_obj)  # 'asd.txt'
 # print(file_obj.read())  # ''
@@ -23,12 +23,12 @@
 # print(file_obj.read())  # 'some text'
 # file_obj.write('other text')
 # print(file_obj.read())  # 'other text'
-# file_obj_1 = File(path_to_file + '_1')
-# file_obj_2 = File(path_to_file + '_2')
+# file_obj_1 = file(path_to_file + '_1')
+# file_obj_2 = file(path_to_file + '_2')
 # file_obj_1.write('line 1\n')
 # file_obj_2.write('line 2\n')
 # new_file_obj = file_obj_1 + file_obj_2
-# print(isinstance(new_file_obj, File))  # True
+# print(isinstance(new_file_obj, file))  # True
 # print(new_file_obj)  # C:\Users\Alexandr\AppData\Local\Temp\299f1c21207044cdae0c754dc4a76c59
 # for line in new_file_obj:
 #     print(ascii(line))
@@ -36,7 +36,7 @@
 # # 'line 2\n'
 # new_path_to_file = str(new_file_obj)
 # print(os.path.exists(new_path_to_file))  # True
-# file_obj_3 = File(new_path_to_file)
+# file_obj_3 = file(new_path_to_file)
 # print(file_obj_3)
 # # C:\Users\Alexandr\AppData\Local\Temp\299f1c21207044cdae0c754dc4a76c59
 # for line in new_file_obj:
@@ -50,7 +50,7 @@ import uuid
 
 
 class File:
-    """Класс File работает с файлами"""
+    """Класс file работает с файлами"""
 
     def __init__(self, path_to_file):
         self.path_to_file = path_to_file

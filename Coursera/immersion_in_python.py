@@ -73,8 +73,8 @@
 #         self.file_path = file_path
 #     def read(self):
 #         try:
-#             with open(self.file_path) as f:
-#                 return f.read()
+#             with open(self.file_path) as input_file:
+#                 return input_file.read()
 #         except OSError:
 #             return ''
 

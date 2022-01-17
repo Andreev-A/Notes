@@ -366,7 +366,7 @@ if __name__ == '__main__':
 # cod_line = ''.join(d[k] for k in line)
 #
 # print(len(d), len(cod_line))
-# print(*[f'{k}: {d[k]}' for k, z in Counter(line).most_common()], sep='\n_test')
+# print(*[input_file'{k}: {d[k]}' for k, z in Counter(line).most_common()], sep='\n_test')
 # print(cod_line)
 
 # Восстановите строку по её коду и беспрефиксному коду символов. В первой строке входного файла заданы два целых числа k

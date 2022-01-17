@@ -96,7 +96,7 @@
 # wind = w.wind()
 # clouds = w.detailed_status
 # temperature = round(w.temperature('celsius')['temp'], 1)
-# print(f'In {city} now {temperature}°C, {clouds}.')
+# print(input_file'In {city} now {temperature}°C, {clouds}.')
 
 # Если у кого-то будет ошибка KeyError или list indices must be integers or slices, not str, то кажется дело в новом
 # формате json.
@@ -110,7 +110,7 @@
 # "\u2103" для значка "градус Цельсия", то есть с буквой С
 
 # Удобный (и быстрый) способ получения ссылки для запроса:
-# f'http://numbersapi.com/{i}/math?json'
+# input_file'http://numbersapi.com/{i}/math?json'
 
 # Может пригодится кому: проверка статус кода не всегда дает 200. Можно поставить таймаут:
 # res = requests.get(url, metric, timeout = 5)
@@ -129,10 +129,10 @@
 # http://numbersapi.com/999/math?json=true
 #
 # import requests
-# with open('D:\\dataset_24476_3.txt', 'r') as f:
-#     for number in f:
+# with open('D:\\dataset_24476_3.txt', 'r') as input_file:
+#     for number in input_file:
 #         api_url = "http://numbersapi.com/" + number.strip() + "/math?json=true"
-#         res = requests.get(api_url)  # requests.get(f'http://******.com/{i}/****')
+#         res = requests.get(api_url)  # requests.get(input_file'http://******.com/{i}/****')
 #         print('Interesting' if res.json()['found'] else 'Boring')
 #
 # import requests as re
@@ -227,8 +227,8 @@ for c in sorted(out):
 # print("\n_test".join(map(lambda x: x[1], ans)))
 
 # res = []
-# with open('dataset_24476_4.txt', 'r') as f, open('result_dict.txt', 'w', encoding='utf-8') as w:
-#     for i in f:
+# with open('dataset_24476_4.txt', 'r') as input_file, open('result_dict.txt', 'w', encoding='utf-8') as w:
+#     for i in input_file:
 #         req_str = 'https://api.artsy.net/api/artists/' + i.rstrip()
 #         j = requests.get(req_str, headers=headers).json()
 #         res.append(j['birthday']+j['sortable_name'])

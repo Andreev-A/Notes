@@ -37,7 +37,7 @@
 #         self.name = name
 #         self.population = population or []
 #     def add_human(self, human):  # метод экземпляра класса (принимает экземпляр класса Human)
-#         print(f"Welcome to {self.name}, {human.name}!")
+#         print(input_file"Welcome to {self.name}, {human.name}!")
 #         self.population.append(human)
 # mars = Planet("Mars")  # создали планету
 # bob = Human("Bob")  # создали человека
@@ -55,10 +55,10 @@
 #         print(text)
 #
 #     def say_name(self):  # публичный метод - можно пользоваться
-#         self._say(f"Hello, I am {self._name}")
+#         self._say(input_file"Hello, I am {self._name}")
 #
 #     def say_how_old(self):  # публичный метод - можно пользоваться
-#         self._say(f"I am {self._age} years old")
+#         self._say(input_file"I am {self._age} years old")
 # bob = Human("Bob", age=29)
 # bob.say_name()
 # bob.say_how_old()
@@ -78,7 +78,7 @@
 #         self.description = description
 #         self.date = event_date
 #     def __str__(self):
-#         return f"Event \"{self.description}\" at {self.date}"
+#         return input_file"Event \"{self.description}\" at {self.date}"
 # from datetime import date
 # event_description = "Рассказать, что такое @classmethod"
 # event_date = date.today()
@@ -94,7 +94,7 @@
 #         self.description = description
 #         self.date = event_date
 #     def __str__(self):
-#         return f"Event \"{self.description}\" at {self.date}"
+#         return input_file"Event \"{self.description}\" at {self.date}"
 #     @classmethod  # встроенный объект, не надо импортировать - делает метод методом класса (в методе аргумент cls)
 #     def from_string(cls, user_input):
 #         description = extract_description(user_input)
@@ -103,8 +103,8 @@
 # event = Event.from_string("добавить в мой календарь открытие чемпионата мира по футболу на 14 июня 2018 года")
 # print(event)  # Event "открытие чемпионата мира по футболу" at 2018 - 06 - 14
 
-# Статический метод класса - @ staticmethod - нет ссылки на экземпляр или класс (f с обращением от класса, экземпляра)
-# Метод не принимает дополнительных аргументов кроме указанных программистом (просто f)
+# Статический метод класса - @ staticmethod - нет ссылки на экземпляр или класс (input_file с обращением от класса, экземпляра)
+# Метод не принимает дополнительных аргументов кроме указанных программистом (просто input_file)
 # К этому методу можно обращаться от экземпляра класса
 # К этому методу можно обращаться от имени класса
 # class Human:
@@ -464,7 +464,7 @@ print(isinstance(Dog(), Pet))
 # # True
 # >>> types.UnionType()
 # # Traceback (most recent call last):
-# #   File "<stdin>", line 1, in <module>
+# #   file "<stdin>", line 1, in <module>
 # # TypeError: cannot create 'types.UnionType' instances
 # Примеры проверок принадлежности экземпляра к классу.
 # Взгляните на следующий код:

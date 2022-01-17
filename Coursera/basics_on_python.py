@@ -882,35 +882,35 @@
 #     elif d < 0:
 #         print(0)
 
-# Даны вещественные числа a, b, c, d, e, f. Известно, что система линейных уравнений:
+# Даны вещественные числа a, b, c, d, e, input_file. Известно, что система линейных уравнений:
 # ax + by = e
-# cx + dy = f
+# cx + dy = input_file
 # имеет ровно одно решение. Выведите два числа x и y, являющиеся решением этой системы.
-# Формат ввода - Вводятся шесть чисел a, b, c, d, e, f - коэффициенты уравнений системы.
+# Формат ввода - Вводятся шесть чисел a, b, c, d, e, input_file - коэффициенты уравнений системы.
 # Формат вывода - Выведите ответ на задачу. Вариант округления - *1 00000000 // 100000000
 # a, b, c, d = float(input()), float(input()), float(input()), float(input())
-# e, f = float(input()), float(input())
+# e, input_file = float(input()), float(input())
 # x, y = 0, 0
 # if a != 0:
-#     y = (f - c * e / a) / (d - c * b / a)  # a != 0
+#     y = (input_file - c * e / a) / (d - c * b / a)  # a != 0
 # if b != 0:
-#     x = (f - d * e / b) / (c - d * a / b)  # b != 0
+#     x = (input_file - d * e / b) / (c - d * a / b)  # b != 0
 # if c != 0:
-#     y = (e - a * f / c) / (b - a * d / c)  # c != 0
+#     y = (e - a * input_file / c) / (b - a * d / c)  # c != 0
 # if d != 0:
-#     x = (e - b * f / d) / (a - b * c / d)  # d != 0
+#     x = (e - b * input_file / d) / (a - b * c / d)  # d != 0
 # print(round(x, 6), round(y, 6))
 #
 # a, b, c = float(input()), float(input()), float(input())
-# d, e, f = float(input()), float(input()), float(input())
-# x = (e * d - b * f) / (a * d - b * c)
-# y = (a * f - c * e) / (a * d - b * c)
+# d, e, input_file = float(input()), float(input()), float(input())
+# x = (e * d - b * input_file) / (a * d - b * c)
+# y = (a * input_file - c * e) / (a * d - b * c)
 # print(x, y)  # *100000000//100000000
 
-# Даны числа a, b, c, d, e, f. Решите систему линейных уравнений
+# Даны числа a, b, c, d, e, input_file. Решите систему линейных уравнений
 # ax + by = e
-# cx + dy = f
-# ормат ввода - Вводятся 6 чисел a, b, c, d, e, f — коэффициенты уравнений.
+# cx + dy = input_file
+# ормат ввода - Вводятся 6 чисел a, b, c, d, e, input_file — коэффициенты уравнений.
 # Формат вывода - Вывод программы зависит от вида решения этой системы.
 # Если система не имеет решений, то программа должна вывести единственное число 0.
 # Если система имеет бесконечно много решений, каждое из которых имеет вид y=px+q, то программа должна вывести число 1,
@@ -920,47 +920,47 @@
 # Если система имеет бесконечно много решений вида y=y₀, x—любое, то программа должна вывести число 4, а затем значение y₀.
 # Если любая пара чисел (x,y) является решением, то программа должна вывести число 5.
 # a, b, c, d = float(input()), float(input()), float(input()), float(input())
-# e, f = float(input()), float(input())
-# if a * d == b * c and a * f != c * e:
+# e, input_file = float(input()), float(input())
+# if a * d == b * c and a * input_file != c * e:
 #     print(0)
 # elif a == b == 0 and e != 0:
 #     print(0)
-# elif c == d == 0 and f != 0:
+# elif c == d == 0 and input_file != 0:
 #     print(0)
-# elif a == c == 0 and b * f != d * e:
+# elif a == c == 0 and b * input_file != d * e:
 #     print(0)
-# elif b == d == 0 and a * f != c * e:
+# elif b == d == 0 and a * input_file != c * e:
 #     print(0)
-# elif a == b == c == d == e == f == 0:
+# elif a == b == c == d == e == input_file == 0:
 #     print(5)
-# elif a * d == b * c and a * f == c * e:
+# elif a * d == b * c and a * input_file == c * e:
 #     if b == d == 0:
 #         if a != 0 and c != 0:
 #             print(3, e / a)
 #         elif a == 0 and e == 0:
-#             print(3, f / c)
-#         elif c == 0 and f == 0:
+#             print(3, input_file / c)
+#         elif c == 0 and input_file == 0:
 #             print(3, e / a)
 #     elif a == c == 0:
 #         if b:
 #             print(4, e / b)
 #         elif d:
-#             print(4, f / d)
+#             print(4, input_file / d)
 #     elif b:
 #         print(1, -a / b, e / b)
 #     elif d:
-#         print(1, -c / d, f / d)
+#         print(1, -c / d, input_file / d)
 # else:
-#     x = (e * d - b * f) / (a * d - b * c)
-#     y = (a * f - c * e) / (a * d - b * c)
+#     x = (e * d - b * input_file) / (a * d - b * c)
+#     y = (a * input_file - c * e) / (a * d - b * c)
 #     print(2, x, y)
 
-# Дана строка. Если в этой строке буква f встречается только один раз, выведите её индекс. Если она встречается два и
-# более раз, выведите индекс её первого и последнего появления. Если буква f в данной строке не встречается, ничего не
+# Дана строка. Если в этой строке буква input_file встречается только один раз, выведите её индекс. Если она встречается два и
+# более раз, выведите индекс её первого и последнего появления. Если буква input_file в данной строке не встречается, ничего не
 # выводите. При решении этой задачи нельзя использовать метод count и циклы.
 # string = input()
-# first = string.find('f')
-# last = string.rfind('f')
+# first = string.find('input_file')
+# last = string.rfind('input_file')
 # if first != -1:
 #     if first == last:
 #         print(first)
@@ -986,15 +986,15 @@
 # last = string[:last]
 # print(last + first)
 
-# Дана строка. Найдите в этой строке второе вхождение буквы f и выведите индекс этого вхождения. Если буква f в данной
+# Дана строка. Найдите в этой строке второе вхождение буквы input_file и выведите индекс этого вхождения. Если буква input_file в данной
 # строке встречается только один раз, выведите число -1, а если не встречается ни разу, выведите число -2. При решении
 # этой задачи нельзя использовать метод count.
 # string = input()
-# first = string.find('f')
+# first = string.find('input_file')
 # if first == -1:
 #     print(-2)
 # else:
-#     first = string.find('f', first + 1)
+#     first = string.find('input_file', first + 1)
 #     if first == -1:
 #         print(-1)
 #     else:
@@ -1366,7 +1366,7 @@
 #         return number
 #     while number > 0:
 #         if lagrange_theorem(n - number ** 2, level - 1):
-#             return f"{number} {lagrange_theorem(n - number ** 2, level - 1)}"
+#             return input_file"{number} {lagrange_theorem(n - number ** 2, level - 1)}"
 #         number -= 1 # уменьшаем число, если не получается в четыре слагаемых
 #     return False
 # print(lagrange_theorem(int(input()), 4))
@@ -1384,7 +1384,7 @@
 #         return number ** 3
 #     while number > 0:
 #         if sum_cube(n - number ** 3, level - 1):
-#             return f"{number ** 3} {sum_cube(n - number ** 3, level - 1)}"
+#             return input_file"{number ** 3} {sum_cube(n - number ** 3, level - 1)}"
 #         number -= 1
 #     return 0
 # print(sum_cube(int(input()), 7))
@@ -1824,11 +1824,11 @@
 # Входные данные - Строки вида "Фамилия Имя НомерШколы Балл".
 # Выходные данные - Строки вида "Фамилия Имя Балл", отсортированные по фамилии.
 # file = []
-# with open('input.txt', 'r', encoding='utf8') as f, \
+# with open('input.txt', 'r', encoding='utf8') as input_file, \
 #         open('output.txt', 'w', encoding='utf8') as w:
-#     for data in f.readlines():
+#     for data in input_file.readlines():
 #         s = data.split()
-#         file.append(f'{s[0]} {s[1]} {s[3]}')
+#         file.append(input_file'{s[0]} {s[1]} {s[3]}')
 #     file.sort()
 #     contents = '\n'.join(file)
 #     w.write(contents)
@@ -1959,9 +1959,9 @@
 # Если количество имеющих равный максимальный балл абитуриентов больше чем K, программа должна вывести число 1.
 # Используйте для вывода файл output.txt с указанием кодировки utf8.
 # file = []
-# with open('input.txt', 'r', encoding='utf8') as f, \
+# with open('input.txt', 'r', encoding='utf8') as input_file, \
 #         open('output.txt', 'w', encoding='utf8') as w:
-#     for data in f.readlines():
+#     for data in input_file.readlines():
 #         e = data.split()
 #         if len(e) == 1:
 #             a = int(e[0])
@@ -2461,6 +2461,19 @@
 # Если есть кандидат, набравший более 50% голосов, программа должна вывести его имя. Если такого кандидата нет,
 # программа должна вывести имя кандидата, занявшего первое место, затем имя кандидата, занявшего второе место. Выводите
 # данные в файл output.txt с указанием кодировки utf8.
+# out_file = open("output.txt", "w", encoding='utf-8')
+# input_file = open('input.txt', 'r', encoding='utf-8')
+# count, my_input = 0, {}
+# for line in input_file:
+#     line = line.strip()
+#     my_input[line] = my_input[line] + 1 if line in my_input else 1
+#     count += 1
+# my_out = sorted(my_input.items(), key=lambda x: (-x[1], x[0]))
+# print(my_out[0][0], file=out_file)
+# if my_out[0][1] * 2 <= count:
+#     print(my_out[1][0], file=out_file)
+# out_file.close()
+# input_file.close()
 
 # outFile = open("output.txt", "w", encoding='utf-8')
 # fin = open('input.txt', 'r', encoding='utf-8')
@@ -2476,6 +2489,79 @@
 #     print(p[0], p[1], sep='\n', file=outFile)
 # outFile.close()
 # fin.close()
+
+# Необходимо распределить 450 мест между партиями, участвовавших в выборах. Сначала подсчитывается сумма голосов
+# избирателей, поданных за каждую партию и подсчитывается сумма голосов, поданных за все партии. Эта сумма делится на
+# 450, получается величина, называемая “первое избирательное частное” (смысл первого избирательного частного - это
+# количество голосов избирателей, которое необходимо набрать для получения одного места в парламенте). Далее каждая
+# партия получает столько мест в парламенте, чему равна целая часть от деления числа голосов за данную партию на первое
+# избирательное частное.Если после первого раунда распределения мест сумма количества мест, отданных партиям, меньше 450
+# , то оставшиеся места передаются по одному партиям, в порядке убывания дробной части частного от деления числа голосов
+# за данную партию на первое избирательное частное. Если же для двух партий эти дробные части равны, то преимущество
+# отдается той партии, которая получила большее число голосов.
+# Формат ввода
+# На вход программе подается список партий, участвовавших в выборах. Каждая строка входного файла содержит название
+# партии (строка, возможно, содержащая пробелы), затем, через пробел, количество голосов, полученных данной партией
+# – число, не превосходящее 10⁸.
+# Формат вывода
+# Программа должна вывести названия всех партий и количество голосов в парламенте, полученных данной партией. Названия
+# необходимо выводить в том же порядке, в котором они шли во входных данных.
+# import sys
+# parties, score = {}, 0
+# for line in sys.stdin:
+#     name = line.strip().split()
+#     parties[' '.join(name[:-1])] = int(name[-1])
+#     score += int(name[-1])
+# part = score / 450
+# parties = [[key, int(parties[key] / part), parties[key] / part -
+#             int(parties[key] / part)] for key in parties]
+# summa = sum(element[1] for element in parties)
+# for element in sorted(parties, key=lambda x: (-x[2], -x[1])):
+#     if summa < 450:
+#         element[1] += 1
+#         summa += 1
+#     else:
+#         break
+# print(*[' '.join(map(str, element[:2])) for element in parties], sep='\n')
+#
+# d, s, h = {}, 0, 450
+# with open('input.txt') as in_file:
+#     for line in in_file:
+#         d[' '.join(line.split()[:-1])] = int(line.split()[-1])
+#         s += int(line.split()[-1])
+# d = [[m, int(h * d[m] / s), h * d[m] / s - int(h * d[m] / s)] for m in d]
+# print(d)
+# overall = sum(party[1] for party in d)
+# for party in sorted(d, key=lambda x: (-x[2], -x[1])):
+#     if overall == h:
+#         break
+#     party[1], overall = party[1] + 1, overall + 1
+# print(*[' '.join(map(str, party[:2])) for party in d], sep='\n')
+
+# Дана база данных о продажах некоторого интернет-магазина. Каждая строка входного файла представляет собой запись вида
+# Покупатель товар количество, где
+# Покупатель — имя покупателя (строка без пробелов),
+# товар — название товара (строка без пробелов),
+# количество — количество приобретенных единиц товара.
+# Создайте список всех покупателей, а для каждого покупателя подсчитайте количество приобретенных им единиц каждого вида
+# товаров.
+# Формат ввода - Вводятся сведения о покупках в указанном формате.
+# Формат вывода - Выведите список всех покупателей в лексикографическом порядке,после имени каждого покупателя выведите
+# двоеточие, затем выведите список названий всех приобретенных данным покупателем товаров в лексикографическом порядке,
+# после названия каждого товара выведите количество единиц товара, приобретенных данным покупателем.Информация о каждом
+# товаре выводится в отдельной строке.
+# import sys
+# base = {}
+# for line in sys.stdin:
+#     family, product, cost = line.strip().split()
+#     base.setdefault(family, {})
+#     base[family].setdefault(product, 0)
+#     base[family][product] += int(cost)
+# for family in sorted(base):
+#     print(family + ':')
+#     for product in sorted(base[family]):
+#         print(product, base[family][product])
+
 
 
 

@@ -21,31 +21,31 @@
 # Когда мы пишем несколько except блоков, важно помнить, что любое исключение будет обработано лишь одним из них
 # - первым, под которое оно подойдет. Остальные except блоки просто не будут исполняться.
 # Важно помнить, что мы можем ловить исключения в любой момент исполнения на стеке.
-# В примере ниже мы ловим исключение деления на ноль не в момент выполнения деления, а в процессе исполнения функции f:
-# def f(x, y):
+# В примере ниже мы ловим исключение деления на ноль не в момент выполнения деления, а в процессе исполнения функции input_file:
+# def input_file(x, y):
 #     try:
 #         return x / y
 #     except TypeError:
 #         print('TypeError')
 # try:
-#     print(f(5, 0))
+#     print(input_file(5, 0))
 # except ZeroDivisionError:
 #     print('ZeroDivisionError')
 # Одним except блоком можно поймать сразу несколько типов исключений. Для этого в except блок нужно передавать кортеж с
 # типами этих исключений.
 # В языке Python мы можем поймать и сам объект ошибки:
-# def f(x, y):
+# def input_file(x, y):
 #     try:
 #         return x / y
 #     except (TypeError, ZeroDivisionError) as e:
 #         print(type(e))
 #         print(e)
 #         print(e.args)
-# print(f(5, 0))  # return вернет None
-# print(f(5, []))  # return вернет None
+# print(input_file(5, 0))  # return вернет None
+# print(input_file(5, []))  # return вернет None
 # Если мы не знаем какой конкретный тип ошибки может произойти, потому что не ожидаем в исполнении блока ошибок, то
 # можно указать пустой except без указания типа ошибки. Он поймает любую ошибку, которая произошла внутри кода:
-# def f(x, y):
+# def input_file(x, y):
 #     try:
 #         return x / y
 #     except:
@@ -296,30 +296,30 @@
 #     print("Объект не найден")
 
 # Блок finally
-# f = open("/etc/hosts")
+# input_file = open("/etc/hosts")
 # try:
-#     for line in f:
+#     for line in input_file:
 #         print(line.rstrip("\n"))
 #         1 / 0
-#     f.close()
+#     input_file.close()
 # except OSError:
 #     print("ошибка")
 #
 # Блок finally
-# f = open("/etc/hosts")
+# input_file = open("/etc/hosts")
 # try:
-#     for line in f:
+#     for line in input_file:
 #         print(line.rstrip("\n"))
 #         1 / 0
 # except OSError:
 #     print("ошибка")
 # finally:
-#     f.close()
+#     input_file.close()
 
 # Доступ к объекту исключения
 # try:
-#     with open("/file/not/found") as f:
-#         content = f.read()
+#     with open("/file/not/found") as input_file:
+#         content = input_file.read()
 # except OSError as err:
 #     print(err.errno, err.strerror)  # .errno - строковое описание ошибки, .strerror - код ошибки
 
@@ -337,8 +337,8 @@
 # # Доступ к стеку вызовов
 # import traceback
 # try:
-#     with open("/file/not/found") as f:
-#         content = f.read()
+#     with open("/file/not/found") as input_file:
+#         content = input_file.read()
 # except OSError as err:
 #     trace = traceback.print_exc()
 #     print(trace)
@@ -386,12 +386,12 @@
 # >>> assert True
 # >>> assert 1 == 0
 # Traceback (most recent call last):
-#   File "<stdin>", line 1, in <module>
+#   file "<stdin>", line 1, in <module>
 # AssertionError
 # >>>
 # >>> assert 1 == 0, "1 не равен 0"
 # Traceback (most recent call last):
-#   File "<stdin>", line 1, in <module>
+#   file "<stdin>", line 1, in <module>
 # AssertionError: 1 не равен 0
 
 # Инструкция assert, флаг -O

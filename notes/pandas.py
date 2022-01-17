@@ -39,25 +39,25 @@
 # 9
 #
 # Индексы можно задавать явно:
-# >>> my_series2 = pd.Series([5, 6, 7, 8, 9, 10], index=['a', 'b', 'c', 'd', 'e', 'f'])
-# >>> my_series2['f']
+# >>> my_series2 = pd.Series([5, 6, 7, 8, 9, 10], index=['a', 'b', 'c', 'd', 'e', 'input_file'])
+# >>> my_series2['input_file']
 # 10
 #
 # Делать выборку по нескольким индексам и осуществлять групповое присваивание:
-# >>> my_series2[['a', 'b', 'f']]
+# >>> my_series2[['a', 'b', 'input_file']]
 # a     5
 # b     6
-# f    10
+# input_file    10
 # dtype: int64
 #
-# >>> my_series2[['a', 'b', 'f']] = 0
+# >>> my_series2[['a', 'b', 'input_file']] = 0
 # >>> my_series2
 # a    0
 # b    0
 # c    7
 # d    8
 # e    9
-# f    0
+# input_file    0
 # dtype: int64
 #
 # Фильтровать Series как душе заблагорассудится, а также применять математические операции и многое другое:

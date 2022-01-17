@@ -4,7 +4,7 @@
 # Работа с CSV, JSON, YAML https://pyneng.readthedocs.io/ru/latest/book/17_serialization/index.html#csv-json-yaml
 # Подробнее про JSON  https://python-scripts.com/json
 # У кого проблемы с некорректным выводом результата при работе с csv-форматом:
-# Для корректного вывода результатов при работе с файлом .tsv (в Pycharm) File -> Settings -> Plugins ->
+# Для корректного вывода результатов при работе с файлом .tsv (в Pycharm) file -> Settings -> Plugins ->
 # install(CSV Plugin), ну и руками исправить сам текст файла, заменив всё табуляцией.
 # Excel может сохранять в csv формате. Но если нужно, есть специальные библиотеки:
 # https://pypi.python.org/pypi/xlwt
@@ -17,13 +17,13 @@
 
 # import csv
 
-# with open("example.csv") as f:
-#     reader = csv.reader(f)
+# with open("example.csv") as input_file:
+#     reader = csv.reader(input_file)
 #     for row in reader:
 #         print(row)
 
-# with open("example.tsv") as f:
-#     reader = csv.reader(f, delimiter="\t")
+# with open("example.tsv") as input_file:
+#     reader = csv.reader(input_file, delimiter="\t")
 #     for row in reader:
 #         print(row)
 
@@ -32,11 +32,11 @@
 #     ["Wirt", "Wood", 80, 80.2, 80, "Nicely done"]
 # ]
 #
-# with open("example.csv", "a", newline='') as f:  # newline='' - нет пустых строк
-#     writer = csv.writer(f)  # , quoting=csv.QUOTE_NONNUMERIC - поместить все нечисловые значения внутри кавычек(ALL-все)
+# with open("example.csv", "a", newline='') as input_file:  # newline='' - нет пустых строк
+#     writer = csv.writer(input_file)  # , quoting=csv.QUOTE_NONNUMERIC - поместить все нечисловые значения внутри кавычек(ALL-все)
 #     writer.writerows(students)
 
-# Для решения пустых строк также можно указать `writer = csv.writer(f, lineterminator = '\n_test')` подробнее тут -
+# Для решения пустых строк также можно указать `writer = csv.writer(input_file, lineterminator = '\n_test')` подробнее тут -
 # https://docs.python.org/3/library/csv.html#csv.Dialect.lineterminator
 # Не всё так однозначно, как кажется. Библиотека csv поддерживает разные диалекты csv. Окончание строки(lineterminator)
 # в её понимании неотъемлемая часть конкретного диалекта. Для диалекта по умолчанию(excel) это '\r\n_test'. Диалект 'unix'
@@ -50,10 +50,10 @@
 # победить, подскажите, пожалуйста? При skipinitialspace=True - он игнорирует пробел, следующий после символов переноса
 # строки (в винде - \r\n_test) и рассматривает то, что за ними как одну строку - как то так, а вот почему так - если честно
 # - не знаю, просто это работает:
-# reader = csv.reader(f, skipinitialspace=True)
+# reader = csv.reader(input_file, skipinitialspace=True)
 
 # И строки объединяет и пустые строки добавляет до и после записи. Помогло только
-# writer = csv.writer(f, skipinitialspace=True, lineterminator = '\n_test') собранном по разным комментариям.
+# writer = csv.writer(input_file, skipinitialspace=True, lineterminator = '\n_test') собранном по разным комментариям.
 
 # Формат JSON
 # Ключом в JSON объекте может быть только строка.
@@ -78,8 +78,8 @@
 # Чтобы записать данный объект в формате JSON в файл, используем метод dump
 # data = [student1, student2]
 # # print(json.dumps(data, indent=4, sort_keys=True))  # печать
-# with open("students.json", "w") as f:  № запись
-#     json.dump(data, f, indent=4, sort_keys=True)
+# with open("students.json", "w") as input_file:  № запись
+#     json.dump(data, input_file, indent=4, sort_keys=True)
 
 # loads преобразовывает строку json в строку python
 # data = [student1, student2]
@@ -88,8 +88,8 @@
 # print(summa(data_again[0]["scores"]))
 
 # считать информацию из файла json
-# with open("students.json", "r") as f:
-#     data_again = json.load(f)
+# with open("students.json", "r") as input_file:
+#     data_again = json.load(input_file)
 #     print(summa(data_again[1]["scores"]))
 # А возможно функцией max получить студента с наибольшей суммой баллов?
 # print(max(data_again, name=lambda x: summa(x['scores'])))
@@ -150,8 +150,8 @@
 # Вам необходимо узнать тип преступления, которое было зафиксировано максимальное число раз в 2015 году.
 # import csv, re, collections
 # res =[]
-# with open("example_crimes.csv") as f:
-#     reader = csv.reader(f)
+# with open("example_crimes.csv") as input_file:
+#     reader = csv.reader(input_file)
 #     for row in reader:
 #         # print(type(row), row)
 #         if re.search(r"/2015", str(row)):  # if '2015' in row[2]:
@@ -177,13 +177,13 @@
 # print(df[df['year'] == 2015]['Primary Type'].value_counts().idxmax())
 #
 # from collections import Counter as c
-# with open('Crimes.csv') as f:
-#     data = csv.reader(f)
+# with open('Crimes.csv') as input_file:
+#     data = csv.reader(input_file)
 #     print(c( row[5] for row in data if '2015' in row[2] ))
 #
 # import csv
-# with open("Crimes.csv") as f:
-#      reader = csv.reader(f)
+# with open("Crimes.csv") as input_file:
+#      reader = csv.reader(input_file)
 #      crimes = []
 #      for row in reader:
 #          if "2015" in row[2]:

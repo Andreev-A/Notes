@@ -31,8 +31,8 @@
 # print(res.headers['Content-Type'])
 # print(res.content)
 # Мы можем очень легко сохранить этот файл к себе на компьютер:
-# with open('python.png', 'wb') as f:
-#     f.write(res.content)
+# with open('python.png', 'wb') as input_file:
+#     input_file.write(res.content)
 # В запросе можно использовать параметры. Они индивидуальные для каждого сайта:
 # res = requests.get("https://yandex.ru/search/",
 #                    metric={
@@ -125,8 +125,8 @@ print(*s, sep='\n')
 # Например, почти все споткнулись на ссылках:
 # <a href="mailto:admin@gmail.com">
 # <a href="/m.html" target="_blank">
-# <a href="/talk/forum/post.php?f=11" class="text_orange">
-# <a href="read.php?f=11&i=464012&t=464012&page=119" id="next_page">
+# <a href="/talk/forum/post.php?input_file=11" class="text_orange">
+# <a href="read.php?input_file=11&i=464012&t=464012&page=119" id="next_page">
 
 # вот две регулярки, которые должны все обработать. По крайней мере, точно обрабатывают приведенный вами набор ссылок:
 # 1. r'<a.*href=[\'\"]\w*?[:/]*([\w-]+\.(?!html)(?!php)[\w.-]+)[/:'\"]'
@@ -375,7 +375,7 @@ print(*s, sep='\n')
 # bad_r.status_code  # 404
 # bad_r.raise_for_status()
 # Traceback (most recent call last):
-#   File "requests/models.py", line 832, in raise_for_status
+#   file "requests/models.py", line 832, in raise_for_status
 #     raise http_error
 # requests.exceptions.HTTPError: 404 Client Error
 # Но, поскольку наш status_codefor rбыл 200, когда мы вызываем, raise_for_status()мы получаем:
@@ -447,7 +447,7 @@ print(*s, sep='\n')
 # ваша программа может зависнуть на неопределенное время:
 # requests.get('https://github.com/', timeout=0.001)
 # Traceback (most recent call last):
-#   File "<stdin>", line 1, in <module>
+#   file "<stdin>", line 1, in <module>
 # requests.exceptions.Timeout: HTTPConnectionPool(host='github.com', port=80): Request timed my_input. (timeout=0.001)
 # Примечание
 # timeout не является ограничением по времени на загрузку всего ответа; скорее, возникает исключение, если сервер не
@@ -637,8 +637,8 @@ print(*s, sep='\n')
 # Потоковая загрузка загрузок
 # Запросы поддерживают потоковую загрузку, что позволяет отправлять большие потоки или файлы, не считывая их в память.
 # Для потоковой передачи и загрузки просто предоставьте объект в виде файла для своего тела:
-# with open('massive-body', 'rb') as f:
-#     requests.post('http://some.url/streamed', data=f)
+# with open('massive-body', 'rb') as input_file:
+#     requests.post('http://some.url/streamed', data=input_file)
 # Предупреждение
 # Настоятельно рекомендуется открывать файлы в двоичном режиме . Это связано с тем, что запросы могут пытаться
 # предоставить вам Content-Lengthзаголовок, и если это произойдет, это значение будет установлено равным количеству

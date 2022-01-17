@@ -182,12 +182,12 @@
 #             timestamp = int(time.time())
 #         else:
 #             timestamp = timestamp
-#         message = f"put {name} {value} {timestamp}\n"
+#         message = input_file"put {name} {value} {timestamp}\n"
 #         if self.__connect(message) == 'error\nwrong command\n\n':
 #             raise ClientError()
 #
 #     def get(self, name):
-#         message = f'get {name}\n'
+#         message = input_file'get {name}\n'
 #         data = self.__connect(message)
 #         if data[0:3] != 'ok\n':
 #             raise ClientError()
@@ -352,7 +352,7 @@ class Client:
 #         # отправляем запрос команды put
 #         try:
 #             self.connection.sendall(
-#                 f"put {name} {value} {timestamp}\n".encode()
+#                 input_file"put {name} {value} {timestamp}\n".encode()
 #             )
 #         except socket.error as err:
 #             raise ClientSocketError("error send data", err)
@@ -364,7 +364,7 @@ class Client:
 #         # формируем и отправляем запрос команды get
 #         try:
 #             self.connection.sendall(
-#                 f"get {name}\n".encode()
+#                 input_file"get {name}\n".encode()
 #             )
 #         except socket.error as err:
 #             raise ClientSocketError("error send data", err)
@@ -525,7 +525,7 @@ class Client:
 #         if data in self.rsp_map:
 #             self.response_buf.append(self.rsp_map[data])
 #         else:
-#             raise ServerSocketException(f"запрос не соответствует протоколу: {data}")
+#             raise ServerSocketException(input_file"запрос не соответствует протоколу: {data}")
 #
 #     def recv(self, bytes_count):
 #         try:
@@ -571,8 +571,8 @@ class Client:
 #                 self.client.put(metric, value, timestamp)
 #             except ServerSocketException as exp:
 #                 message = exp.args[0]
-#                 self.fail(f"Ошибка вызова client.put("
-#                           f"'{metric}', {value}, timestamp={timestamp})\n{message}")
+#                 self.fail(input_file"Ошибка вызова client.put("
+#                           input_file"'{metric}', {value}, timestamp={timestamp})\n{message}")
 #
 #     @patch("socket.create_connection", ServerSocket.create_connection)
 #     @patch("socket.socket", ServerSocket.create_connection)
@@ -581,7 +581,7 @@ class Client:
 #             rsp = self.client.get("test")
 #         except ServerSocketException as exp:
 #             message = exp.args[0]
-#             self.fail(f"Ошибка вызова client.get('test')\n{message}")
+#             self.fail(input_file"Ошибка вызова client.get('test')\n{message}")
 #
 #         metrics_fixture = {
 #             "test": [(1, .5), (2, .4)],
@@ -595,7 +595,7 @@ class Client:
 #             rsp = self.client.get("*")
 #         except ServerSocketException as exp:
 #             message = exp.args[0]
-#             self.fail(f"Ошибка вызова client.get('*')\n{message}")
+#             self.fail(input_file"Ошибка вызова client.get('*')\n{message}")
 #
 #         metrics_fixture = {
 #             "test": [(1, .5), (2, .4)],
@@ -610,7 +610,7 @@ class Client:
 #             rsp = self.client.get("key_not_exists")
 #         except ServerSocketException as exp:
 #             message = exp.args[0]
-#             self.fail(f"Ошибка вызова client.get('key_not_exists')\n{message}")
+#             self.fail(input_file"Ошибка вызова client.get('key_not_exists')\n{message}")
 #
 #         self.assertEqual({}, rsp, "check rsp eq {}")
 #
@@ -622,4 +622,4 @@ class Client:
 #                               self.client.get, "get_client_error")
 #         except ServerSocketException as exp:
 #             message = exp.args[0]
-#             self.fail(f"Некорректно обработано сообщение сервера об ошибке: {message}")
+#             self.fail(input_file"Некорректно обработано сообщение сервера об ошибке: {message}")

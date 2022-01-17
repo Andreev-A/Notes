@@ -12,19 +12,19 @@
 # from collections import Counter
 # print(Counter(a).most_common(3))  # вывести три наиболее часто встречающихся значения из a
 
-# from functools import reduce  # применяет f слева-направо к итерируемому объекту и запоминает результат (сжимает)
+# from functools import reduce  # применяет input_file слева-направо к итерируемому объекту и запоминает результат (сжимает)
 # def multiply(a, b):
 #     return a * b
 # print(reduce(multiply, [1, 2, 3, 4, 5]))  # 120 -> 1*2=2 2*3=6 6*4=24 24*5=120
 # print(reduce(lambda x, y: x * y, range(1, 6)))  # то же начинаем с 1 до 5
 
-# from functools import partial  # позволяет модифицировать поведение f подменив определенные параметры
+# from functools import partial  # позволяет модифицировать поведение input_file подменив определенные параметры
 # def greeter(person, greeting):
 #     return '{}, {}!'.format(greeting, person)
 # hier = partial(greeter, greeting='Hi')  # подменить по умолчанию определенные параметры (шаблон)
 # helloer = partial(greeter, greeting='Hello')  # то же
-# print(hier('brother'))  # Hi, brother! -> в f остался один параметр, другой по умолчанию
-# print(helloer('sir'))  # Hello, sir! -> в f остался один параметр, другой по умолчанию
+# print(hier('brother'))  # Hi, brother! -> в input_file остался один параметр, другой по умолчанию
+# print(helloer('sir'))  # Hello, sir! -> в input_file остался один параметр, другой по умолчанию
 
 # from os import path  # помогает в проверке существования файла хранилища при первом запуске программы - path.exists
 # from tempfile import gettempdir  # создание временного файла

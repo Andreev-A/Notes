@@ -27,11 +27,11 @@ def fib2(n):
 #     cache[n_test] = fib2(n_test - 1) + fib2(n_test - 2)
 
 # Декоратор (без глобальной переменной)
-# def memo(f):
+# def memo(input_file):
 #     cache = {}
 #     def inner(n_test):  # функция "обертка" принимает один аргумент - n_test
 #         if n_test not in cache:
-#             cache[n_test] = f(n_test)
+#             cache[n_test] = input_file(n_test)
 #         return cache[n_test]
 #     return inner
 #
@@ -45,11 +45,11 @@ def fib2(n):
 #
 # from functools import lru_cache
 #
-# def memo(f):
+# def memo(input_file):
 #     cache = {}
 #     def inner(n_test):
 #         if n_test not in cache:
-#             cache[n_test] = f(n_test)
+#             cache[n_test] = input_file(n_test)
 #         return cache[n_test]
 #     return inner
 #
@@ -65,38 +65,38 @@ def fib2(n):
 # def fib(n_test):
 #     return n_test if n_test < 2 else fib(n_test - 1) + fib(n_test - 2)
 #
-# def memo(f):
+# def memo(input_file):
 #     cache = {}
 #     def wrap(n_test):
 #         if n_test not in cache:
-#             cache[n_test] = f(n_test)
+#             cache[n_test] = input_file(n_test)
 #         return cache[n_test]
 #     return wrap
 #
-# fib = memo(f=fib)
+# fib = memo(input_file=fib)
 
 # Разберём самую интересную запись справа налево
-# fib = memo(f=fib)
-# ПРАВО - передаем функции memo аргумент f, который ссылается на ту же функцию, на которую ссылается функция
+# fib = memo(input_file=fib)
+# ПРАВО - передаем функции memo аргумент input_file, который ссылается на ту же функцию, на которую ссылается функция
 # fib -> получаем функцию wrap
 # ЛЕВО - определяем, что теперь fib будет ссылаться на функцию справа т.е. wrap
-# В ИТОГЕ мы поменяли не только поведение, но и зону видимости функции fib (теперь она видит cache и новую функцию f)
+# В ИТОГЕ мы поменяли не только поведение, но и зону видимости функции fib (теперь она видит cache и новую функцию input_file)
 # Для лучшего понимаю, можно записать.
 # cache = {}
 #
-# def f(n_test):
+# def input_file(n_test):
 #     return n_test if n_test < 2 else fib(n_test - 1) + fib(n_test - 2)
 #
 # def fib(n_test):
 #     if n_test not in cache:
-#         cache[n_test] = f(n_test)
+#         cache[n_test] = input_file(n_test)
 #     return cache[n_test]
 # Такая функция будет работать быстро и верно. Следовательно называя новую функцию как попало и затем вызывая её
-# random_name = memo(f=fib)
+# random_name = memo(input_file=fib)
 # random_name(80)
 # мы обрекаем себя на вызов рекурсивной неоптимизированной функции fib
 # cache = {}
-# def f(n_test): #2
+# def input_file(n_test): #2
 #     return n_test if n_test < 2 else fib(n_test - 1) + fib(n_test - 2)
 #
 # def fib(n_test): #3,.. n_test
@@ -104,7 +104,7 @@ def fib2(n):
 #
 # def random_name(n_test): #1
 #     if n_test not in cache:
-#         cache[n_test] = f(n_test)
+#         cache[n_test] = input_file(n_test)
 #     return cache[n_test]
 
 # Есть ограничение на кол-во вызовов рекурсивных функций. Пишем функцию использующую итерацию вместо рекурсии.

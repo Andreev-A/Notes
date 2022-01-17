@@ -35,11 +35,11 @@ import logging
 with open('D:\\BOT_CONFIG.json', encoding='utf-8') as f:
     BOT_CONFIG = json.load(f)
 
-# with open('D:\\BOT_CONFIG.json', 'r') as f: # encoding='utf-8'
-#     BOT_CONFIG = json.load(f)
+# with open('D:\\BOT_CONFIG.json', 'r') as input_file: # encoding='utf-8'
+#     BOT_CONFIG = json.load(input_file)
 
-# with open('D:\\BOT_CONFIG1.json', 'w') as f:
-#     json.dump(BOT_CONFIG, f, ensure_ascii=False, indent=3)
+# with open('D:\\BOT_CONFIG1.json', 'w') as input_file:
+#     json.dump(BOT_CONFIG, input_file, ensure_ascii=False, indent=3)
 
 """# День 1"""
 

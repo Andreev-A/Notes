@@ -101,8 +101,8 @@
 # короткая запись часто используемых выражений:
 # \d ~ [0-9] -- цифры
 # \D ~ [^0-9]
-# \s ~ [ \t\n_test\r\f\v] -- пробельные символы
-# \S ~ [^ \t\n_test\r\f\v]
+# \s ~ [ \t\n_test\r\input_file\v] -- пробельные символы
+# \S ~ [^ \t\n_test\r\input_file\v]
 # \w ~ [a-zA-Z0-9_] -- буквы + цифры + _
 # \W ~ [^a-zA-Z0-9_]
 # пример - r"a[\w.]c" - буквы + цифры + _ и точка (дополнить короткую запись)
@@ -337,7 +337,7 @@
 # import re
 # for line in sys.stdin:
 #     line = line.strip()
-#     if re.search(r"\\", line):  # f chr(92) in line:
+#     if re.search(r"\\", line):  # input_file chr(92) in line:
 #         print(line)
 
 # Вам дана последовательность строк.
@@ -637,7 +637,7 @@ print(res.text)
 #
 # Результат:
 # ['A', 'V', ' ', 'i', 's', ' ', 'l', 'a', 'r', 'g', 'e', 's', 't', ' ', 'A', 'n_test', 'a', 'l', 'y', 't', 'i', 'c', 's',
-# ' ', 'c', 'o', 'm', 'm', 'u', 'n_test', 'i', 't', 'y', ' ', 'o', 'f', ' ', 'I', 'n_test', 'd', 'i', 'a']
+# ' ', 'c', 'o', 'm', 'm', 'u', 'n_test', 'i', 't', 'y', ' ', 'o', 'input_file', ' ', 'I', 'n_test', 'd', 'i', 'a']
 # Для того, чтобы в конечный результат не попал пробел, используем вместо . \w.
 
 # result_dict = re.findall(r'\w', 'AV is largest Analytics community of India')
@@ -645,7 +645,7 @@ print(res.text)
 #
 # Результат:
 # ['A', 'V', 'i', 's', 'l', 'a', 'r', 'g', 'e', 's', 't', 'A', 'n_test', 'a', 'l', 'y', 't', 'i', 'c', 's', 'c', 'o', 'm',
-# 'm', 'u', 'n_test', 'i', 't', 'y', 'o', 'f', 'I', 'n_test', 'd', 'i', 'a']
+# 'm', 'u', 'n_test', 'i', 't', 'y', 'o', 'input_file', 'I', 'n_test', 'd', 'i', 'a']
 # Теперь попробуем достать каждое слово (используя * или +)
 #
 # result_dict = re.findall(r'\w*', 'AV is largest Analytics community of India')

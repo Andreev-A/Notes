@@ -40,7 +40,7 @@ if 2 > 1:
     e, f = 5, 6
     print('if:', e + f)
 # else:
-#     e, f = 7, 8
+#     e, input_file = 7, 8
 print('global:', e + f)
 
 for elem in [1, 2, 3]:

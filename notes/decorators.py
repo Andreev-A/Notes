@@ -1,6 +1,6 @@
 # Декоратор это функция принимающая функцию и возвращающая другую функцию.
-# Чаще всего используются чтобы модифицировать поведение каких-то f (может семейства f)
-# Обычно f внутри декораторов называют - wrapped, decorated, inner
+# Чаще всего используются чтобы модифицировать поведение каких-то input_file (может семейства input_file)
+# Обычно input_file внутри декораторов называют - wrapped, decorated, inner
 
 # def decorator(func):
 #    return func  # простейший декоратор принимает функцию и возвращающет ее же
@@ -9,10 +9,10 @@
 # def decorated():
 #    print('Hello!')
 
-# def decorator(func):  # простой декоратор принимает f
-#    def new_func():  # определяет внутри новую f
+# def decorator(func):  # простой декоратор принимает input_file
+#    def new_func():  # определяет внутри новую input_file
 #        pass
-#    return new_func  # возвращает новую f
+#    return new_func  # возвращает новую input_file
 # @decorator
 # def decorated():
 #    print('Hello!')
@@ -23,15 +23,15 @@
 # def logger(func):  # Написать декоратор, который записывает в лог результат декорируемой функции
 #     # def wrapped(num_list):  # первый вариант, принимает только num_list
 #     #     result_dict = func(num_list)
-#     #     with open('log.txt', 'w') as f:
-#     #         f.write(str(result_dict))
+#     #     with open('log.txt', 'w') as input_file:
+#     #         input_file.write(str(result_dict))
 #     #     return result_dict
 #     # return wrapped  #########################################################################################
-#     @functools.wraps(func)  # подменяет (для интроспекции или отладки) в doc. string на название исходной f->summator
+#     @functools.wraps(func)  # подменяет (для интроспекции или отладки) в doc. string на название исходной input_file->summator
 #     def wrapped(*args, **kwargs):  # второй вариант, принимает *args, **kwargs
 #         result_dict = func(*args, **kwargs)
-#         with open('log.txt', 'w') as f:
-#             f.write(str(result_dict))
+#         with open('log.txt', 'w') as input_file:
+#             input_file.write(str(result_dict))
 #         return result_dict
 #     return wrapped  ############################################################################################
 # @logger
@@ -41,30 +41,30 @@
 # print(summator.__name__)  # summator или wrapped(без применения @functools.wraps(func))
 
 # Написать декоратор с параметром, который записывает лог в указанный файл
-# def logger(filename):  # вызывается f logger, который принимает не f, а имя файла, но возвращает decorator(summator)
-#     def decorator(func):  # декоратор принимает f (summator) и возвращает новую f wrapped, кот. подменяет summator
-#         def wrapped(*args, **kwargs):  # подменяет f summator
-#             result_dict = func(*args, **kwargs)  # выполняется f summator
-#             with open(filename, 'w') as f:
-#                 f.write(str(result_dict))  # записывается результат ее выполнения в файл
+# def logger(filename):  # вызывается input_file logger, который принимает не input_file, а имя файла, но возвращает decorator(summator)
+#     def decorator(func):  # декоратор принимает input_file (summator) и возвращает новую input_file wrapped, кот. подменяет summator
+#         def wrapped(*args, **kwargs):  # подменяет input_file summator
+#             result_dict = func(*args, **kwargs)  # выполняется input_file summator
+#             with open(filename, 'w') as input_file:
+#                 input_file.write(str(result_dict))  # записывается результат ее выполнения в файл
 #             return result_dict
 #         return wrapped
-#     return decorator  # вернется decorator, который будет применяться к f summator
-# @logger('new_log.txt')  # применяется декоратор к f summator с параметром имя файла, куда писать лог
+#     return decorator  # вернется decorator, который будет применяться к input_file summator
+# @logger('new_log.txt')  # применяется декоратор к input_file summator с параметром имя файла, куда писать лог
 # def summator(num_list):
 #     return sum(num_list)
 # # summator = logger('log.txt')(summator) - так примерно работает
 # summator([1, 2, 3, 4, 5, 6, 7])
-# with open('new_log.txt', 'r') as f:
-#     print(f.read())
+# with open('new_log.txt', 'r') as input_file:
+#     print(input_file.read())
 
 # # Работа с двумя декораторами - цепочка "ченить"
-# def first_decorator(func):  # просто принтят и вызывают f (для примера)
+# def first_decorator(func):  # просто принтят и вызывают input_file (для примера)
 #     def wrapped():
 #         print('Inside first_decorator product')
 #         return func()
 #     return wrapped
-# def second_decorator(func):  # просто принтят и вызывают f (для примера)
+# def second_decorator(func):  # просто принтят и вызывают input_file (для примера)
 #     def wrapped():
 #         print('Inside second_decorator product')
 #         return func()

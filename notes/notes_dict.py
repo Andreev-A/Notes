@@ -79,7 +79,7 @@ capital_country = {"Russia": "Moscow",
 for c in capital_country:
     print("{country}: {capital}".format(country=c, capital=capital_country[c]))
 for country, capital in capital_country.items():
-    print(f"{country}: {capital}") # здесь я использую f-строку, внизу есть ссылка
+    print(f"{country}: {capital}") # здесь я использую input_file-строку, внизу есть ссылка
     print("{}: {}".format(country, capital))
 
 import operator
