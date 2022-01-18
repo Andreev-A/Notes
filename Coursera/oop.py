@@ -199,107 +199,107 @@
 # этого изменим базовый объект у внешнего декоратора на базовый объект декоратора, который необходимо удалить. Принцип
 # похож на удаление элемента из середины односвязного списка.
 # Пример использования Декоратора
-from abc import ABC, abstractmethod
-
-
-class Creature(ABC):
-    @abstractmethod
-    def feed(self):
-        pass
-
-    @abstractmethod
-    def move(self):
-        pass
-
-    @abstractmethod
-    def make_noise(self):
-        pass
-
-
-class Animal(Creature):
-    def feed(self):
-        print("I eat grass")
-
-    def move(self):
-        print("I walk forward")
-
-    def make_noise(self):
-        print("WOOO!")
-
-
-class AbstractDecorator(Creature):
-    def __init__(self, obj):
-        self.obj = obj  # в видеолекции вместо obj -> base
-
-    def feed(self):
-        self.obj.feed()
-
-    def move(self):
-        self.obj.move()
-
-    def make_noise(self):
-        self.obj.make_noise()
-
-
-class Swimming(AbstractDecorator):
-    def move(self):
-        print("I swim")
-
-    def make_noise(self):
-        print("...")
-
-
-class Flying(AbstractDecorator):
-    def move(self):
-        print("I fly")
-
-    def make_noise(self):
-        print("QUAAA!")
-
-
-class Predator(AbstractDecorator):
-    def feed(self):
-        print("I eat other animals")
-
-
-class Fast(AbstractDecorator):
-    def move(self):
-        self.obj.move()
-        print("Fast!")
-
-
-animal = Animal()  # наложение декораторов - создаем животное, добавляя созданные эффекты животных
-animal.feed()
-animal.move()
-animal.make_noise()
-print()
-animal = Swimming(animal)
-animal.feed()
-animal.move()
-animal.make_noise()
-print()
-animal = Predator(animal)
-animal.feed()
-animal.move()
-animal.make_noise()
-print()
-animal = Fast(animal)
-animal.feed()
-animal.move()
-animal.make_noise()
-print()
-animal = Fast(animal)
-animal.feed()
-animal.move()
-animal.make_noise()
-print()
-print(animal.obj)  # <__main__.Fast object at 0x0000028F6E03B6D0> - объект сейчас
-print(animal.obj.obj)  # <__main__.Predator object at 0x000002592DC3B790> - доступ к предыдущему объекту
-print(animal.obj.obj.obj)  # <__main__.Swimming object at 0x0000015921DBDF70> - доступ к предпредыдущему объекту
-animal.obj.obj = animal.obj.obj.obj  # снятие декораторов (убираем Predator и заменяем предидущим Swimming)
-animal.feed()
-animal.move()
-animal.make_noise()
+# from abc import ABC, abstractmethod
+#
+#
+# class Creature(ABC):
+#     @abstractmethod
+#     def feed(self):
+#         pass
+#
+#     @abstractmethod
+#     def move(self):
+#         pass
+#
+#     @abstractmethod
+#     def make_noise(self):
+#         pass
+#
+#
+# class Animal(Creature):
+#     def feed(self):
+#         print("I eat grass")
+#
+#     def move(self):
+#         print("I walk forward")
+#
+#     def make_noise(self):
+#         print("WOOO!")
+#
+#
+# class AbstractDecorator(Creature):
+#     def __init__(self, obj):
+#         self.obj = obj  # в видеолекции вместо obj -> base
+#
+#     def feed(self):
+#         self.obj.feed()
+#
+#     def move(self):
+#         self.obj.move()
+#
+#     def make_noise(self):
+#         self.obj.make_noise()
+#
+#
+# class Swimming(AbstractDecorator):
+#     def move(self):
+#         print("I swim")
+#
+#     def make_noise(self):
+#         print("...")
+#
+#
+# class Flying(AbstractDecorator):
+#     def move(self):
+#         print("I fly")
+#
+#     def make_noise(self):
+#         print("QUAAA!")
+#
+#
+# class Predator(AbstractDecorator):
+#     def feed(self):
+#         print("I eat other animals")
+#
+#
+# class Fast(AbstractDecorator):
+#     def move(self):
+#         self.obj.move()
+#         print("Fast!")
+#
+#
+# animal = Animal()  # наложение декораторов - создаем животное, добавляя созданные эффекты животных
+# animal.feed()
+# animal.move()
+# animal.make_noise()
+# print()
+# animal = Swimming(animal)
+# animal.feed()
+# animal.move()
+# animal.make_noise()
+# print()
+# animal = Predator(animal)
+# animal.feed()
+# animal.move()
+# animal.make_noise()
+# print()
+# animal = Fast(animal)
+# animal.feed()
+# animal.move()
+# animal.make_noise()
+# print()
+# animal = Fast(animal)
+# animal.feed()
+# animal.move()
+# animal.make_noise()
+# print()
+# print(animal.obj)  # <__main__.Fast object at 0x0000028F6E03B6D0> - объект сейчас
+# print(animal.obj.obj)  # <__main__.Predator object at 0x000002592DC3B790> - доступ к предыдущему объекту
+# print(animal.obj.obj.obj)  # <__main__.Swimming object at 0x0000015921DBDF70> - доступ к предпредыдущему объекту
+# animal.obj.obj = animal.obj.obj.obj  # снятие декораторов (убираем Predator и заменяем предидущим Swimming)
+# animal.feed()
+# animal.move()
+# animal.make_noise()
 
 ######################################################################################################################
 # Паттерн Адаптер
@@ -409,55 +409,303 @@ animal.make_noise()
 # подписывается на обновления системы. При изменениях система оповещает об изменениях всех текущих подписчиков при
 # помощи вызова у подписчиков метода update.
 # Реализация паттерна Наблюдатеь
-from abc import ABC, abstractmethod
+# from abc import ABC, abstractmethod
+#
+#
+# class NotificationManager:  # Наблюдаемая система
+#     def __init__(self):
+#         self.__subscribers = set()  # При инициализации множество подписчиков задается пустым
+#
+#     def subscribe(self, subscriber):
+#         self.__subscribers.add(
+#             subscriber)  # Для того чтобы подписать пользователя, он добавляется во множество подписчиков
+#
+#     def unsubcribe(self, subscriber):
+#         self.__subscribers.remove(subscriber)  # Удаление подписчика из списка
+#
+#     def notify(self, message):
+#         for subscriber in self.__subscribers:
+#             subscriber.update(message)  # Отправка уведомления всем подписчикам
+#
+#
+# class AbstractObserver(ABC):
+#     @abstractmethod
+#     def update(self, message):  # Абстрактный наблюдатель задает метод update
+#         pass
+#
+#
+# class MessageNotifier(AbstractObserver):
+#     def __init__(self, name):
+#         self.__name = name
+#
+#     def update(self, message):  # Конкретная реализация метода update
+#         print(f'{self.__name} recieved message!')
+#
+#
+# class MessagePrinter(AbstractObserver):
+#     def __init__(self, name):
+#         self.__name = name
+#
+#     def update(self, message):  # Конкретная реализация метода update
+#         print(f'{self.__name} recieved message: {message}')
+#
+#
+# notifier1 = MessageNotifier("Notifier1")
+# printer1 = MessagePrinter("Printer1")
+# printer2 = MessagePrinter("Printer2")
+#
+# manager = NotificationManager()
+#
+# manager.subscribe(notifier1)
+# manager.subscribe(printer1)
+# manager.subscribe(printer2)
+#
+# manager.notify("Hi!")
 
-
-class NotificationManager:  # Наблюдаемая система
+#######################################################################################################################
+# Паттерн "Цепочка обязанностей"
+# 1. Описание персонажа
+# Опишем персонажа, который будет взаимодействовать с цепочкой обязанностей
+class Character:
     def __init__(self):
-        self.__subscribers = set()  # При инициализации множество подписчиков задается пустым
-
-    def subscribe(self, subscriber):
-        self.__subscribers.add(
-            subscriber)  # Для того чтобы подписать пользователя, он добавляется во множество подписчиков
-
-    def unsubcribe(self, subscriber):
-        self.__subscribers.remove(subscriber)  # Удаление подписчика из списка
-
-    def notify(self, message):
-        for subscriber in self.__subscribers:
-            subscriber.update(message)  # Отправка уведомления всем подписчикам
-
-
-class AbstractObserver(ABC):
-    @abstractmethod
-    def update(self, message):  # Абстрактный наблюдатель задает метод update
-        pass
-
-
-class MessageNotifier(AbstractObserver):
-    def __init__(self, name):
-        self.__name = name
-
-    def update(self, message):  # Конкретная реализация метода update
-        print(f'{self.__name} recieved message!')
+        self.name = "Nagibator"
+        self.xp = 0
+        self.passed_quests = set()
+        self.taken_quests = set()
+# 2. Описание квестов
+# Опишем квесты, из которых будет состоять цепочка обязанностей
+def add_quest_speak(char):
+    quest_name = "Поговорить с фермером"
+    xp = 100
+    if quest_name not in (char.passed_quests | char.taken_quests):
+        print(f"Квест получен: \"{quest_name}\"")
+        char.taken_quests.add(quest_name)
+    elif quest_name in char.taken_quests:
+        print(f"Квест сдан: \"{quest_name}\"")
+        char.passed_quests.add(quest_name)
+        char.taken_quests.remove(quest_name)
+        char.xp += xp
 
 
-class MessagePrinter(AbstractObserver):
-    def __init__(self, name):
-        self.__name = name
+def add_quest_hunt(char):
+    quest_name = "Охота на крыс"
+    xp = 300
+    if quest_name not in (char.passed_quests | char.taken_quests):
+        print(f"Квест получен: \"{quest_name}\"")
+        char.taken_quests.add(quest_name)
+    elif quest_name in char.taken_quests:
+        print(f"Квест сдан: \"{quest_name}\"")
+        char.passed_quests.add(quest_name)
+        char.taken_quests.remove(quest_name)
+        char.xp += xp
 
-    def update(self, message):  # Конкретная реализация метода update
-        print(f'{self.__name} recieved message: {message}')
+
+def add_quest_carry(char):
+    quest_name = "Принести доски из сарая"
+    xp = 200
+    if quest_name not in (char.passed_quests | char.taken_quests):
+        print(f"Квест получен: \"{quest_name}\"")
+        char.taken_quests.add(quest_name)
+    elif quest_name in char.taken_quests:
+        print(f"Квест сдан: \"{quest_name}\"")
+        char.passed_quests.add(quest_name)
+        char.taken_quests.remove(quest_name)
+        char.xp += xp
+# 3. Описание квестгивера
+# Опишем персонажа, который будет давать игрокам квесты. У него определим список доступных квестов, который можно
+# пополнять.
+# Определим метод handle_quests, который позволяет применить квест к персонажу.
+class QuestGiver:
+    def __init__(self):
+        self.quests = []
+
+    def add_quest(self, quest):
+        self.quests.append(quest)
+
+    def handle_quests(self, character):
+        for quest in self.quests:
+            quest(character)
+# 4. Применение цепочки обязанностей
+# Создадим квестгивера и передадим ему все квесты, которые он может давать и принимать.
+all_quests = [add_quest_speak, add_quest_hunt, add_quest_carry]
+
+quest_giver = QuestGiver()
+
+for quest in all_quests:
+    quest_giver.add_quest(quest)
+
+player = Character()
+# Персонаж подходит к квестгиверу и берет квесты
+quest_giver.handle_quests(player)
+# Квест получен: "Поговорить с фермером"
+# Квест получен: "Охота на крыс"
+# Квест получен: "Принести доски из сарая"
+# Проверим, какие квесты активны на данный момент
+print("Получено: ", player.taken_quests)
+print("Сдано: ", player.passed_quests)
+# Получено:  {'Принести доски из сарая', 'Поговорить с фермером', 'Охота на крыс'}
+# Сдано:  set()
+# Изменим полученные квесты
+
+player.taken_quests = {'Принести доски из сарая', 'Поговорить с фермером'}
+# Подойдем к квестгиверу еще раз
+
+quest_giver.handle_quests(player)
+# Квест сдан: "Поговорить с фермером"
+# Квест получен: "Охота на крыс"
+# Квест сдан: "Принести доски из сарая"
+print("Получено: ", player.taken_quests)
+print("Сдано: ", player.passed_quests)
+# Получено:  {'Охота на крыс'}
+# Сдано:  {'Поговорить с фермером', 'Принести доски из сарая'}
+# Сдадим оставшийся квест и проверим состояние
+
+quest_giver.handle_quests(player)
+# Квест сдан: "Охота на крыс"
+print("Получено: ", player.taken_quests)
+print("Сдано: ", player.passed_quests)
+# Получено:  set()
+# Сдано:  {'Поговорить с фермером', 'Принести доски из сарая', 'Охота на крыс'}
 
 
-notifier1 = MessageNotifier("Notifier1")
-printer1 = MessagePrinter("Printer1")
-printer2 = MessagePrinter("Printer2")
+# Паттерн "Цепочка обязанностей"
+# 1. Объявление возможных типов событий
+QUEST_SPEAK, QUEST_HUNT, QUEST_CARRY = "QSPEAK", "QHUNT", "QCARRY"
+# 2. Описание персонажа
+# Опишем персонажа, который будет взаимодействовать с цепочкой обязанностей
+class Character:
 
-manager = NotificationManager()
+    def __init__(self):
+        self.name = "Nagibator"
+        self.xp = 0
+        self.passed_quests = set()
+        self.taken_quests = set()
+# 3. Опишем класс события
+# При возникновении определенного события запускается цепочка обязанностей, которая может это событие обрабатывать
+class Event:
 
-manager.subscribe(notifier1)
-manager.subscribe(printer1)
-manager.subscribe(printer2)
+    def __init__(self, kind):
+        self.kind = kind
+# 4. Опишем базовое звено цепочки обязанностей
+# Элементарный обработчик просто передает событие следующему звену цепочки, если таковое имеется.
+class NullHandler:
 
-manager.notify("Hi!")
+    def __init__(self, successor=None):
+        self.__successor = successor
+
+    def handle(self, char, event):
+        if self.__successor is not None:
+            self.__successor.handle(char, event)
+# 5. Опишем обработчики квестов
+# Для каждого квеста напишем обработчик и определим событие, при котором этот обработчик будет срабатывать.
+class HandleQSpeak(NullHandler):
+
+    def handle(self, char, event):
+        if event.kind == QUEST_SPEAK:
+            xp = 100
+            quest_name = "Поговорить с фермером"
+            if event.kind not in (char.passed_quests | char.taken_quests):
+                print(f"Квест получен: \"{quest_name}\"")
+                char.taken_quests.add(event.kind)
+            elif event.kind in char.taken_quests:
+                print(f"Квест сдан: \"{quest_name}\"")
+                char.passed_quests.add(event.kind)
+                char.taken_quests.remove(event.kind)
+                char.xp += xp
+        else:
+            print("Передаю обработку дальше")
+            super().handle(char, event)
+
+
+class HandleQHunt(NullHandler):
+
+    def handle(self, char, event):
+        if event.kind == QUEST_HUNT:
+            xp = 300
+            quest_name = "Охота на крыс"
+            if event.kind not in (char.passed_quests | char.taken_quests):
+                print(f"Квест получен: \"{quest_name}\"")
+                char.taken_quests.add(event.kind)
+            elif event.kind in char.taken_quests:
+                print(f"Квест сдан: \"{quest_name}\"")
+                char.passed_quests.add(event.kind)
+                char.taken_quests.remove(event.kind)
+                char.xp += xp
+        else:
+            print("Передаю обработку дальше")
+            super().handle(char, event)
+
+
+class HandleQCarry(NullHandler):
+
+    def handle(self, char, event):
+        if event.kind == QUEST_CARRY:
+            xp = 200
+            quest_name = "Принести дрова из сарая"
+            if event.kind not in (char.passed_quests | char.taken_quests):
+                print(f"Квест получен: \"{quest_name}\"")
+                char.taken_quests.add(event.kind)
+            elif event.kind in char.taken_quests:
+                print(f"Квест сдан: \"{quest_name}\"")
+                char.passed_quests.add(event.kind)
+                char.taken_quests.remove(event.kind)
+                char.xp += xp
+        else:
+            print("Передаю обработку дальше")
+            super().handle(char, event)
+# 6. Опишем квестгивера
+# Квестгивер будет хранить цепочку обработчиков и список событий, на которые он может реагировать. Список событий можно
+# пополнять.
+# Метод handle_quests генерирует все доступные события и передает их на обработку цепочке.
+class QuestGiver:
+
+    def __init__(self):
+        self.handlers = HandleQSpeak(HandleQHunt(HandleQCarry(NullHandler())))
+        self.events = []
+
+    def add_event(self, event):
+        self.events.append(event)
+
+    def handle_quests(self, char):
+        for event in self.events:
+            self.handlers.handle(char, event)
+# 7. Создадим квестгивера и дадим ему все возможные события
+events = [Event(QUEST_CARRY), Event(QUEST_HUNT), Event(QUEST_SPEAK)]
+
+quest_giver = QuestGiver()
+
+for event in events:
+    quest_giver.add_event(event)
+# 8. Проверим работы цепочки обязанностейй на примере, аналогичном предыдущему
+player = Character()
+
+quest_giver.handle_quests(player)
+print()
+player.taken_quests = {QUEST_CARRY, QUEST_SPEAK}
+quest_giver.handle_quests(player)
+print()
+quest_giver.handle_quests(player)
+# Передаю обработку дальше
+# Передаю обработку дальше
+# Квест получен: "Принести дрова из сарая"
+# Передаю обработку дальше
+# Квест получен: "Охота на крыс"
+# Квест получен: "Поговорить с фермером"
+#
+# Передаю обработку дальше
+# Передаю обработку дальше
+# Квест сдан: "Принести дрова из сарая"
+# Передаю обработку дальше
+# Квест получен: "Охота на крыс"
+# Квест сдан: "Поговорить с фермером"
+#
+# Передаю обработку дальше
+# Передаю обработку дальше
+# Передаю обработку дальше
+# Квест сдан: "Охота на крыс"
+# Видно, что цепочка обязанностей работает, и квесты, обработка которых невозможна на данном этапе, передаются по ней
+# дальше
+
+
+
+
