@@ -706,6 +706,656 @@ quest_giver.handle_quests(player)
 # Видно, что цепочка обязанностей работает, и квесты, обработка которых невозможна на данном этапе, передаются по ней
 # дальше
 
+######################################################################################################################
+# Паттерн "Абстрактная фабрика"
+# Импортируем необходимые классы и методы
+from abc import ABC, abstractmethod
+# 1. Объявим абстрактый класс фабрики
+# Обявим методы, которые позволят создать персонажа, а также оружие и заклинание для него.
+class HeroFactory(ABC):
+    @abstractmethod
+    def create_hero(self, name):
+        pass
 
+    @abstractmethod
+    def create_weapon(self):
+        pass
+
+    @abstractmethod
+    def create_spell(self):
+        pass
+# 2. Определим конкретные фабрики
+# Оределим конкретные фабрики и необходимые классы, для каждого из классов персонажей
+class WarriorFactory(HeroFactory):
+    def create_hero(self, name):
+        return Warrior(name)
+
+    def create_weapon(self):
+        return Claymore()
+
+    def create_spell(self):
+        return Power()
+
+
+class Warrior:
+    def __init__(self, name):
+        self.name = name
+        self.weapon = None
+        self.armor = None
+        self.spell = None
+
+    def add_weapon(self, weapon):
+        self.weapon = weapon
+
+    def add_spell(self, spell):
+        self.spell = spell
+
+    def hit(self):
+        print(f"Warrior {self.name} hits with {self.weapon.hit()}")
+        self.weapon.hit()
+
+    def cast(self):
+        print(f"Warrior {self.name} casts {self.spell.cast()}")
+        self.spell.cast()
+
+
+class Claymore:
+    def hit(self):
+        return "Claymore"
+
+
+class Power:
+    def cast(self):
+        return "Power"
+
+
+class MageFactory(HeroFactory):
+    def create_hero(self, name):
+        return Mage(name)
+
+    def create_weapon(self):
+        return Staff()
+
+    def create_spell(self):
+        return Fireball()
+
+
+class Mage:
+    def __init__(self, name):
+        self.name = name
+        self.weapon = None
+        self.armor = None
+        self.spell = None
+
+    def add_weapon(self, weapon):
+        self.weapon = weapon
+
+    def add_spell(self, spell):
+        self.spell = spell
+
+    def hit(self):
+        print(f"Mage {self.name} hits with {self.weapon.hit()}")
+        self.weapon.hit()
+
+    def cast(self):
+        print(f"Mage {self.name} casts {self.spell.cast()}")
+        self.spell.cast()
+
+
+class Staff:
+    def hit(self):
+        return "Staff"
+
+
+class Fireball:
+    def cast(self):
+        return "Fireball"
+
+
+class AssassinFactory(HeroFactory):
+    def create_hero(self, name):
+        return Assassin(name)
+
+    def create_weapon(self):
+        return Dagger()
+
+    def create_spell(self):
+        return Invisibility()
+
+
+class Assassin:
+    def __init__(self, name):
+        self.name = name
+        self.weapon = None
+        self.armor = None
+        self.spell = None
+
+    def add_weapon(self, weapon):
+        self.weapon = weapon
+
+    def add_spell(self, spell):
+        self.spell = spell
+
+    def hit(self):
+        print(f"Assassin {self.name} hits with {self.weapon.hit()}")
+        self.weapon.hit()
+
+    def cast(self):
+        print(f"Assassin {self.name} casts {self.spell.cast()}")
+
+
+class Dagger:
+    def hit(self):
+        return "Dagger"
+
+
+class Invisibility:
+    def cast(self):
+        return "Invisibility"
+# 3. Определим функцию, создающую персонажей
+# Определим функцию, зависящую от фабрики. Данная функция будет создавать прсонажа и его экипировку в зависимости от
+# фабрики, которая будет передаваться в качестве аргумента.
+def create_hero(factory):
+    hero = factory.create_hero("Nagibator")
+
+    weapon = factory.create_weapon()
+    ability = factory.create_spell()
+
+    hero.add_weapon(weapon)
+    hero.add_spell(ability)
+
+    return hero
+# 4. Попробуем создать персонажей различных классов
+# Попробуем создать персонажей различных классов, передавая функции назличные фабрики.
+factory = AssassinFactory()
+player = create_hero(factory)
+player.cast()
+player.hit()
+# Assassin Nagibator casts Invisibility
+# Assassin Nagibator hits with Dagger
+factory = MageFactory()
+player = create_hero(factory)
+player.cast()
+player.hit()
+# Mage Nagibator casts Fireball
+# Mage Nagibator hits with Staff
+
+# Паттерн "Абстрактная фабрика"
+# 1. Объявим абстрактную фабрику
+# Обявим методы, которые позволят создать персонажа. Используем механизм classmethod
+class HeroFactory:
+    @classmethod
+    def create_hero(Class, name):
+        return Class.Hero(name)
+
+    @classmethod
+    def create_weapon(Class):
+        return Class.Weapon()
+
+    @classmethod
+    def create_spell(Class):
+        return Class.Spell()
+# 2. Определим конкретные фабрики
+# В каждой конкретной фабрике объявим собственные классы героя, оружия и заклинаний, которые будут специфичны для класса
+# персонажа
+class WariorFactory(HeroFactory):
+    class Hero:
+        def __init__(self, name):
+            self.name = name
+            self.weapon = None
+            self.armor = None
+            self.spell = None
+
+        def add_weapon(self, weapon):
+            self.weapon = weapon
+
+        def add_spell(self, spell):
+            self.spell = spell
+
+        def hit(self):
+            print(f"Warior hits with {self.weapon.hit()}")
+            self.weapon.hit()
+
+        def cast(self):
+            print(f"Warior casts {self.spell.cast()}")
+            self.spell.cast()
+
+    class Weapon:
+        def hit(self):
+            return "Claymore"
+
+    class Spell:
+        def cast(self):
+            return "Power"
+
+
+class MageFactory(HeroFactory):
+    class Hero:
+        def __init__(self, name):
+            self.name = name
+            self.weapon = None
+            self.armor = None
+            self.spell = None
+
+        def add_weapon(self, weapon):
+            self.weapon = weapon
+
+        def add_spell(self, spell):
+            self.spell = spell
+
+        def hit(self):
+            print(f"Mage hits with {self.weapon.hit()}")
+            self.weapon.hit()
+
+        def cast(self):
+            print(f"Mage casts {self.spell.cast()}")
+            self.spell.cast()
+
+    class Weapon:
+        def hit(self):
+            return "Staff"
+
+    class Spell:
+        def cast(self):
+            return "Fireball"
+
+
+class AssassinFactory(HeroFactory):
+    class Hero:
+        def __init__(self, name):
+            self.name = name
+            self.weapon = None
+            self.armor = None
+            self.spell = None
+
+        def add_weapon(self, weapon):
+            self.weapon = weapon
+
+        def add_spell(self, spell):
+            self.spell = spell
+
+        def hit(self):
+            print(f"Assassin hits with {self.weapon.hit()}")
+            self.weapon.hit()
+
+        def cast(self):
+            print(f"Assassin casts {self.spell.cast()}")
+
+    class Weapon:
+        def hit(self):
+            return "Dagger"
+
+    class Spell:
+        def cast(self):
+            return "Invisibility"
+# 3. Определим функцию, создающую персонажей
+# Она не отличается от базовой реализации
+def create_hero(factory):
+    hero = factory.create_hero("Nagibator")
+
+    weapon = factory.create_weapon()
+    spell = factory.create_spell()
+
+    hero.add_weapon(weapon)
+    hero.add_spell(spell)
+
+    return hero
+# 4. Попробуем создать персонажей различных классов
+# Попробуем создать персонажей различных классов, передавая функции назличные фабрики.
+player = create_hero(AssassinFactory)
+player.cast()
+player.hit()
+# Assassin casts Invisibility
+# Assassin hits with Dagger
+player = create_hero(MageFactory)
+player.cast()
+player.hit()
+# Mage casts Fireball
+# Mage hits with Staff
+
+######################################################################################################################
+# Конфигурирование с YAML
+# В данном примере будет показано, как можно сконфигурировать отчёт при помощи YAML файла.
+# В качестве фабрики, по производству отчёта возмём фабрики, созданные в предыдущих уроках, но изменим их так, чтобы
+# формирование отчёта осуществялось через загрузку yaml файла.
+# YAML файл отчёта
+# Определим строковые переменные yml_MD и yml_HTML в которых будут храниться содержание конфигурационных фалов для
+# Markdown и HTML отчёта соответственно.
+# для Markdown отчёта
+yml_MD = '''
+--- !MDreport                # указывает, что хранящаяся ниже структура относиться к типу MDreport   
+objects:                     # для хранения якорей
+  - &img !img                # якорь img хранит объект типа img
+      alt_text: coursera     # описание изображения
+      src: "https://blog.coursera.org/wp-content/uploads/2017/07/coursera-fb.png"   # адрес изображения
+report: !report              # содержит непосредственно отчёт
+  filename: report_yaml.md   # имя файла отчёта
+  title: !!str Report        # название отчёта - строковый параметр (!!str) "Report"
+  parts:                     # содержание отчёта - список частей (каждая часть начинаеться с "-")
+    - !chapter                   # первая часть отчёта - объект типа "chapter"
+      caption: "chapter one"         # заглавие первой части
+      parts:                         # содержание первой части - список ниже
+
+ # первая часть - текст.
+ # символ '>' вконце показывает, что весь блок ниже являеться содержанием. Перенос строк не учитываеться
+ # Для учёта переноса строк - символ '|'
+
+        - |                            
+          chapter
+          1
+          text               
+        - !link                          # далее ссылка
+            obj: coursera                    # текст ссылки
+            href: "https://ru.coursera.org"  # куда ссылаеться
+    - !chapter                   # вторая часть отчёта - объект типа "chapter"
+      caption: "chapter two"         # заглавие второй части
+      parts:                         # содержание второй части - список ниже
+        - "Chapter 2 header"             # сначала текст
+        - !link                          # далее ссылка
+            obj: *img                        # объект, хранящийся по якорю img (изображение) будет являться ссылкой
+            href: "https://ru.coursera.org"  # куда ссылаеться
+        - "Chapter 2 footer"             # в конце - текст'''
+# Для HTML отчёта только одно изминение — тип отчёта:
+yml_HTML = '''
+--- !HTMLreport             # указывает, что хранящаяся ниже структура относиться к типу HTMLreport
+objects:
+  - &img !img
+      alt_text: google
+      src: "https://blog.coursera.org/wp-content/uploads/2017/07/coursera-fb.png"
+report: !report
+  filename: report_yaml.html
+  title: Report
+  parts:
+    - !chapter
+      caption: "chapter one"
+      parts:
+        - "chapter 1 text"
+        - !link
+            obj: coursera
+            href: "https://ru.coursera.org"
+    - !chapter
+      caption: "chapter two"
+      parts:
+        - "Chapter 2 header"
+        - !link
+            obj: *img
+            href: "https://ru.coursera.org"
+        - "Chapter 2 footer"'''
+# Далее перейдём к изменению абстрактной фабрики ReportFactory
+import yaml      # для работы с PyYAML
+
+
+# теперь ReportFactory - потомок yaml.YAMLObject.
+# Сделано для того, чтобы yaml оработчик знал новый тип данных, указанный в yaml_tag
+# он будет определён в фабриках - потомках
+class ReportFactory(yaml.YAMLObject):
+
+    # данные yaml фала - структура отчёта одинакова для всех потомков.
+    # В связи с этим - получение отчёта из yaml файла - классовый метод со специальным именем from_yaml
+    @classmethod
+    def from_yaml(Class, loader, node):
+        # сначала опишем функции для обработки каждого нового типа
+        # метод loader.construct_mapping() формирует из содержания node словарь
+
+        # обработчик создания отчёта !report
+        def get_report(loader, node):
+            data = loader.construct_mapping(node)
+            rep = Class.make_report(data["title"])
+            rep.filename = data["filename"]
+            # на данный момент data["parts"] пуст. Он будет заполнен позже, соответствующим обработчиком,
+            # сохраняем на него ссылку, дополнив сразу частями из rep.parts
+            data["parts"].extend(rep.parts)
+            rep.parts = data["parts"]
+            return rep
+
+    # обработчик создания части !chapter
+        def get_chapter(loader, node):
+            data = loader.construct_mapping(node)
+            ch = Class.make_chapter(data["caption"])
+            # аналогично предыдущему обработчику
+            data["parts"].extend(ch.objects)
+            ch.objects = data["parts"]
+            return ch
+
+    # обработчик создания ссылки !link
+        def get_link(loader, node):
+            data = loader.construct_mapping(node)
+            lnk = Class.make_link(data["obj"], data["href"])
+            return lnk
+
+    # обработчик создания изображения !img
+        def get_img(loader, node):
+            data = loader.construct_mapping(node)
+            img = Class.make_img(data["alt_text"], data["src"])
+            return img
+
+    # добавляем обработчики
+        loader.add_constructor(u"!report", get_report)
+        loader.add_constructor(u"!chapter", get_chapter)
+        loader.add_constructor(u"!link", get_link)
+        loader.add_constructor(u"!img", get_img)
+
+    # возвращаем результат yaml обработчика - отчёт
+        return loader.construct_mapping(node)['report']
+
+    # ниже - без изменений
+
+    @classmethod
+    def make_report(Class, title):
+        return Class.Report(title)
+
+    @classmethod
+    def make_chapter(Class, caption):
+        return Class.Chapter(caption)
+
+    @classmethod
+    def make_link(Class, obj, href):
+        return Class.Link(obj, href)
+
+    @classmethod
+    def make_img(Class, alt_text, src):
+        return Class.Img(alt_text, src)
+# Далее берём непосредственно фабрики по производству элементов отчёта. Добавляем соответствие фабрик yaml типу
+class MDreportFactory(ReportFactory):
+    yaml_tag = u'!MDreport'        # указываем соответствие
+
+    class Report:
+        def __init__(self, title):
+            self.parts = []
+            self.parts.append("# "+title+"\n\n")
+
+        def add(self, part):
+            self.parts.append(part)
+
+        def save(self):          # вносим изменения - имя файла отчёта указываеться в yaml файле
+            try:
+                file = open(self.filename, "w", encoding="utf-8")
+                print('\n'.join(map(str, self.parts)), file=file)
+            finally:
+                if isinstance(self.filename, str) and file is not None:
+                    file.close()
+
+    class Chapter:
+        def __init__(self, caption):
+            self.caption = caption
+            self.objects = []
+
+        def add(self, obj):
+            print(obj)
+            self.objects.append(obj)
+
+        def __str__(self):
+            return f'## {self.caption}\n\n' + ''.join(map(str, self.objects))
+
+    class Link:
+        def __init__(self, obj, href):
+            self.obj = obj
+            self.href = href
+
+        def __str__(self):
+            return f'[{self.obj}]({self.href})'
+
+    class Img:
+        def __init__(self, alt_text, src):
+            self.alt_text = alt_text
+            self.src = src
+
+        def __str__(self):
+            return f'![{self.alt_text}]({self.src})'
+
+
+class HTMLreportFactory(ReportFactory):
+    yaml_tag = u'!HTMLreport'
+
+    class Report:
+        def __init__(self, title):
+            self.title = title
+            self.parts = []
+            self.parts.append("<html>")
+            self.parts.append("<head>")
+            self.parts.append("<title>" + title + "</title>")
+            self.parts.append("<meta charset=\"utf-8\">")
+            self.parts.append("</head>")
+            self.parts.append("<body>")
+
+        def add(self, part):
+            self.parts.append(part)
+
+        def save(self):
+            try:
+                file = open(self.filename, "w", encoding="utf-8")
+                print('\n'.join(map(str, self.parts)), file=file)
+            finally:
+                if isinstance(self.filename, str) and file is not None:
+                    file.close()
+
+    class Chapter:
+        def __init__(self, caption):
+            self.caption = caption
+            self.objects = []
+
+        def add(self, obj):
+            self.objects.append(obj)
+
+        def __str__(self):
+            ch = f'<h1>{self.caption}</h1>'
+            return ch + ''.join(map(str, self.objects))
+
+    class Link:
+        def __init__(self, obj, href):
+            self.obj = obj
+            self.href = href
+
+        def __str__(self):
+            return f'<a href="{self.href}">{self.obj}</a>'
+
+    class Img:
+        def __init__(self, alt_text, src):
+            self.alt_text = alt_text
+            self.src = src
+
+        def __str__(self):
+            return f'<img alt = "{self.alt_text}", sr c ="{self.src}"/>'
+# Осталось провести загрузку yaml файла и вывести результат
+from IPython.display import display, Markdown, HTML
+
+txtreport = yaml.load(yml_MD)            # загружаем yaml файл markdown отчёта
+txtreport.save()                         # сохраняем
+print("Сохранено:", txtreport.filename)  # вывод
+
+HTMLreport = yaml.load(yml_HTML)         # загружаем yaml файл markdown отчёта
+HTMLreport.save()                        # сохраняем
+print("Сохранено:", HTMLreport.filename)  # вывод
+
+# Выводим результат работы в jupyter notebook
+
+display(Markdown('# <span style="color:red">report.md</span>'))
+display(Markdown(filename="report_yaml.md"))
+display(Markdown('# <span style="color:red">report.html</span>'))
+display(HTML(filename="report_yaml.html"))
+# Сохранено: report_yaml.md
+# Сохранено: report_yaml.html
+# <IPython.core.display.Markdown object>
+# <IPython.core.display.Markdown object>
+# <IPython.core.display.Markdown object>
+# Report
+
+# У меня проблемы с пониманием процесса создания объектов с использованием yaml, не могли бы вы пояснить? А то совсем
+# запутался.
+# Постараюсь коротко пояснить. Когда происходит загрузка (по существу создание объектов на основании yaml), используются
+# уже определенные конструкторы типов данных (например: для списков, чисел , словарей). Если мы определили свой класс в
+# коде, то мы не сможем использовать указание на него в yaml файле, так конструктор для него отсутствует.  Для
+# исправления этой ситуации возможны два варианта:
+# первый - не изменяя определения пользовательского класса (не внося изменения в код нашего класса), определить функцию
+# конструктор, которая будет загружать данные и на основе их создавать экземпляр необходимого типа данных и возвращать
+# его. Далее, эту созданную функцию нужно зарегистрировать (добавить к существующим конструкторам) с помощью функции
+# add_constructor.
+# второй - добавить в реализацию класса нужного нам типа данных (в код нашего класса), атрибут класса yaml_tag и метод
+# класса с названием from_yaml, который по существу делает тоже самое, что и функция конструктор из первого варианта.
+# При этом нужно соблюсти еще одно условие - класс должен наследоваться от  yaml.YAMLObject.
+# Вот пара примеров:
+# демонстрация загрузки yaml по первому варианту
+# важное замечание версия PyYAML - 3.13
+import yaml
+
+
+# класс определяющий пользовательский тип данных
+class ExampleClass:
+    def __init__(self, value):
+        self.value = value
+
+    def __str__(self):
+        return f'ExampleClass, value - {self.value}'
+
+
+# функция конструктор для типа данных ExampleClass
+def constuctor_example_class(loader, node):
+    # получаем данные из yaml
+    value = loader.construct_mapping(node)
+    # необходимо выбрать из полученные данных необходимые
+    # для создания экземпляра класса ExampleClass
+    return ExampleClass(*value)
+
+
+# регистрируем конструктор
+yaml.add_constructor('!example_class', constuctor_example_class)
+# yaml строка
+document = """!example_class {5}"""
+# выполняем загрузку
+obj = yaml.load(document)
+# выведем полученный объект, ожидаем строку
+# ExampleClass, value - 5
+
+
+# демонстрация загрузки yaml по второму варианту ###############################################################
+# важное замечание версия PyYAML - 3.13
+import yaml
+
+# класс определяющий пользовательский тип данных
+class ExampleClass(yaml.YAMLObject):  # <-- добавим родительский класс yaml.YAMLObject
+    yaml_tag = '!example_class'  # <-- добавим тег
+
+    @classmethod
+    def from_yaml(cls, loader, node):  # <-- добавим метод класса from_yaml
+        # получаем данные из yaml
+        value = loader.construct_mapping(node)
+        # необходимо выбрать из полученные данных необходимые
+        # для создания экземпляра класса ExampleClass
+        return ExampleClass(*value)
+
+    def __init__(self, value):
+        self.value = value
+
+    def __str__(self):
+        return f'ExampleClass, value - {self.value}'
+
+
+# yaml строка
+document = """!example_class {7}"""
+# выполняем загрузку
+obj = yaml.load(document)
+# выведем полученный объект, ожидаем строку
+# ExampleClass, value - 7
+print(obj)
 
 
