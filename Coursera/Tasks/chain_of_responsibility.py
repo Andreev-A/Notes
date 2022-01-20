@@ -152,3 +152,4 @@ class FloatHandler(NullHandler):
                 obj.float_field = event.prop;
         else:
             return super().handle(obj, event)
+
