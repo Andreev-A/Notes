@@ -76,14 +76,13 @@ class MapFactory(yaml.YAMLObject):
 
     @classmethod
     def from_yaml(cls, loader, node):
-
         # FIXME
         # get _map and _obj
 
-        # _map = cls.Map()
-        # _obj = cls.Objects()
-        # config = loader.construct_mapping(node)
-        # _obj.config.update(config)
+        _map = cls.Map()
+        _obj = cls.Objects()
+        config = loader.construct_mapping(node)
+        _obj.config = config
 
         return {'map': _map, 'obj': _obj}
 

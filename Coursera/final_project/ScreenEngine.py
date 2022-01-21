@@ -29,24 +29,32 @@ class ScreenHandle(pygame.Surface):
             canvas.blit(self.successor, self.next_coord)
             self.successor.draw(canvas)
 
-    # FIXME connect_engine
+    # FIXME подключить _ двигатель +++++
+    def connect_engine(self, engine):
+        if self.successor is not None:
+            return self.successor.connect_engine(engine)
 
 
 class GameSurface(ScreenHandle):
-
+    # FIXME сохранить двигатель и отправить его следующему в цепочке +++++
     def connect_engine(self, engine):
-        # FIXME save engine and send it to next in chain
+        self.game_engine = engine
+        if self.successor is not None:
+            return self.successor.connect_engine(engine)
 
     def draw_hero(self):
         self.game_engine.hero.draw(self)
 
     def draw_map(self):
 
-        # FIXME || calculate (min_x,min_y) - left top corner
+        # FIXME || calculate (min_x,min_y) - left top corner - вычислить (min_x,min_y) - левый верхний угол
 
         min_x = 0
         min_y = 0
-
+        # GameSurface((640, 480), pygame.SRCALPHA, (0, 480),
+        hero_pos = self.game_engine.hero.position
+        min_x = hero_pos[0] - 10
+        min_y = hero_pos[1] -10
     ##
 
         if self.game_engine.map:
@@ -82,7 +90,7 @@ class GameSurface(ScreenHandle):
                                       (obj.position[1] - min_y) * self.game_engine.sprite_size))
         self.draw_hero()
 
-    # draw next surface in chain
+    # draw next surface in chain - нарисовать следующую поверхность в цепочке
 
 
 class ProgressBar(ScreenHandle):
@@ -91,8 +99,12 @@ class ProgressBar(ScreenHandle):
         super().__init__(*args, **kwargs)
         self.fill(colors["wooden"])
 
-    def connect_engine(self, engine):
+    # def connect_engine(self, engine):
         # FIXME save engine and send it to next in chain
+    def connect_engine(self, engine):
+        self.engine = engine
+        if self.successor is not None:
+            return self.successor.connect_engine(engine)
 
     def draw(self, canvas):
         self.fill(colors["wooden"])
@@ -172,9 +184,9 @@ class InfoWindow(ScreenHandle):
     # FIXME
     # draw next surface in chain
 
-    def connect_engine(self, engine):
-        # FIXME set this class as Observer to engine and send it to next in
-        # chain
+    # def connect_engine(self, engine):
+        # FIXME set this class as Observer to engine and send it to next in - установите этот класс как Observer для двигателя и отправьте его следующему в
+        # chain - цепь
 
 
 class HelpWindow(ScreenHandle):
@@ -194,8 +206,12 @@ class HelpWindow(ScreenHandle):
         self.data.append([" R ", "Restart Game"])
     # FIXME You can add some help information
 
-    def connect_engine(self, engine):
+    # def connect_engine(self, engine):
         # FIXME save engine and send it to next in chain
+    def connect_engine(self, engine):
+        self.engine = engine
+        if self.successor is not None:
+            return self.successor.connect_engine(engine)
 
     def draw(self, canvas):
         alpha = 0
