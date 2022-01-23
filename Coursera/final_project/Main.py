@@ -42,11 +42,17 @@ def create_game(sprite_size, is_new):
                                                                                (0, 0))
                                                                            ))))
 
+
     else:
         engine.sprite_size = sprite_size
         hero.sprite = Service.create_sprite(
             os.path.join("texture", "Hero.png"), sprite_size)
         Service.service_init(sprite_size, False)
+
+        # engine.sprite_size = 5
+        # hero.sprite = Service.create_sprite(
+        #     os.path.join("texture", "Hero.png"), 5)
+        # Service.service_init(5, False)
 
     Logic.GameEngine.sprite_size = sprite_size
 

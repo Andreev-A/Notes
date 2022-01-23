@@ -272,3 +272,4 @@ def service_init(sprite_size, full=True):
         level_list = yaml.load(file.read())['levels']
         level_list.append({'map': EndMap.Map(), 'obj': EndMap.Objects()})
         file.close()
+    # print(object_list_prob)

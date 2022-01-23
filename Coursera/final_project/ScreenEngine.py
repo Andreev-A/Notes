@@ -1,5 +1,6 @@
 import pygame
 import collections
+import Service
 
 colors = {
     "black": (0, 0, 0, 255),
@@ -45,23 +46,31 @@ class GameSurface(ScreenHandle):
     def draw_hero(self):
         self.game_engine.hero.draw(self)
 
-    def draw_map(self):
+    def draw_map(self, asd):
 
         # FIXME || calculate (min_x,min_y) - left top corner - вычислить (min_x,min_y) - левый верхний угол
 
         min_x = 0
         min_y = 0
+        # print(self.game_engine.hero.position)
         # GameSurface((640, 480), pygame.SRCALPHA, (0, 480),
         hero_pos = self.game_engine.hero.position
-        min_x = hero_pos[0] - 10
-        min_y = hero_pos[1] -10
+        min_x = hero_pos[0] - 8 if hero_pos[0] - 8 > 0 else 0
+        min_y = hero_pos[1] - 5 if hero_pos[1] - 5 > 0 else 0
+
     ##
 
         if self.game_engine.map:
-            for i in range(len(self.game_engine.map[0]) - min_x):
-                for j in range(len(self.game_engine.map) - min_y):
-                    self.blit(self.game_engine.map[min_y + j][min_x + i][
-                              0], (i * self.game_engine.sprite_size, j * self.game_engine.sprite_size))
+            if asd is True:
+                for i in range(len(self.game_engine.map[0]) - min_x):
+                    for j in range(len(self.game_engine.map) - min_y):
+                        self.blit(self.game_engine.map[min_y + j][min_x + i][
+                                  0], (i * self.game_engine.sprite_size, j * self.game_engine.sprite_size))
+            if asd is False:
+                for i in range(len(self.game_engine.map[0]) - min_x):
+                    for j in range(len(self.game_engine.map) - min_y):
+                        self.blit(self.game_engine.map[min_y + j][min_x + i][
+                                  0], (i * 10, j * 10))
         else:
             self.fill(colors["white"])
 
@@ -71,10 +80,15 @@ class GameSurface(ScreenHandle):
 
         min_x = 0
         min_y = 0
+        hero_pos = self.game_engine.hero.position
+        min_x = hero_pos[0] - 8 if hero_pos[0] - 8 > 0 else 0
+        min_y = hero_pos[1] - 5 if hero_pos[1] - 5 > 0 else 0
 
     ##
-        self.blit(sprite, ((coord[0] - min_x) * self.game_engine.sprite_size,
-                           (coord[1] - min_y) * self.game_engine.sprite_size))
+        self.blit(sprite, ((coord[0] - min_x) * size,
+                           (coord[1] - min_y) * size))
+        # self.blit(sprite, ((coord[0] - min_x) * 5,
+        #                    (coord[1] - min_y) * 5))
 
     def draw(self, canvas):
         size = self.game_engine.sprite_size
@@ -82,16 +96,35 @@ class GameSurface(ScreenHandle):
 
         min_x = 0
         min_y = 0
+        hero_pos = self.game_engine.hero.position
+        min_x = hero_pos[0] - 8 if hero_pos[0] - 8 > 0 else 0
+        min_y = hero_pos[1] - 5 if hero_pos[1] - 5 > 0 else 0
 
     ##
-        self.draw_map()
+        Service.service_init(size, False)
+        self.draw_map(True)
         for obj in self.game_engine.objects:
-            self.blit(obj.sprite[0], ((obj.position[0] - min_x) * self.game_engine.sprite_size,
-                                      (obj.position[1] - min_y) * self.game_engine.sprite_size))
+            self.blit(obj.sprite[0], ((obj.position[0] - min_x) * size,
+                                      (obj.position[1] - min_y) * size))
+
+        Service.service_init(10, False)
+        self.draw_map(False)
+        # print(self.game_engine.objects)
+        for obj in self.game_engine.objects:
+            self.blit(obj.sprite[0], ((obj.position[0] - min_x) * 10,
+                                      (obj.position[1] - min_y) * 10))
+
+
+        # self.draw_hero()
+
+
         self.draw_hero()
+        # Service.service_init(5)
 
     # draw next surface in chain - нарисовать следующую поверхность в цепочке
-
+        if self.successor is not None:
+            canvas.blit(self.successor, self.next_coord)
+            return self.successor.draw(canvas)
 
 class ProgressBar(ScreenHandle):
 
@@ -157,7 +190,9 @@ class ProgressBar(ScreenHandle):
                   (550, 30))
         self.blit(font.render(f'{self.engine.score:.4f}', True, colors["black"]),
                   (550, 70))
-
+        if self.successor is not None:
+            canvas.blit(self.successor, self.next_coord)
+            return self.successor.draw(canvas)
     # draw next surface in chain
 
 
@@ -183,11 +218,18 @@ class InfoWindow(ScreenHandle):
 
     # FIXME
     # draw next surface in chain
+        if self.successor is not None:
+            canvas.blit(self.successor, self.next_coord)
+            return self.successor.draw(canvas)
 
     # def connect_engine(self, engine):
         # FIXME set this class as Observer to engine and send it to next in - установите этот класс как Observer для двигателя и отправьте его следующему в
         # chain - цепь
-
+    def connect_engine(self, engine):
+        self.engine = engine
+        engine.subscribe(self)
+        if self.successor is not None:
+            return self.successor.connect_engine(engine)
 
 class HelpWindow(ScreenHandle):
 
@@ -231,3 +273,6 @@ class HelpWindow(ScreenHandle):
                           (150, 50 + 30 * i))
     # FIXME
     # draw next surface in chain
+        if self.successor is not None:
+            canvas.blit(self.successor, self.next_coord)
+            return self.successor.draw(canvas)
