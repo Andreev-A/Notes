@@ -12,9 +12,8 @@ colors = {
     "wooden": (153, 92, 0, 255),
 }
 
-
+MINI_MAP = False
 class ScreenHandle(pygame.Surface):
-
     def __init__(self, *args, **kwargs):
         if len(args) > 1:
             self.successor = args[-1]
@@ -31,7 +30,7 @@ class ScreenHandle(pygame.Surface):
             canvas.blit(self.successor, self.next_coord)
             self.successor.draw(canvas)
 
-    # FIXME подключить _ двигатель +++++
+
     def connect_engine(self, engine):
         if self.successor is not None:
             return self.successor.connect_engine(engine)
@@ -50,30 +49,31 @@ class GameSurface(ScreenHandle):
 
 
 
-    def draw_map(self, mini_map):
-
+    def draw_map(self):
+        global MINI_MAP
         # FIXME || calculate (min_x,min_y) - left top corner - вычислить (min_x,min_y) - левый верхний угол
-
+        size = self.game_engine.sprite_size
         min_x = 0
         min_y = 0
         hero_pos = self.game_engine.hero.position
-        min_x = hero_pos[0] - 8 if hero_pos[0] - 8 > 0 else 0
+        min_x = int(hero_pos[0] - 480 / size) if hero_pos[0] - 480 / size > 0 else 0
         min_y = hero_pos[1] - 5 if hero_pos[1] - 5 > 0 else 0
 
     ##
 
         if self.game_engine.map:
-            if mini_map is False:
+            if MINI_MAP is False:
                 for i in range(len(self.game_engine.map[0]) - min_x):
                     for j in range(len(self.game_engine.map) - min_y):
                         self.blit(self.game_engine.map[min_y + j][min_x + i][
-                                  0], (i * self.game_engine.sprite_size, j * self.game_engine.sprite_size))
-            if mini_map is True:
-                for i in range(len(self.game_engine.map[0]) - min_x):
-                    for j in range(len(self.game_engine.map) - min_y):
-                        self.blit(self.game_engine.map[min_y + j][min_x + i][
+                                  0], (i * size, j * size))
+            else:
+
+                for i in range(len(self.game_engine.map[0])):
+                    for j in range(len(self.game_engine.map)):
+                        self.blit(self.game_engine.map[j][i][
                                   0], (i * 7, j * 7))
-                # print(self.game_engine.map)
+
         else:
             self.fill(colors["white"])
 
@@ -84,15 +84,16 @@ class GameSurface(ScreenHandle):
         min_x = 0
         min_y = 0
         hero_pos = self.game_engine.hero.position
-        min_x = hero_pos[0] - 8 if hero_pos[0] - 8 > 0 else 0
+        min_x = int(hero_pos[0] - 480 / size) if hero_pos[0] - 480 / size > 0 else 0
         min_y = hero_pos[1] - 5 if hero_pos[1] - 5 > 0 else 0
 
     ##
-        self.blit(sprite, ((coord[0] - min_x) * size,
+        if MINI_MAP is False:
+            self.blit(sprite, ((coord[0] - min_x) * size,
                            (coord[1] - min_y) * size))
-
-        self.blit(Service.create_sprite(os.path.join("texture", "Hero.png"), 7), ((coord[0] - min_x) * 7,
-                           (coord[1] - min_y) * 7))
+        else:
+            self.blit(Service.create_sprite(os.path.join("texture", "Hero.png"), 10), ((coord[0]) * 7,
+                           (coord[1]) * 7))
 
 
     def draw(self, canvas):
@@ -102,23 +103,23 @@ class GameSurface(ScreenHandle):
         min_x = 0
         min_y = 0
         hero_pos = self.game_engine.hero.position
-        min_x = hero_pos[0] - 8 if hero_pos[0] - 8 > 0 else 0
+        min_x = int(hero_pos[0] - 480 / size) if hero_pos[0] - 480 / size > 0 else 0
         min_y = hero_pos[1] - 5 if hero_pos[1] - 5 > 0 else 0
 
     ##
-        Service.service_init(size, False)
-        self.draw_map(False)
-        for obj in self.game_engine.objects:
-            self.blit(obj.sprite[0], ((obj.position[0] - min_x) * size,
-                                      (obj.position[1] - min_y) * size))
-
-
-        Service.service_init(10, False)
-        self.draw_map(True)
-        # print(self.game_engine.objects)
-        for obj in self.game_engine.objects:
-            self.blit(obj.sprite[0], ((obj.position[0] - min_x) * 7,
-                                      (obj.position[1] - min_y) * 7))
+        if MINI_MAP is False:
+            Service.service_init(size, False)
+            self.draw_map()
+            for obj in self.game_engine.objects:
+                self.blit(obj.sprite[0], ((obj.position[0] - min_x) * size,
+                                          (obj.position[1] - min_y) * size))
+        else:
+            Service.service_init(11, False)
+            self.draw_map()
+            # print(self.game_engine.objects)
+            for obj in self.game_engine.objects:
+                self.blit(obj.sprite[0], ((obj.position[0]) * 7,
+                                          (obj.position[1]) * 7))
 
         self.draw_hero()
 
@@ -201,7 +202,7 @@ class InfoWindow(ScreenHandle):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.len = 30
+        self.len = 16
         clear = []
         self.data = collections.deque(clear, maxlen=self.len)
 

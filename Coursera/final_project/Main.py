@@ -60,7 +60,7 @@ size = 60
 create_game(size, True)
 
 while engine.working:
-
+    s = None
     if KEYBOARD_CONTROL:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -114,12 +114,13 @@ while engine.working:
         else:
             create_game()
 
-    # if SE.mini_map:
+    # if SE.MINI_MAP:
+    SE.MINI_MAP = True
     gameDisplay.blit(drawer, (0, 0))
-    # if not SE.mini_map:
+    drawer.draw(gameDisplay)
+    SE.MINI_MAP = False
     gameDisplay.blit(drawer, (640, 315))
     drawer.draw(gameDisplay)
-
     pygame.display.update()
 
 pygame.display.quit()
