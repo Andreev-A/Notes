@@ -88,7 +88,6 @@ class MapFactory(yaml.YAMLObject):
 
 
 class EndMap(MapFactory):
-
     yaml_tag = "!end_map"
 
     class Map:

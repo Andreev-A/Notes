@@ -34,9 +34,9 @@ def create_game(sprite_size, is_new):
         Service.service_init(sprite_size)
         Service.reload_game(engine, hero)
         # with ScreenEngine as SE:
-        drawer = SE.GameSurface((640, 480), pygame.SRCALPHA, (0, 480),
+        drawer = SE.GameSurface((800, 600), pygame.SRCALPHA, (0, 480),
                                 SE.ProgressBar((640, 120), (640, 0),
-                                               SE.InfoWindow((160, 600), (50, 50),
+                                               SE.InfoWindow((160, 315), (50, 50),
                                                              SE.HelpWindow((700, 500), pygame.SRCALPHA, (0, 0),
                                                                            SE.ScreenHandle(
                                                                                (0, 0))
@@ -48,11 +48,6 @@ def create_game(sprite_size, is_new):
         hero.sprite = Service.create_sprite(
             os.path.join("texture", "Hero.png"), sprite_size)
         Service.service_init(sprite_size, False)
-
-        # engine.sprite_size = 5
-        # hero.sprite = Service.create_sprite(
-        #     os.path.join("texture", "Hero.png"), 5)
-        # Service.service_init(5, False)
 
     Logic.GameEngine.sprite_size = sprite_size
 
@@ -119,7 +114,10 @@ while engine.working:
         else:
             create_game()
 
+    # if SE.mini_map:
     gameDisplay.blit(drawer, (0, 0))
+    # if not SE.mini_map:
+    gameDisplay.blit(drawer, (640, 315))
     drawer.draw(gameDisplay)
 
     pygame.display.update()

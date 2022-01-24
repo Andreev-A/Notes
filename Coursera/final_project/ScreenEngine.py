@@ -1,6 +1,7 @@
 import pygame
 import collections
 import Service
+import os
 
 colors = {
     "black": (0, 0, 0, 255),
@@ -46,14 +47,15 @@ class GameSurface(ScreenHandle):
     def draw_hero(self):
         self.game_engine.hero.draw(self)
 
-    def draw_map(self, asd):
+
+
+
+    def draw_map(self, mini_map):
 
         # FIXME || calculate (min_x,min_y) - left top corner - вычислить (min_x,min_y) - левый верхний угол
 
         min_x = 0
         min_y = 0
-        # print(self.game_engine.hero.position)
-        # GameSurface((640, 480), pygame.SRCALPHA, (0, 480),
         hero_pos = self.game_engine.hero.position
         min_x = hero_pos[0] - 8 if hero_pos[0] - 8 > 0 else 0
         min_y = hero_pos[1] - 5 if hero_pos[1] - 5 > 0 else 0
@@ -61,16 +63,17 @@ class GameSurface(ScreenHandle):
     ##
 
         if self.game_engine.map:
-            if asd is True:
+            if mini_map is False:
                 for i in range(len(self.game_engine.map[0]) - min_x):
                     for j in range(len(self.game_engine.map) - min_y):
                         self.blit(self.game_engine.map[min_y + j][min_x + i][
                                   0], (i * self.game_engine.sprite_size, j * self.game_engine.sprite_size))
-            if asd is False:
+            if mini_map is True:
                 for i in range(len(self.game_engine.map[0]) - min_x):
                     for j in range(len(self.game_engine.map) - min_y):
                         self.blit(self.game_engine.map[min_y + j][min_x + i][
-                                  0], (i * 10, j * 10))
+                                  0], (i * 7, j * 7))
+                # print(self.game_engine.map)
         else:
             self.fill(colors["white"])
 
@@ -87,8 +90,10 @@ class GameSurface(ScreenHandle):
     ##
         self.blit(sprite, ((coord[0] - min_x) * size,
                            (coord[1] - min_y) * size))
-        # self.blit(sprite, ((coord[0] - min_x) * 5,
-        #                    (coord[1] - min_y) * 5))
+
+        self.blit(Service.create_sprite(os.path.join("texture", "Hero.png"), 7), ((coord[0] - min_x) * 7,
+                           (coord[1] - min_y) * 7))
+
 
     def draw(self, canvas):
         size = self.game_engine.sprite_size
@@ -102,24 +107,20 @@ class GameSurface(ScreenHandle):
 
     ##
         Service.service_init(size, False)
-        self.draw_map(True)
+        self.draw_map(False)
         for obj in self.game_engine.objects:
             self.blit(obj.sprite[0], ((obj.position[0] - min_x) * size,
                                       (obj.position[1] - min_y) * size))
 
+
         Service.service_init(10, False)
-        self.draw_map(False)
+        self.draw_map(True)
         # print(self.game_engine.objects)
         for obj in self.game_engine.objects:
-            self.blit(obj.sprite[0], ((obj.position[0] - min_x) * 10,
-                                      (obj.position[1] - min_y) * 10))
-
-
-        # self.draw_hero()
-
+            self.blit(obj.sprite[0], ((obj.position[0] - min_x) * 7,
+                                      (obj.position[1] - min_y) * 7))
 
         self.draw_hero()
-        # Service.service_init(5)
 
     # draw next surface in chain - нарисовать следующую поверхность в цепочке
         if self.successor is not None:
