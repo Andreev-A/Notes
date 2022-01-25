@@ -117,6 +117,7 @@ while engine.working:
     SE.MINI_MAP = True
     gameDisplay.blit(drawer, (0, 0))
     drawer.draw(gameDisplay)
+
     SE.MINI_MAP = False
     gameDisplay.blit(drawer, (640, 315))
     drawer.draw(gameDisplay)

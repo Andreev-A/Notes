@@ -219,6 +219,7 @@ class HelpWindow(ScreenHandle):
 
     # FIXME You can add some help information
 
+
     def connect_engine(self, engine):
         self.engine = engine
         if self.successor is not None:

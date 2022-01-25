@@ -302,6 +302,7 @@ class SpecialMap(MapFactory):
                 for j in range(len(i)):
                     i[j] = wall if i[j] == '0' else floor1
 
+
         def get_map(self):
             return self.Map
 
