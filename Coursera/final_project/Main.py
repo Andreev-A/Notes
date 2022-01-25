@@ -34,7 +34,7 @@ def create_game(sprite_size, is_new):
         Service.service_init(sprite_size)
         Service.reload_game(engine, hero)
         # with ScreenEngine as SE:
-        drawer = SE.GameSurface((800, 600), pygame.SRCALPHA, (0, 480),
+        drawer = SE.GameSurface((640, 480), pygame.SRCALPHA, (0, 480),
                                 SE.ProgressBar((640, 120), (640, 0),
                                                SE.InfoWindow((160, 315), (50, 50),
                                                              SE.HelpWindow((700, 500), pygame.SRCALPHA, (0, 0),
@@ -114,13 +114,13 @@ while engine.working:
         else:
             create_game()
 
-    # if SE.MINI_MAP:
     SE.MINI_MAP = True
     gameDisplay.blit(drawer, (0, 0))
     drawer.draw(gameDisplay)
     SE.MINI_MAP = False
     gameDisplay.blit(drawer, (640, 315))
     drawer.draw(gameDisplay)
+
     pygame.display.update()
 
 pygame.display.quit()

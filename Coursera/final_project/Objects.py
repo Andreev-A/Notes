@@ -10,11 +10,13 @@ def create_sprite(img, sprite_size):
     sprite.blit(icon, (0, 0))
     return sprite
 
+
 class AbstractObject(ABC):
 
     @abstractmethod
     def draw(self, display):
         pass
+
 
 class Interactive(ABC):
 
@@ -51,6 +53,7 @@ class Creature(AbstractObject):
 
     def draw(self, display):
         display.draw_object(self.sprite, self.position)
+
 
 class Hero(Creature):
 
@@ -139,6 +142,7 @@ class Effect(Hero):
 # add classes
 import Service
 
+
 class Enemy(Creature, Interactive):
 
     def __init__(self, icon, stats, xp, position):
@@ -162,6 +166,7 @@ class Enemy(Creature, Interactive):
             for m in hero.level_up():
                 engine.notify(m)
             self.action(engine, hero)
+
 
 class Berserk(Effect):
 
