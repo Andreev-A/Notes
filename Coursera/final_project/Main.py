@@ -91,7 +91,6 @@ while engine.working:
                         iteration += 1
                 if event.key == pygame.K_q:
                     engine.minimap_drawing = not engine.minimap_drawing
-
                 else:
                     if event.key == pygame.K_RETURN:
                         create_game()
@@ -115,12 +114,15 @@ while engine.working:
         else:
             create_game()
 
-    SE.MINI_MAP = True
+    gameDisplay.fill((153, 92, 0, 255))
+
+    create_game(7, False)
     gameDisplay.blit(drawer, (0, 0))
     drawer.draw(gameDisplay)
 
-    SE.MINI_MAP = False
-    gameDisplay.blit(drawer, (640, 315))
+    create_game(size, False)
+    if engine.minimap_drawing:
+        gameDisplay.blit(drawer, (640, 315))
     drawer.draw(gameDisplay)
 
     pygame.display.update()

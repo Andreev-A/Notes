@@ -1,8 +1,5 @@
 import pygame
 import collections
-import Service
-import os
-import Logic
 
 colors = {
     "black": (0, 0, 0, 255),
@@ -12,7 +9,6 @@ colors = {
     "blue": (0, 0, 255, 255),
     "wooden": (153, 92, 0, 255),
 }
-MINI_MAP = False
 
 
 class ScreenHandle(pygame.Surface):
@@ -57,46 +53,26 @@ class GameSurface(ScreenHandle):
         self.min_y = int(max(0, hero_pos[1] - screen_size[1] / size + 3))
 
         if self.game_engine.map:
-            if not MINI_MAP:
-                for i in range(len(self.game_engine.map[0]) - self.min_x):
-                    for j in range(len(self.game_engine.map) - self.min_y):
-                        self.blit(self.game_engine.map[self.min_y + j][
-                                      self.min_x + i][0], (i * size, j * size))
-            else:
-                if Logic.GameEngine.minimap_drawing:
-                    for i in range(len(self.game_engine.map[0])):
-                        for j in range(len(self.game_engine.map)):
-                            self.blit(self.game_engine.map[j][i][0],
-                                      (i * 7, j * 7))
-                else:
-                    self.fill(colors["wooden"])
-                print(Logic.GameEngine.minimap_drawing)
+            for i in range(len(self.game_engine.map[0]) - self.min_x):
+                for j in range(len(self.game_engine.map) - self.min_y):
+                    self.blit(self.game_engine.map[self.min_y + j][
+                                  self.min_x + i][0], (i * size, j * size))
         else:
             self.fill(colors["white"])
 
     def draw_object(self, sprite, coord):
         size = self.game_engine.sprite_size
-        if not MINI_MAP:
-            self.blit(sprite, ((coord[0] - self.min_x) * size,
-                               (coord[1] - self.min_y) * size))
-        else:
-            self.blit(Service.create_sprite(os.path.join("texture", "Hero.png"), 10), ((coord[0]) * 7,
-                                                                                       (coord[1]) * 7))
+
+        self.blit(sprite, ((coord[0] - self.min_x) * size,
+                  (coord[1] - self.min_y) * size))
 
     def draw(self, canvas):
         size = self.game_engine.sprite_size
-        if not MINI_MAP:
-            Service.service_init(size, False)
-            self.draw_map()
-            for obj in self.game_engine.objects:
-                self.blit(obj.sprite[0], ((obj.position[0] - self.min_x) * size,
-                                          (obj.position[1] - self.min_y) * size))
-        else:
-            Service.service_init(11, False)
-            self.draw_map()
-            for obj in self.game_engine.objects:
-                self.blit(obj.sprite[0], ((obj.position[0]) * 7,
-                                          (obj.position[1]) * 7))
+
+        self.draw_map()
+        for obj in self.game_engine.objects:
+            self.blit(obj.sprite[0], ((obj.position[0] - self.min_x) * size,
+                                      (obj.position[1] - self.min_y) * size))
         self.draw_hero()
 
         if self.successor is not None:

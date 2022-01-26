@@ -61,10 +61,15 @@ def remove_effect(engine, hero):
 
 
 def add_gold(engine, hero):
-    if random.randint(1, 10) == 1:
+    random_number = random.randint(1, 10)
+    if random_number == 1:
         engine.score -= 0.05
         engine.hero = Objects.Weakness(hero)
         engine.notify("You were cursed")
+    elif random_number == 10:
+        engine.score -= 0.1
+        engine.hero = Objects.Spoilage(hero)
+        engine.notify("On you spoilage")
     else:
         engine.score += 0.1
         gold = int(random.randint(10, 1000) * (1.1**(engine.hero.level - 1)))

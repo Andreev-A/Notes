@@ -193,3 +193,10 @@ class Weakness(Effect):
     def apply_effect(self):
         self.stats["strength"] -= 4
         self.stats["endurance"] -= 4
+
+
+class Spoilage(Effect):
+
+    def apply_effect(self):
+        self.stats["luck"] -= 3
+
