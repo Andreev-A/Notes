@@ -24,7 +24,6 @@ base_stats = {
     "luck": 5
 }
 
-
 def create_game(sprite_size, is_new):
     global hero, engine, drawer, iteration
     if is_new:
@@ -33,7 +32,6 @@ def create_game(sprite_size, is_new):
         engine = Logic.GameEngine()
         Service.service_init(sprite_size)
         Service.reload_game(engine, hero)
-        # with ScreenEngine as SE:
         drawer = SE.GameSurface((640, 480), pygame.SRCALPHA, (0, 480),
                                 SE.ProgressBar((640, 120), (640, 0),
                                                SE.InfoWindow((160, 315), (50, 50),
@@ -60,7 +58,7 @@ size = 60
 create_game(size, True)
 
 while engine.working:
-    s = None
+
     if KEYBOARD_CONTROL:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -91,6 +89,9 @@ while engine.working:
                     elif event.key == pygame.K_RIGHT:
                         engine.move_right()
                         iteration += 1
+                if event.key == pygame.K_q:
+                    engine.minimap_drawing = not engine.minimap_drawing
+
                 else:
                     if event.key == pygame.K_RETURN:
                         create_game()
