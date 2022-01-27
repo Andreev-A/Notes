@@ -55,7 +55,7 @@ class GameSurface(ScreenHandle):
             for i in range(len(self.game_engine.map[0]) - self.min_x):
                 for j in range(len(self.game_engine.map) - self.min_y):
                     self.blit(self.game_engine.map[self.min_y + j][
-                              self.min_x + i][0], (i * size, j * size))
+                                  self.min_x + i][0], (i * size, j * size))
         else:
             self.fill(colors["white"])
 
@@ -96,52 +96,64 @@ class ProgressBar(ScreenHandle):
         pygame.draw.rect(self, colors["black"], (50, 70, 200, 30), 2)
 
         pygame.draw.rect(self, colors[
-                         "red"], (50, 30, 200 * min(self.engine.hero.hp /
-                                  self.engine.hero.max_hp, 1), 30))
+            "red"], (50, 30, 200 * min(self.engine.hero.hp /
+                                       self.engine.hero.max_hp, 1), 30))
         pygame.draw.rect(self, colors[
-                         "green"], (50, 70, 200 * self.engine.hero.exp / (
-                            100 * (2 ** (self.engine.hero.level - 1))), 30))
+            "green"], (50, 70, 200 * self.engine.hero.exp / (
+                100 * (2 ** (self.engine.hero.level - 1))), 30))
 
         font = pygame.font.SysFont("comicsansms", 20)
-        self.blit(font.render(f'Hero at {self.engine.hero.position}', True, colors["black"]),
-                  (250, 0))
+        self.blit(font.render(
+            f'Hero at {self.engine.hero.position}', True, colors["black"]),
+            (250, 0))
 
-        self.blit(font.render(f'{self.engine.level} floor', True, colors["black"]),
-                  (10, 0))
+        self.blit(font.render(
+            f'{self.engine.level} floor', True, colors["black"]),
+            (10, 0))
 
         self.blit(font.render(f'HP', True, colors["black"]),
                   (10, 30))
         self.blit(font.render(f'Exp', True, colors["black"]),
                   (10, 70))
 
-        self.blit(font.render(f'{self.engine.hero.hp}/{self.engine.hero.max_hp}', True, colors["black"]),
-                  (60, 30))
-        self.blit(font.render(f'{self.engine.hero.exp}/{(100 * (2 ** (self.engine.hero.level - 1)))}', True, colors["black"]),
-                  (60, 70))
+        self.blit(font.render(
+            f'{self.engine.hero.hp}/{self.engine.hero.max_hp}', True,
+            colors["black"]),
+            (60, 30))
+        self.blit(font.render(
+            f'{self.engine.hero.exp}/'
+            f'{(100 * (2 ** (self.engine.hero.level - 1)))}', True,
+            colors["black"]),
+            (60, 70))
 
         self.blit(font.render(f'Level', True, colors["black"]),
                   (280, 30))
         self.blit(font.render(f'Gold', True, colors["black"]),
                   (280, 70))
 
-        self.blit(font.render(f'{self.engine.hero.level}', True, colors["black"]),
-                  (360, 30))
-        self.blit(font.render(f'{self.engine.hero.gold}', True, colors["black"]),
-                  (340, 70))
+        self.blit(font.render(
+            f'{self.engine.hero.level}', True, colors["black"]),
+            (360, 30))
+        self.blit(font.render(
+            f'{self.engine.hero.gold}', True, colors["black"]),
+            (340, 70))
 
         self.blit(font.render(f'Str', True, colors["black"]),
                   (420, 30))
         self.blit(font.render(f'Luck', True, colors["black"]),
                   (420, 70))
 
-        self.blit(font.render(f'{self.engine.hero.stats["strength"]}', True, colors["black"]),
-                  (480, 30))
-        self.blit(font.render(f'{self.engine.hero.stats["luck"]}', True, colors["black"]),
-                  (480, 70))
+        self.blit(font.render(
+            f'{self.engine.hero.stats["strength"]}', True, colors["black"]),
+            (480, 30))
+        self.blit(font.render(
+            f'{self.engine.hero.stats["luck"]}', True, colors["black"]),
+            (480, 70))
 
         self.blit(font.render(f'SCORE', True, colors["black"]),
                   (550, 30))
-        self.blit(font.render(f'{self.engine.score:.4f}', True, colors["black"]),
+        self.blit(font.render
+                  (f'{self.engine.score:.4f}', True, colors["black"]),
                   (550, 70))
         if self.successor is not None:
             GD.blit(self.successor, self.next_coord)
