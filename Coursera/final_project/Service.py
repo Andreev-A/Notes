@@ -37,24 +37,31 @@ def restore_hp(engine, hero):
 
 
 def apply_blessing(engine, hero):
-    if hero.gold >= int(20 * 1.5**engine.level) - 2 * hero.stats["intelligence"]:
+    if hero.gold >= int(20 * 1.5 ** engine.level) - 2 * hero.stats["intelligence"]:
         engine.score += 0.2
-        hero.gold -= int(20 * 1.5**engine.level) - \
-            2 * hero.stats["intelligence"]
-        if random.randint(0, 1) == 0:
-            engine.hero = Objects.Blessing(hero)
-            engine.notify("Blessing applied")
-        else:
-            engine.hero = Objects.Berserk(hero)
-            engine.notify("Berserk applied")
+        hero.gold -= int(20 * 1.5 ** engine.level) - \
+                     2 * hero.stats["intelligence"]
+        engine.hero = Objects.Blessing(hero)
+        engine.notify("Blessing applied")
+    else:
+        engine.score -= 0.1
+
+
+def apply_berserk(engine, hero):
+    if hero.gold >= int(20 * 1.5 ** engine.level) - 2 * hero.stats["intelligence"]:
+        engine.score += 0.3
+        hero.gold -= int(20 * 1.5 ** engine.level) - \
+                     2 * hero.stats["intelligence"]
+        engine.hero = Objects.Berserk(hero)
+        engine.notify("Berserk applied")
     else:
         engine.score -= 0.1
 
 
 def remove_effect(engine, hero):
-    if hero.gold >= int(10 * 1.5**engine.level) - 2 * hero.stats["intelligence"] and "base" in dir(hero):
-        hero.gold -= int(10 * 1.5**engine.level) - \
-            2 * hero.stats["intelligence"]
+    if hero.gold >= int(10 * 1.5 ** engine.level) - 2 * hero.stats["intelligence"] and "base" in dir(hero):
+        hero.gold -= int(10 * 1.5 ** engine.level) - \
+                     2 * hero.stats["intelligence"]
         engine.hero = hero.base
         engine.hero.calc_max_HP()
         engine.notify("Effect removed")
@@ -72,7 +79,7 @@ def add_gold(engine, hero):
         engine.notify("On you spoilage")
     else:
         engine.score += 0.1
-        gold = int(random.randint(10, 1000) * (1.1**(engine.hero.level - 1)))
+        gold = int(random.randint(10, 1000) * (1.1 ** (engine.hero.level - 1)))
         hero.gold += gold
         engine.notify(f"{gold} gold added")
 
@@ -80,45 +87,20 @@ def add_gold(engine, hero):
 class MapFactory(yaml.YAMLObject):
 
     @classmethod
-    def from_yaml(cls, loader, node):
-        _map = cls.Map()
-        _obj = cls.Objects()
+    def from_yaml(Class, loader, node):
+        _map = Class.Map()
+        _obj = Class.Objects()
         config = loader.construct_mapping(node)
         _obj.config = config
         return {'map': _map, 'obj': _obj}
 
+    @classmethod
+    def create_map(Class):
+        return Class.Map()
 
-class EndMap(MapFactory):
-    yaml_tag = "!end_map"
-
-    class Map:
-        def __init__(self):
-            self.Map = ['000000000000000000000000000000000000000',
-                        '0                                     0',
-                        '0                                     0',
-                        '0  0   0   000   0   0  00000  0   0  0',
-                        '0  0  0   0   0  0   0  0      0   0  0',
-                        '0  000    0   0  00000  0000   0   0  0',
-                        '0  0  0   0   0  0   0  0      0   0  0',
-                        '0  0   0   000   0   0  00000  00000  0',
-                        '0                                   0 0',
-                        '0                                     0',
-                        '000000000000000000000000000000000000000'
-                        ]
-            self.Map = list(map(list, self.Map))
-            for i in self.Map:
-                for j in range(len(i)):
-                    i[j] = wall if i[j] == '0' else floor1
-         
-        def get_map(self):
-            return self.Map
-
-    class Objects:
-        def __init__(self):
-            self.objects = []
-
-        def get_objects(self, _map):
-            return self.objects
+    @classmethod
+    def create_objects(Class):
+        return Class.Objects()
 
 
 class RandomMap(MapFactory):
@@ -210,9 +192,6 @@ class RandomMap(MapFactory):
 
             return self.objects
 
-
-# FIXME
-# add classes for YAML !empty_map and !special_map{}
 
 class EmptyMap(MapFactory):
     yaml_tag = "!empty_map"
@@ -307,7 +286,6 @@ class SpecialMap(MapFactory):
                 for j in range(len(i)):
                     i[j] = wall if i[j] == '0' else floor1
 
-
         def get_map(self):
             return self.Map
 
@@ -382,6 +360,69 @@ class SpecialMap(MapFactory):
             return self.objects
 
 
+class EndMap(MapFactory):
+    yaml_tag = "!end_map"
+
+    class Map:
+        def __init__(self):
+            self.Map = ['00000000000000000000000',
+                        '0                     0',
+                        '0  0000  0   0  000   0',
+                        '0  0     00  0  0  0  0',
+                        '0  000   0 0 0  0  0  0',
+                        '0  0     0  00  0  0  0',
+                        '0  0000  0   0  000   0',
+                        '0                     0',
+                        '00000000000000000000000',
+                        '0                     0',
+                        '0  0000  0   0  000   0',
+                        '0  0     00  0  0  0  0',
+                        '0  000   0 0 0  0  0  0',
+                        '0  0     0  00  0  0  0',
+                        '0  0000  0   0  000   0',
+                        '0                     0',
+                        '00000000000000000000000',
+                        '0                     0',
+                        '0  0000  0   0  000   0',
+                        '0  0     00  0  0  0  0',
+                        '0  000   0 0 0  0  0  0',
+                        '0  0     0  00  0  0  0',
+                        '0  0000  0   0  000   0',
+                        '0                     0',
+                        '00000000000000000000000',
+                        '0                     0',
+                        '0  0000  0   0  000   0',
+                        '0  0     00  0  0  0  0',
+                        '0  000   0 0 0  0  0  0',
+                        '0  0     0  00  0  0  0',
+                        '0  0000  0   0  000   0',
+                        '0                     0',
+                        '00000000000000000000000',
+                        '0                     0',
+                        '0  0000  0   0  000   0',
+                        '0  0     00  0  0  0  0',
+                        '0  000   0 0 0  0  0  0',
+                        '0  0     0  00  0  0  0',
+                        '0  0000  0   0  000   0',
+                        '0                     0',
+                        '00000000000000000000000'
+                        ]
+            self.Map = list(map(list, self.Map))
+            for i in self.Map:
+                for j in range(len(i)):
+                    i[j] = wall if i[j] == '0' else floor1
+
+        def get_map(self):
+            return self.Map
+
+    class Objects:
+        def __init__(self):
+            self.objects = []
+
+        def get_objects(self, _map):
+            return self.objects
+
+
 wall = [0]
 floor1 = [0]
 floor2 = [0]
@@ -410,6 +451,7 @@ def service_init(sprite_size, full=True):
     object_list_actions = {'reload_game': reload_game,
                            'add_gold': add_gold,
                            'apply_blessing': apply_blessing,
+                           'apply_berserk': apply_berserk,
                            'remove_effect': remove_effect,
                            'restore_hp': restore_hp}
 

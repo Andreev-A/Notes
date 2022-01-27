@@ -24,10 +24,10 @@ class ScreenHandle(pygame.Surface):
         super().__init__(*args, **kwargs)
         self.fill(colors["wooden"])
 
-    def draw(self, canvas):
+    def draw(self, GD):
         if self.successor is not None:
-            canvas.blit(self.successor, self.next_coord)
-            self.successor.draw(canvas)
+            GD.blit(self.successor, self.next_coord)
+            self.successor.draw(GD)
 
     def connect_engine(self, engine):
         if self.successor is not None:
@@ -45,7 +45,6 @@ class GameSurface(ScreenHandle):
         self.game_engine.hero.draw(self)
 
     def draw_map(self):
-
         size = self.game_engine.sprite_size
         screen_size = list(self.get_size())
         hero_pos = self.game_engine.hero.position
@@ -56,7 +55,7 @@ class GameSurface(ScreenHandle):
             for i in range(len(self.game_engine.map[0]) - self.min_x):
                 for j in range(len(self.game_engine.map) - self.min_y):
                     self.blit(self.game_engine.map[self.min_y + j][
-                                  self.min_x + i][0], (i * size, j * size))
+                              self.min_x + i][0], (i * size, j * size))
         else:
             self.fill(colors["white"])
 
@@ -64,9 +63,9 @@ class GameSurface(ScreenHandle):
         size = self.game_engine.sprite_size
 
         self.blit(sprite, ((coord[0] - self.min_x) * size,
-                  (coord[1] - self.min_y) * size))
+                           (coord[1] - self.min_y) * size))
 
-    def draw(self, canvas):
+    def draw(self, GD):
         size = self.game_engine.sprite_size
 
         self.draw_map()
@@ -76,8 +75,8 @@ class GameSurface(ScreenHandle):
         self.draw_hero()
 
         if self.successor is not None:
-            canvas.blit(self.successor, self.next_coord)
-            return self.successor.draw(canvas)
+            GD.blit(self.successor, self.next_coord)
+            return self.successor.draw(GD)
 
 
 class ProgressBar(ScreenHandle):
@@ -91,16 +90,17 @@ class ProgressBar(ScreenHandle):
         if self.successor is not None:
             return self.successor.connect_engine(engine)
 
-    def draw(self, canvas):
+    def draw(self, GD):
         self.fill(colors["wooden"])
         pygame.draw.rect(self, colors["black"], (50, 30, 200, 30), 2)
         pygame.draw.rect(self, colors["black"], (50, 70, 200, 30), 2)
 
         pygame.draw.rect(self, colors[
-            "red"], (50, 30, 200 * self.engine.hero.hp / self.engine.hero.max_hp, 30))
-        pygame.draw.rect(self, colors["green"], (50, 70,
-                                                 200 * self.engine.hero.exp / (
-                                                         100 * (2 ** (self.engine.hero.level - 1))), 30))
+                         "red"], (50, 30, 200 * min(self.engine.hero.hp /
+                                  self.engine.hero.max_hp, 1), 30))
+        pygame.draw.rect(self, colors[
+                         "green"], (50, 70, 200 * self.engine.hero.exp / (
+                            100 * (2 ** (self.engine.hero.level - 1))), 30))
 
         font = pygame.font.SysFont("comicsansms", 20)
         self.blit(font.render(f'Hero at {self.engine.hero.position}', True, colors["black"]),
@@ -116,19 +116,18 @@ class ProgressBar(ScreenHandle):
 
         self.blit(font.render(f'{self.engine.hero.hp}/{self.engine.hero.max_hp}', True, colors["black"]),
                   (60, 30))
-        self.blit(
-            font.render(f'{self.engine.hero.exp}/{(100 * (2 ** (self.engine.hero.level - 1)))}', True, colors["black"]),
-            (60, 70))
+        self.blit(font.render(f'{self.engine.hero.exp}/{(100 * (2 ** (self.engine.hero.level - 1)))}', True, colors["black"]),
+                  (60, 70))
 
         self.blit(font.render(f'Level', True, colors["black"]),
-                  (300, 30))
+                  (280, 30))
         self.blit(font.render(f'Gold', True, colors["black"]),
-                  (300, 70))
+                  (280, 70))
 
         self.blit(font.render(f'{self.engine.hero.level}', True, colors["black"]),
                   (360, 30))
         self.blit(font.render(f'{self.engine.hero.gold}', True, colors["black"]),
-                  (360, 70))
+                  (340, 70))
 
         self.blit(font.render(f'Str', True, colors["black"]),
                   (420, 30))
@@ -145,9 +144,8 @@ class ProgressBar(ScreenHandle):
         self.blit(font.render(f'{self.engine.score:.4f}', True, colors["black"]),
                   (550, 70))
         if self.successor is not None:
-            canvas.blit(self.successor, self.next_coord)
-            return self.successor.draw(canvas)
-    # draw next surface in chain
+            GD.blit(self.successor, self.next_coord)
+            return self.successor.draw(GD)
 
 
 class InfoWindow(ScreenHandle):
@@ -161,7 +159,7 @@ class InfoWindow(ScreenHandle):
     def update(self, value):
         self.data.append(f"> {str(value)}")
 
-    def draw(self, canvas):
+    def draw(self, GD):
         self.fill(colors["wooden"])
         size = self.get_size()
 
@@ -171,8 +169,8 @@ class InfoWindow(ScreenHandle):
                       (5, 20 + 18 * i))
 
         if self.successor is not None:
-            canvas.blit(self.successor, self.next_coord)
-            return self.successor.draw(canvas)
+            GD.blit(self.successor, self.next_coord)
+            return self.successor.draw(GD)
 
     def connect_engine(self, engine):
         self.engine = engine
@@ -203,7 +201,7 @@ class HelpWindow(ScreenHandle):
         if self.successor is not None:
             return self.successor.connect_engine(engine)
 
-    def draw(self, canvas):
+    def draw(self, GD):
         alpha = 0
         if self.engine.show_help:
             alpha = 128
@@ -220,5 +218,5 @@ class HelpWindow(ScreenHandle):
                 self.blit(font2.render(text[1], True, ((128, 128, 255))),
                           (150, 50 + 30 * i))
         if self.successor is not None:
-            canvas.blit(self.successor, self.next_coord)
-            return self.successor.draw(canvas)
+            GD.blit(self.successor, self.next_coord)
+            return self.successor.draw(GD)

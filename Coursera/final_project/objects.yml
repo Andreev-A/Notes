@@ -12,7 +12,7 @@ objects:
 ally:
   bless:
     sprite: [NPC_1.png]
-    action: apply_blessing
+    action: apply_berserk
     min-count: 1
     max-count: 6
   remove:
@@ -24,6 +24,11 @@ ally:
     sprite: [NPC_3.png]
     action: restore_hp
     min-count: 0
+    max-count: 3
+  berserk:
+    sprite: [ NPC_4.png ]
+    action: apply_blessing
+    min-count: 1
     max-count: 3
 enemies:
   rat:
@@ -54,3 +59,10 @@ enemies:
     intelligence: 50
     luck: 5
     experience: 1000
+  sorcerer:
+    sprite: [ Enemy_2.png ]
+    strength: 20
+    endurance: 20
+    intelligence: 50
+    luck: 10
+    experience: 300
