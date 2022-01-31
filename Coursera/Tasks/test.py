@@ -39,7 +39,7 @@
 # get *\n  get palm.cpu\n  ok\npalm.cpu 2.0 1150864247\npalm.cpu 0.5 1150864248\neardrum.cpu 3.0 1150864250\n\n
 # data = 'put paaslm.cpu 23.7 1150864247\n'
 # metrics_dict = {'palm.cpu': {1150864263: 23.7, 1150864259: 55.7}, 'pal.cpu': {1150864263: 83.7, 1150864200: 55.7}}
-#
+# print(ascii(process_data(data)))
 #
 # def process_data(data):
 #     result = 'ok\n'
