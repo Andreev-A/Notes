@@ -193,3 +193,18 @@ print(out)
 # def foo(xy):
 #     x,y = xy
 #     return (y,x)
+
+# как транспонировать матрицу в питоне
+# [*zip(*theArray)]
+#
+# >>> theArray = [['a','b','c'],['d','e','f'],['g','h','i']]
+# >>> [list(i) for i in zip(*theArray)]
+# [['a', 'd', 'g'], ['b', 'e', 'h'], ['c', 'f', 'i']]
+# генератор списков создает новый 2d-массив с элементами списка вместо кортежей.
+#
+# в Python 3 функциональность map изменен, itertools.zip_longest можно использовать вместо:
+# Источник:Что нового в Python 3.0
+# >>> import itertools
+# >>> uneven = [['a','b','c'],['d','e'],['g','h','i']]
+# >>> list(itertools.zip_longest(*uneven))
+# [('a', 'd', 'g'), ('b', 'e', 'h'), ('c', None, 'i')]
