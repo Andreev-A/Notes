@@ -2718,17 +2718,17 @@
 # Выведите значение наименьшего нечетного элемента списка, гарантируется, что хотя бы один нечётный элемент в списке есть.
 # Формат ввода - Вводится список чисел. Все числа списка находятся на одной строке.
 # Формат вывода - Выведите ответ на задачу.
-print(
-    min(
-        filter(
-            lambda x: x % 2 == 1,
-            map(
-                int,
-                input().split()
-            )
-        )
-    )
-)
+# print(
+#     min(
+#         filter(
+#             lambda x: x % 2 == 1,
+#             map(
+#                 int,
+#                 input().split()
+#             )
+#         )
+#     )
+# )
 
 # Проверьте, есть ли среди данных N чисел нули.
 # Формат ввода - Вводится число N, а затем N чисел.
@@ -2937,3 +2937,164 @@ from itertools import accumulate
 #     )
 # )
 
+################################################################################################################3
+# import itertools
+# import operator
+#
+# print(next(map(lambda a:
+#                ' '.join(map(str, a[0])),
+#                filter(lambda a: all(map(lambda b: operator.xor(
+#                    *map(lambda c: c in itertools.combinations(a[0], 2), b, )),
+#                                         a[1])), (
+#                           lambda a, b: zip(itertools.permutations(a),
+#                                            itertools.repeat(b)))(
+#                    *(lambda k, n: (range(1, k + 1),
+#                                    tuple(map(lambda i: (i[:2], i[2:]),
+#                                              map(lambda _: tuple(
+#                                                  map(int, input().split())),
+#                                                  range(n)))))
+#                      )(*map(int, input().split()))))), 0))
+
+# from itertools import permutations
+# from sys import stdin
+# from operator import xor
+#
+# print(
+#     *next(
+#         map(
+#             lambda d:
+#             next(
+#                 filter(
+#                     lambda y:
+#                     all(
+#                         map(
+#                             lambda x:
+#                             xor(y.index(x[0]) < y.index(x[1]), y.index(x[2]) < y.index(x[3])),
+#                             d[-1])
+#                     ),
+#                     d[:-1]
+#                 ),
+#                 [0, ]
+#             ),
+#
+#             map(
+#                 lambda j: [
+#                     *permutations(range(j, 0, -1), j),
+#                     list(map(lambda z: tuple(map(int, z.split())),
+#                              stdin.readlines()))
+#                 ],
+#                 map(int, input().split())
+#             )
+#
+#         ),
+#         [0, ]
+#     )
+# )
+# Т.к. во входных данных через map(int, input().split()) идёт и K и N, то у нас будет считаться два permutations. Чтобы
+# не использовать второй мы используем next. Следовательно у Вас ошибка в последовательности. next на 9-й строке должен
+# быть перед map на 7-й, а lambda d это filter.
+#
+# И посмотрите на то, что выдаёт map на 23-й строке (кстати не пойму зачем * на 25-й строке). Вы неправильно берёте из
+# неё данные.
+#
+# И по поводу xor, не факт что грейдер импортирует библиотеку operator. Есть встроенный логический оператор, который
+# подходит для наших нужд - ^. Используется как обычно: a ^ b.
+#####################################################################################
+
+# Реализуйте класс Matrix. Он должен содержать:
+# Конструктор от списка списков. Гарантируется, что списки состоят из чисел, не пусты и все имеют одинаковый размер.
+# Конструктор должен копировать содержимое списка списков, т. е. при изменении списков, от которых была сконструирована
+# матрица, содержимое матрицы изменяться не должно.
+# Метод __str__, переводящий матрицу в строку. При этом элементы внутри одной строки должны быть разделены знаками
+# табуляции, а строки  —  переносами строк. После каждой строки не должно быть символа табуляции и в конце не должно
+# быть переноса строки.
+# Метод size без аргументов, возвращающий кортеж вида (число строк, число столбцов). Пример теста с участием этого
+# метода есть в следующей задаче этой недели.
+# from sys import stdin
+# class Matrix:
+#     def __init__(self, cls):
+#         self._cls = [lst[:] for lst in cls]
+#
+#     def __str__(self):
+#         s = ''
+#         for i in self._cls:
+#             if s:
+#                 s += '\n'
+#             s += '\t'.join(map(str, i))
+#         return s
+#
+#     def size(self):
+#         return len(self._cls), len(self._cls[0])
+# exec(stdin.read())
+
+# Добавьте в предыдущий класс следующие методы:
+#  __add__, принимающий вторую матрицу того же размера и возвращающий сумму матриц.
+#  __mul__, принимающий число типа int или float и возвращающий матрицу, умноженную на скаляр.
+#  __rmul__, делающий то же самое, что и __mul__. Этот метод будет вызван в том случае, аргумент находится справа. Для
+# реализации этого метода в коде класса достаточно написать __rmul__ = __mul__.
+# Иллюстрация:
+#  В следующем случае вызовется __mul__: Matrix([[0, 1], [1, 0]) * 10.
+#  В следующем случае вызовется __rmul__ (так как у int не определен __mul__ для матрицы справа):
+#  10 * Matrix([[0, 1], [1, 0]).
+# Разумеется, данные методы не должны менять содержимое матрицы.
+# Формат ввода - Как в предыдущей задаче.
+# Формат вывода - Как в предыдущей задаче.
+# from sys import stdin
+# class Matrix:
+#     def __init__(self, cls):
+#         self.cls = [lst[:] for lst in cls]
+#
+#     def __str__(self):
+#         s = ''
+#         for i in self.cls:
+#             if s:
+#                 s += '\n'
+#             s += '\t'.join(map(str, i))
+#         return s
+#
+#     def __add__(self, other):
+#         return Matrix([[num + other.cls[j][i] for i, num in enumerate(number)]
+#                        for j, number in enumerate(self.cls)])
+#
+#     def __mul__(self, other):
+#         return Matrix([[num * other for num in number]
+#                        for number in self.cls])
+#
+#     __rmul__ = __mul__
+#
+#     def size(self):
+#         return len(self.cls), len(self.cls[0])
+# exec(stdin.read())
+
+from sys import stdin
+# from copy import deepcopy
+# class Matrix:
+#     def __init__(self, matrix):
+#         self.matrix = deepcopy(matrix)
+#
+#     def __str__(self):  # без аргументов
+#         return '\n'.join(['\t'.join(map(str, list)) for list in self.matrix])
+#
+#     def __add__(self, other):
+#         return Matrix()
+#
+#     def size(self):  # без аргументов!
+#         return (len(self.matrix), len(self.matrix[0]))
+#
+#     def __add__(self, other):
+#         return Matrix(list(map(
+#             lambda x, y: list(map(lambda z, w: z + w, x, y)),
+#             self.matrix, other.matrix)))
+#
+#     def __mul__(self, other):
+#         return Matrix([[i * other for i in list] for list in self.matrix])
+#
+#     __rmul__ = __mul__
+# # exec(stdin.read())
+# m1 = Matrix([[1, 0, 0], [0, 1, 0], [0, 0, 1]])
+# m2 = Matrix([[0, 1, 0], [20, 0, -1], [-1, -2, 0]])
+# print(m1 + m2)
+# m = Matrix([[1, 1, 0], [0, 2, 10], [10, 15, 30]])
+# alpha = 15
+# print(m * alpha)
+# print(alpha * m)
