@@ -1,3 +1,4 @@
+# import datetime
 # now_date = datetime.date.today()  # Текущая дата (без времени)
 # now_time = datetime.datetime.now()  # Текущая дата со временем
 #
