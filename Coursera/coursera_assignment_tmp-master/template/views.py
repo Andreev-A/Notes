@@ -1,10 +1,20 @@
 from django.shortcuts import render
 
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+from django.views.decorators.csrf import csrf_exempt
+
 
 # Create your views here.
 
+@csrf_exempt
 def echo(request):
-    pass
+    context = {
+        'get': request.GET,
+        'post': request.POST,
+        'meta': request.META
+    }
+    return render(request, 'echo.html', context=context)
 
 
 def filters(request):
