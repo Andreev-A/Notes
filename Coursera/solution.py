@@ -9,4 +9,4 @@ res = requests.get('http://127.0.0.1:8000/template/echo/',
 print(res.status_code)
 print(res.headers['Content-Type'])
 print(res.text)
-
+# json.loads(response.content.decode('utf-8'))
