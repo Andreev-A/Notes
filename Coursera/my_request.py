@@ -7,6 +7,7 @@ res = requests.post('http://127.0.0.1:8000/api/v1/goods/',
                    headers={'Content-Type': 'application/json'},
                    # params={"title": "Gouda cheese.", "description": "The number 1 cheese in the world!", "price": 101}
                    )
+# data=json.dumps(payload)  payload = {'some':'data'} передать в json
 print(res.status_code)
 print(res.headers['Content-Type'])
 print(res.text)
