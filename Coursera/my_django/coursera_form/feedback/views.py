@@ -15,38 +15,20 @@ from django.utils.decorators import method_decorator
 from marshmallow import ValidationError as MarshmallowError
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.edit import CreateView
+from .models import Feedback
 
 
-class FormDummyView(LoginRequiredMixin, View):
+class FeedbackCreateView(LoginRequiredMixin, CreateView):
+    model = Feedback
+    fields = ['text', 'grade', 'subject']
+    success_url = '/feedback/add'
 
-    # def get(self, request):
-    #     # from pdb import set_trace; set_trace()  # в консоли request.GET, pp request.__dict__
-    #     hello = request.GET.get('hello')  # отобразить полученную информацию (запрос в строке hello=world)
-    #     return render(request, 'form.html', {'hello': hello})
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
 
-    def get(self, request):
-        form = DummyForm()
-        return render(request, 'form.html', {'form': form})
 
-    # def post(self, request):
-    #     text = request.POST.get('text')
-    #     grade = request.POST.get('grade')
-    #     image = request.FILES.get('image')
-    #     content = image.read()
-    #     context = {
-    #        'text': text,
-    #        'grade': grade,
-    #        'content': content,
-    #     }
-    #     return render(request, 'form.html', context)
-
-    def post(self, request):
-        form = DummyForm(request.POST)
-        if form.is_valid():
-            context = form.cleaned_data
-            return render(request, 'form.html', context)
-        else:
-            return render(request, 'error.html', {'error': form.errors})
 
 @method_decorator(csrf_exempt, name='dispatch')
 class SchemaView(View):

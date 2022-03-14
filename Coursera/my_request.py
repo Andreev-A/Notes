@@ -10,18 +10,25 @@ res = requests.post('http://127.0.0.1:8000/api/v1/goods/',
 print(res.status_code)
 print(res.headers['Content-Type'])
 print(res.text)
-# json.loads(response.content.decode('utf-8'))
 
-# из консоли -
+
+# TypeError: argument of type 'WindowsPath' is not iterable - in django python [duplicate]
+# I got this cleared by changing DATABASES in settings.py file:
 #
-#  $ python -m pytest tests/
-
-# ?title=asdfg&description= asdfg&price=100
-# "title": "Gouda cheese.", "description": "The number 1 cheese in the world!", "price": 101
-# "text": "Best. Cheese. Ever.", "grade": 9
-
-
-
+# change
+#
+# 'NAME': BASE_DIR / 'db.sqlite3',
+# to
+#
+# 'NAME': str(os.path.join(BASE_DIR, "db.sqlite3"))
+# this works
+#
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': str(os.path.join(BASE_DIR, "db.sqlite3"))
+#     }
+# }
 
 # from django.http import HttpResponse, JsonResponse
 # from django.views import View
@@ -204,18 +211,3 @@ print(res.text)
 #
 #
 #
-# import json
-# from django import forms
-#
-# class SomeForm(forms.Form):
-#     name = forms.CharField(label=u'Name', max_length=25)
-#
-# def some_view(request):
-#     json_string = request.POST.get('json_data')
-#     form_data = json.loads(json_string)[0]  # data = json.loads(request.body.decode())
-#     f = SomeForm(form_data)
-#     if f.is_valid():
-#         name = f.cleaned_data['name']
-#         # ... Работа с данными ...
-#     else:
-#         # ... Обработка ошибки ...
