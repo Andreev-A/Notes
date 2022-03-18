@@ -1,10 +1,12 @@
 import os
 from collections import defaultdict
+import time
+
 import telebot
 import redis
 
-
-token = os.getenv('TOKEN')
+token = '5268671568:AAF9DTbcJZkWcdJVhAHJR0BqhhAakInDhAI'
+# token = os.getenv('TOKEN')
 
 bot = telebot.TeleBot(token)
 
@@ -53,7 +55,7 @@ def delete_location(user_id):
     func=lambda message: get_state(message) == START, commands=['add']
 )
 def handle_title(message):
-    bot.send_message(chat_id=message.chat.id, text='Напиши название')
+    bot.send_message(chat_id=message.chat.id, text='Напишите название места')
     update_state(message, ADD_NAME)
 
 
@@ -65,7 +67,9 @@ def handle_location(message):
         update_state(message, START)
     else:
         write_title_to_redis(message)
-        bot.send_message(chat_id=message.chat.id, text='Отправь локацию')
+        bot.send_message(chat_id=message.chat.id,
+                         text='Отправьте свою геопозицию'
+                         )
         update_state(message, ADD_LOCATION)
 
 
@@ -74,7 +78,7 @@ def handle_location(message):
     content_types=['location']
 )
 def handle_confirmation(message):
-    bot.send_message(chat_id=message.chat.id, text='Добавить?')
+    bot.send_message(chat_id=message.chat.id, text='Добавить место?')
     update_state(message, CONFIRMATION)
     write_coords_to_redis(message.chat.id, message.location)
 
@@ -86,19 +90,24 @@ def handle_finish(message):
         delete_location(message.chat.id)
         bot.send_message(chat_id=message.chat.id, text='Добавление прервано')
     else:
-        if 'да' in message.text.lower():
+        if message.text.lower() in ('да', 'yes', 'ок', 'ok'):
             bot.send_message(
                 chat_id=message.chat.id,
-                text=f'Локация добавлена'
+                text=f'Место добавлено'
             )
             update_state(message, START)
-        if 'нет' in message.text.lower():
+        elif message.text.lower() in ('нет', 'no'):
             bot.send_message(
                 chat_id=message.chat.id,
-                text=f'Локация не добавлена'
+                text=f'Место не добавлено'
             )
             update_state(message, START)
             delete_location(message.chat.id)
+        else:
+            bot.send_message(
+                chat_id=message.chat.id,
+                text=f'Введите да или нет'
+            )
 
 
 @bot.message_handler(
@@ -109,8 +118,8 @@ def handle_list(message):
         update_state(message, START)
         r.lpop(message.chat.id)
     else:
-        bot.send_message(chat_id=message.chat.id, text='Последние локации:')
-        last_locations = r.lrange(message.chat.id, 0, 10)
+        bot.send_message(chat_id=message.chat.id, text='Последние места:')
+        last_locations = r.lrange(message.chat.id, 0, 9)
         for location in last_locations:
             if '&#124;' in location:
                 title, lat, lon = location.split('&#124;')
@@ -123,81 +132,113 @@ def handle_list(message):
 @bot.message_handler(func=lambda x: True, commands=['reset'])
 def handle_confirmation(message):
     r.flushdb()
-    bot.send_message(chat_id=message.chat.id, text='Все локации удалены')
+    bot.send_message(chat_id=message.chat.id, text='Все сохраненные места удалены')
 
 
 @bot.message_handler(func=lambda x: True, commands=['start'])
 def handle_confirmation(message):
-    bot.send_message(chat_id=message.chat.id, text='Введите команду /add для добавления локации')
+    bot.send_message(chat_id=message.chat.id, text='Введите команду /add для добавления места')
     bot.send_message(chat_id=message.chat.id,
-                     text='Введите команду /list для просмотра 10 последних локаций')
+                     text='Введите команду /list для просмотра 10 последних мест')
     bot.send_message(chat_id=message.chat.id,
-                     text='Введите команду /reset для удаления всех локаций')
+                     text='Введите команду /reset для удаления всех мест')
 
 
-bot.polling()
+# bot.polling()
+while True:
+    try:
+        bot.polling(none_stop=True)
+
+    except Exception as e:
+        print(e)  # logger.error(e)  # или просто print(e) если у вас логгера нет,
+        # или import traceback; traceback.print_exc() для печати полной инфы
+        time.sleep(15)
 
 
+# https://t.me/apower_bot
 # 1961796256:AAGeSMjx2sO8hGQq8biD_8ZAInuj3dOe4II    @Apower_TODO_bot
 # 5268671568:AAF9DTbcJZkWcdJVhAHJR0BqhhAakInDhAI    t.me/apower_bot.
-import telebot
+
+# Сами разработчики telebot'а предлагают не мудрить и тупо запхнуть polling в вечный цикл и ловить ошибку подключения:
+#
+# while True:
+#     try:
+#         bot.polling(none_stop=True)
+#
+#     except Exception as e:
+#         logger.error(e)  # или просто print(e) если у вас логгера нет,
+#         # или import traceback; traceback.print_exc() для печати полной инфы
+#         time.sleep(15)
+# UPD: с многопоточностью (которая по умолчанию) обнаружились проблемы (при перезапуске polling падало в can't start
+# thread), можно их обойти, переключившись на однопоточную версию (в простых случаях подойдёт):
+#
+# bot = telebot.TeleBot(extras.token, threaded=False)
+
+# Есть еще один вариант:
+# вместо bot.polling(none_stop=True) написать bot.infinity_polling(True).
+
+# bot.infinity_polling(), True в этом случае лишнее (оно прилетает в timeout=, если его оставить).
+
+####################################################################################################################
+
+# import telebot
 
 
-TOKEN = '5268671568:AAF9DTbcJZkWcdJVhAHJR0BqhhAakInDhAI'
-
-bot = telebot.TeleBot(TOKEN, parse_mode=None)  # Вы можете установить parse_mode по умолчанию. HTML или MARKDOWN
+# TOKEN = '5268671568:AAF9DTbcJZkWcdJVhAHJR0BqhhAakInDhAI'
+#
+# bot = telebot.TeleBot(TOKEN, parse_mode=None)  # Вы можете установить parse_mode по умолчанию. HTML или MARKDOWN
 
 # memory
-from collections import defaultdict
-
-START, TITLE, PRICE, CONFIRMATION = range(4)
-USER_STATE = defaultdict(lambda: START)
-
-
-def get_state(message):
-    return USER_STATE[message.chat.id]
-
-
-def update_state(message, state):
-    USER_STATE[message.chat.id] = state
-
-@bot.message_handler(func=lambda message: get_state(message) == START)
-def handle_message(message):
-    bot.send_message(message.chat.id, text='Напишите название')
-    update_state(message, TITLE)
-
-
-@bot.message_handler(func=lambda message: get_state(message) == TITLE)
-def handle_title(message):
-    # название
-    update_product(message.chat.id, 'title', message.text)
-    bot.send_message(message.chat.id, text='Укажи цену')
-    update_state(message, PRICE)
-
-
-@bot.message_handler(func=lambda message: get_state(message) == PRICE)
-def handle_price(message):
-    update_product(message.chat.id, 'price', message.text)
-    product = get_product(message.chat.id)
-    bot.send_message(message.chat.id, text='Опубликовать объявление? {}'.format(product))
-    update_state(message, CONFIRMATION)
-
-
-@bot.message_handler(func=lambda message: get_state(message) == CONFIRMATION)
-def handle_confirmation(message):
-    if 'да' in message.text.lower():
-        bot.send_message(message.chat.id, text='Объявление опубликовано')
-    update_state(message, START)
-
-
-PRODUCTS = defaultdict(lambda: {})
-
-def update_product(user_id, key, value):
-    PRODUCTS[user_id][key] = value
-
-def get_product(user_id):
-    return PRODUCTS[user_id]
-
+# from collections import defaultdict
+#
+# START, TITLE, PRICE, CONFIRMATION = range(4)
+# USER_STATE = defaultdict(lambda: START)
+#
+#
+# def get_state(message):
+#     return USER_STATE[message.chat.id]
+#
+#
+# def update_state(message, state):
+#     USER_STATE[message.chat.id] = state
+#
+# @bot.message_handler(func=lambda message: get_state(message) == START)
+# def handle_message(message):
+#     bot.send_message(message.chat.id, text='Напишите название')
+#     update_state(message, TITLE)
+#
+#
+# @bot.message_handler(func=lambda message: get_state(message) == TITLE)
+# def handle_title(message):
+#     # название
+#     update_product(message.chat.id, 'title', message.text)
+#     bot.send_message(message.chat.id, text='Укажи цену')
+#     update_state(message, PRICE)
+#
+#
+# @bot.message_handler(func=lambda message: get_state(message) == PRICE)
+# def handle_price(message):
+#     update_product(message.chat.id, 'price', message.text)
+#     product = get_product(message.chat.id)
+#     bot.send_message(message.chat.id, text='Опубликовать объявление? {}'.format(product))
+#     update_state(message, CONFIRMATION)
+#
+#
+# @bot.message_handler(func=lambda message: get_state(message) == CONFIRMATION)
+# def handle_confirmation(message):
+#     if 'да' in message.text.lower():
+#         bot.send_message(message.chat.id, text='Объявление опубликовано')
+#     update_state(message, START)
+#
+#
+# PRODUCTS = defaultdict(lambda: {})
+#
+# def update_product(user_id, key, value):
+#     PRODUCTS[user_id][key] = value
+#
+# def get_product(user_id):
+#     return PRODUCTS[user_id]
+#
 
 # # keyboard
 # from telebot import types  # для меню
@@ -272,7 +313,7 @@ def get_product(user_id):
 #     bot.send_location(message.chat.id, bank_lat, bank_lon)
 
 
-bot.polling()
+# bot.polling()
 
 
 # # -*- coding: utf-8 -*-
@@ -285,7 +326,8 @@ bot.polling()
 # def qwe(message):
 #   bot.send_message(message.chat.id, 'Привет я бот')
 #   bot.send_message(message.chat.id, 'Пока что я раздатчик ролей для игры в мафию!')
-#   bot.send_message(message.chat.id, 'Скажи сколько игроков с тобой будет играть (только числами! И от 5 до 10 игроков)?')
+#   bot.send_message(message.chat.id, 'Скажи сколько игроков с тобой будет играть (только числами! И от 5 до 10
+#   игроков)?')
 #
 #
 # @bot.message_handler(content_types=['text'])
@@ -299,3 +341,50 @@ bot.polling()
 #
 # if __name__ == '__main__':
 #      bot.polling(none_stop=True)
+
+##################################################################################
+#
+# from pathlib import Path
+#
+#
+# # Сохраним изображение, которое отправил пользователь в папку `/files/%ID пользователя/photos`
+# @bot.message_handler(content_types=['photo'])
+# def save_photo(message):
+#     # создадим папку если её нет
+#     Path(f'files/{message.chat.id}/photos').mkdir(parents=True, exist_ok=True)
+#
+#     # сохраним изображение
+#     file_info = bot.get_file(message.photo[len(message.photo) - 1].file_id)
+#     downloaded_file = bot.download_file(file_info.file_path)
+#     src = f'files/{message.chat.id}/' + file_info.file_path
+#     with open(src, 'wb') as new_file:
+#         new_file.write(downloaded_file)
+#
+#     # явно указано имя файла!
+#     # откроем файл на чтение  преобразуем в base64
+#     with open(f'files/{message.chat.id}/photos/file_0.jpg', "rb") as image_file:
+#         encoded_string = base64.b64encode(image_file.read())
+#
+#     # откроем БД и запишем информацию (ID пользователя, base64, подпись к фото)
+#     conn = sqlite3.connect("test.db")
+#     cursor = conn.cursor()
+#     cursor.execute('INSERT INTO users VALUES (?, ?, ?)', (message.chat.id, encoded_string, str(message.caption)))
+#     conn.commit()
+#
+#
+# # при получении команды /img от пользователя
+# @bot.message_handler(commands=['img'])
+# def ext_photo(message):
+#     # откроем БД и по ID пользователя извлечём данные base64
+#     conn = sqlite3.connect("test.db")
+#     img = conn.execute('SELECT img FROM users WHERE tlgrm_id = ?', (message.chat.id,)).fetchone()
+#     if img is None:
+#         conn.close()
+#         return None
+#     else:
+#         conn.close()
+#
+#         # сохраним base64 в картинку и отправим пользователю
+#         with open("files/imageToSave.jpg", "wb") as fh:
+#             fh.write(base64.decodebytes(img[0]))
+#             bot.send_photo(message.chat.id, open("files/imageToSave.jpg", "rb"))

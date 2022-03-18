@@ -1,17 +1,85 @@
 import requests
+import json
+from pprint import pprint
 
-res = requests.post('http://127.0.0.1:8000/api/v1/goods/',
-                   # data={"title": "Gouda cheese 1.", "description": "The number 1 cheese in the world!", "price": 101},
-                   json={"title": "sd", "description": "The number 1 cheese in the world!", "price": 5},
-                   # auth=('omer', 'b01ad0ce'),
-                   headers={'Content-Type': 'application/json'},
-                   # params={"title": "Gouda cheese.", "description": "The number 1 cheese in the world!", "price": 101}
-                   )
+# res = requests.post('http://127.0.0.1:8000/api/v1/goods/',
+#                    # data={"title": "Gouda cheese 1.", "description": "The number 1 cheese in the world!", "price": 101},
+#                    json={"title": "sd", "description": "The number 1 cheese in the world!", "price": 5},
+#                    # auth=('omer', 'b01ad0ce'),
+#                    headers={'Content-Type': 'application/json'},
+#                    # params={"title": "Gouda cheese.", "description": "The number 1 cheese in the world!", "price": 101}
+#                    )
 # data=json.dumps(payload)  payload = {'some':'data'} передать в json
-print(res.status_code)
-print(res.headers['Content-Type'])
-print(res.text)
 
+# print(res.status_code)
+# print(res.headers['Content-Type'])
+# pprint(res.text)
+# print(json.loads(res.text))  # раскодирование кириллицы
+
+######################################################################################################################
+url = 'http://smarthome.webpython.graders.eldf.ru/api/user.controller'
+payload = json.dumps({
+    "controllers": [
+        {
+            "name": "air_conditioner",
+            "value": True
+        },
+        {
+            "name": "bedroom_light",
+            "value": True
+        }
+    ]
+})
+headers={
+    'Authorization': 'Bearer 787358f3c98a66cec191aaa7c3e3995b22c168276869c7d7a37edc9b6ee4814a',
+    'Content-Type': 'application/json'
+}
+response = requests.request('POST', url, headers=headers, data=payload)
+pprint(response.json())
+
+# x = {"controllers": [{"value": False, "name": "air_conditioner"}, {"value": False, "name": "bedroom_light"},
+#                      {"value": False, "name": "smoke_detector"}, {"value": False, "name": "bedroom_presence"},
+#                      {"value": False, "name": "bedroom_motion"}, {"value": False, "name": "boiler"},
+#                      {"value": False, "name": "cold_water"}, {"value": False, "name": "hot_water"},
+#                      {"value": False, "name": "bathroom_light"}, {"value": False, "name": "bathroom_motion"},
+#                      {"value": False, "name": "bathroom_presence"}, {"value": "close", "name": "curtains"},
+#                      {"value": "off", "name": "washing_machine"}, {"value": 76, "name": "bedroom_temperature"},
+#                      {"value": 80, "name": "boiler_temperature"}, {"value": False, "name": "leak_detector"},
+#                      {"value": 68, "name": "outdoor_light"}]}
+#
+# answer = requests.post('https://smarthome.webpython.graders.eldf.ru/api/user.controller', headers=headers, data=x)
+
+# res = requests.get('http://smarthome.webpython.graders.eldf.ru/api/auth.current',
+#                    headers={'Authorization': 'Bearer 787358f3c98a66cec191aaa7c3e3995b22c168276869c7d7a37edc9b6ee4814a'})
+
+# res = requests.get('http://smarthome.webpython.graders.eldf.ru/api/user.controller',
+#                    headers={'Authorization': 'Bearer 787358f3c98a66cec191aaa7c3e3995b22c168276869c7d7a37edc9b6ee4814a'})
+
+# res = requests.post('http://smarthome.webpython.graders.eldf.ru/api/user.controller',
+#                     headers={
+#                         'Authorization': 'Bearer 787358f3c98a66cec191aaa7c3e3995b22c168276869c7d7a37edc9b6ee4814a',
+#                         'Content-Type': 'application/json'
+#                         },
+#                     data=json.dumps({
+#                         "controllers": [
+#                             {
+#                                 "name": "air_conditioner",
+#                                 "value": False
+#                             },
+#                             {
+#                                 "name": "bedroom_light",
+#                                 "value": False
+#                             }
+#                         ]
+#                     })
+#                     )
+# print(res.status_code)
+# print(res.headers['Content-Type'])
+# pprint(res.text)
+# print(json.loads(res.text))  # раскодирование кириллицы
+
+
+####################################################################################################################
 
 # TypeError: argument of type 'WindowsPath' is not iterable - in django python [duplicate]
 # I got this cleared by changing DATABASES in settings.py file:
