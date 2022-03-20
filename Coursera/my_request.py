@@ -20,13 +20,13 @@ from pprint import pprint
 url = 'http://smarthome.webpython.graders.eldf.ru/api/user.controller'
 payload = json.dumps({
     "controllers": [
+        # {
+        #     "name": "leak_detector",
+        #     "value": True
+        # },
         {
-            "name": "air_conditioner",
-            "value": True
-        },
-        {
-            "name": "bedroom_light",
-            "value": True
+            "name": "hot_water",
+            "value": False
         }
     ]
 })
