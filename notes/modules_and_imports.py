@@ -227,7 +227,7 @@
 
 # he "task" is no longer in version 5.x You can use version 4.x
 # pip3 uninstall celery
-# pip3 install celery==4.4.2
+# pip3 install celery==4.4.0
 # Edited the spaces
 
 ##########################################################################################

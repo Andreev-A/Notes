@@ -45,7 +45,7 @@ def smart_home_manager():
             not controller_data['cold_water']['value']:
         if controller_data['boiler']['value']:
             payload['controllers'].append({'name': 'boiler', 'value': False})
-        if controller_data['washing_machine']['value'] in ('on', 'broken'):
+        if controller_data['washing_machine']['value'] == 'on':
             payload['controllers'].append({'name': 'washing_machine', 'value': "off"})
 
     if controller_data['smoke_detector']['value']:
@@ -63,7 +63,7 @@ def smart_home_manager():
             )
         if controller_data['boiler']['value']:
             payload['controllers'].append({'name': 'boiler', 'value': False})
-        if controller_data['washing_machine']['value'] in ('on', 'broken'):
+        if controller_data['washing_machine']['value'] == 'on':
             payload['controllers'].append(
                 {'name': 'washing_machine', 'value': 'off'}
             )
@@ -96,9 +96,11 @@ def smart_home_manager():
         pass
     else:
         if outdoor_light < 50 and not bedroom_light:
-            payload['controllers'].append({'name': 'curtains', 'value': 'open'})
+            if controller_data['curtains']['value'] == 'close':
+                payload['controllers'].append({'name': 'curtains', 'value': 'open'})
         elif outdoor_light > 50 or bedroom_light:
-            payload['controllers'].append({'name': 'curtains', 'value': 'close'})
+            if controller_data['curtains']['value'] == 'open':
+                payload['controllers'].append({'name': 'curtains', 'value': 'close'})
 
     if payload['controllers']:
         unique = []
