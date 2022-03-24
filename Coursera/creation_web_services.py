@@ -268,3 +268,45 @@ print(r.text)
 #     "X-Test2": "true"
 #   }
 # }
+
+# from bs4 import BeautifulSoup
+# import requests
+
+# resp = requests.get('https://www.wikipedia.org')
+# html = resp.text
+
+# import re
+# re_links = re.findall(r'<a[^>]+class="[^"]*other-project-link[^>]+href="([^"]+)', html)
+# print(re_links)
+
+# soup = BeautifulSoup(html, 'lxml')
+# bs_links = soup('a', 'other-project-link')
+# bs_hrefs = [link['href'] for link in bs_links]
+# print(bs_hrefs)
+
+# html = """<!DOCTYPE html>
+# <html lang="en">
+# <head>
+# <title>test page</title>
+# </head>
+# <body class="mybody" id="js-body">
+# <p class="text odd">first <b>bold</b> paragraph</p>
+# <p class="text even">second <a href="https://mail.ru">link</a></p>
+# <p class="list odd">third <a id="paragraph"><b>bold link</b></a></p>
+# </body>
+# </html>
+# """
+# soup = BeautifulSoup(html, 'lxml')
+# print(soup.head)
+# print(soup)  # напечатать
+# print(soup.prettify())  # красиво напечатать с отступами
+# print(soup.p.b.string)  # можно .p или .p.b или p.b.string
+# print(soup.p.name)  # p
+# print(soup.p['class'])  # ['title'] - список, т.к. может быть много значений
+# print(soup('p')[1]['class'])  # следующий класс
+# print(soup.p.b.parrent)  # родитель тега b
+# print(soup.p.b.parrents)  # все родители тега b - это генератор -> (вывести) [tag.name for tag in soup.p.b.parrents]
+# print(soup.p.next)  # Перейти к тегу или строке непосредственно идущему за первым <p>, включая вложеный
+# print(soup.p.next_sibling)  # следующий тег, не включая вложеный - у нас перенос строки (еще добавить - .next_sibling)
+# print(soup.p.contents)  # все вложеные теги
+# print(soup.p.children)  # все вложеные теги - генератор -> (вывести) list(soup.p.children)
