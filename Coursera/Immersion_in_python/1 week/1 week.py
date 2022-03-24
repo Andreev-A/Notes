@@ -8,6 +8,7 @@ $ python key_value_storage.py 160438521039
 42
 """
 import sys
+
 digit_string = sys.argv[1]
 summa = 0
 for digit in digit_string:
@@ -32,6 +33,7 @@ $ python solution.py 3
 ###
 """
 # import sys
+
 digit = int(sys.argv[1])
 for i in range(1, digit + 1):
     space = digit - i
@@ -45,6 +47,7 @@ for i in range(1, digit + 1):
 которые в итоге дают 2 корня квадратного уравнения.
 """
 # import sys
+
 a = int(sys.argv[1])
 b = int(sys.argv[2])
 c = int(sys.argv[3])
