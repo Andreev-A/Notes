@@ -1,7 +1,7 @@
 """
 Это вспомогательный скрипт для тестирования сервера из задания на неделе 6.
 
-Для запуска скрипта на локальном компьютере разместите рядом файл client.py,
+Для запуска скрипта на локальном компьютере разместите рядом файл client_for_sending_metrics.py,
 где содержится код клиента, который открывается по прохождении задания
 недели 5.
 
@@ -9,7 +9,7 @@
 запускаете этот скрипт.
 """
 import sys
-from client import Client, ClientError
+from client_for_sending_metrics import Client, ClientError
 
 
 def run(host, port):
