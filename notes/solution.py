@@ -103,3 +103,20 @@ print(len(languages_one), *languages_one, sep='\n')
 #
 # -- Удалить все сообщения с четными id: https://dev.mysql.com/doc/refman/5.7/en/delete.html
 # DELETE FROM message WHERE NOT message_id % 2;
+
+
+# import json
+# from django import forms
+#
+# class SomeForm(forms.Form):
+#     name = forms.CharField(label=u'Name', max_length=25)
+#
+# def some_view(request):
+#     json_string = request.POST.get('json_data')
+#     form_data = json.loads(json_string)[0]  # data = json.loads(request.body.decode())
+#     f = SomeForm(form_data)
+#     if f.is_valid():
+#         name = f.cleaned_data['name']
+#         # ... Работа с данными ...
+#     else:
+#         # ... Обработка ошибки ...
